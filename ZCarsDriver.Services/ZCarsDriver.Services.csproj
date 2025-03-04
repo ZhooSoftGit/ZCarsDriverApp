@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\ZhooSoft.LocalData\ZhooSoft.LocalData.csproj" />
+	  <ProjectReference Include="..\ZhooSoft.ServiceBase\ZhooSoft.ServiceBase.csproj" />
 	</ItemGroup>
 
 </Project>

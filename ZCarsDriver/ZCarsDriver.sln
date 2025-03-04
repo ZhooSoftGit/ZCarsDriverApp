@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.ThirdParty", "..\Z
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.LocalData", "..\ZhooSoft.LocalData\ZhooSoft.LocalData.csproj", "{BA419313-7518-4645-9A71-229270AD7222}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.ServiceBase", "..\ZhooSoft.ServiceBase\ZhooSoft.ServiceBase.csproj", "{48993518-D2C2-4302-A874-3820264A9829}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{BA419313-7518-4645-9A71-229270AD7222}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA419313-7518-4645-9A71-229270AD7222}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA419313-7518-4645-9A71-229270AD7222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48993518-D2C2-4302-A874-3820264A9829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48993518-D2C2-4302-A874-3820264A9829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48993518-D2C2-4302-A874-3820264A9829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48993518-D2C2-4302-A874-3820264A9829}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
