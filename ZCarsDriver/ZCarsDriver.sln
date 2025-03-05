@@ -5,8 +5,6 @@ VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZCarsDriver", "ZCarsDriver.csproj", "{B2C520E7-D374-4806-991F-33004B58BCD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.Auth", "..\ZhooSoft.Auth\ZhooSoft.Auth.csproj", "{6753208E-A5D1-41AB-9C12-8CF6070B7F7E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.Controls", "..\ZhooSoft.Controls\ZhooSoft.Controls.csproj", "{1C748479-2DCD-4211-823A-2D45E7DCBD3C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.Common", "..\ZhooSoft.Common\ZhooSoft.Common.csproj", "{3D282815-91A4-4397-B0D0-7F49CC437B92}"
@@ -21,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.LocalData", "..\Zh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.ServiceBase", "..\ZhooSoft.ServiceBase\ZhooSoft.ServiceBase.csproj", "{48993518-D2C2-4302-A874-3820264A9829}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.Auth", "..\ZhooSoft.Auth\ZhooSoft.Auth.csproj", "{367A38AD-A438-45C5-9F42-17EF96E37C04}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +32,6 @@ Global
 		{B2C520E7-D374-4806-991F-33004B58BCD6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{B2C520E7-D374-4806-991F-33004B58BCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2C520E7-D374-4806-991F-33004B58BCD6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6753208E-A5D1-41AB-9C12-8CF6070B7F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6753208E-A5D1-41AB-9C12-8CF6070B7F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6753208E-A5D1-41AB-9C12-8CF6070B7F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6753208E-A5D1-41AB-9C12-8CF6070B7F7E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C748479-2DCD-4211-823A-2D45E7DCBD3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C748479-2DCD-4211-823A-2D45E7DCBD3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C748479-2DCD-4211-823A-2D45E7DCBD3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -64,6 +60,10 @@ Global
 		{48993518-D2C2-4302-A874-3820264A9829}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48993518-D2C2-4302-A874-3820264A9829}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48993518-D2C2-4302-A874-3820264A9829}.Release|Any CPU.Build.0 = Release|Any CPU
+		{367A38AD-A438-45C5-9F42-17EF96E37C04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{367A38AD-A438-45C5-9F42-17EF96E37C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{367A38AD-A438-45C5-9F42-17EF96E37C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{367A38AD-A438-45C5-9F42-17EF96E37C04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

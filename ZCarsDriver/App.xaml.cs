@@ -1,4 +1,6 @@
-﻿namespace ZCarsDriver
+﻿using ZhooSoft.Auth.Views;
+
+namespace ZCarsDriver
 {
     public partial class App : Application
     {
@@ -9,7 +11,9 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            var nvPage = new NavigationPage(new LoginPage());
+          
+            return new Window(nvPage);
         }
     }
 }

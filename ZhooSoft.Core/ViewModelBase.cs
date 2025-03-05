@@ -20,7 +20,6 @@ namespace ZhooSoft.Core
         public ViewModelBase()
         {
             _navigationService = ServiceHelper.GetService<INavigationService>();
-            _helperService = ServiceHelper.GetService<IHelperService>();
             BackCommand = new Command(GoBack);
         }
 

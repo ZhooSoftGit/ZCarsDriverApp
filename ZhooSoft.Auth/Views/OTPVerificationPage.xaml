@@ -2,11 +2,43 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ZhooSoft.Auth.Views.OTPVerificationPage"
+             NavigationPage.HasNavigationBar="False"
              Title="OTPVerificationPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <Border StrokeShape="Rectangle, 2,2,2,2">
+        <VerticalStackLayout Padding="20" BackgroundColor="White" Spacing="15" VerticalOptions="Center" MaximumWidthRequest="400" MaximumHeightRequest="500">
+            <Label Text="OTP Verification" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label FontSize="12" HorizontalTextAlignment="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span FontSize="14" Text="Enter the OTP Sent to "></Span>
+                        <Span Text="{Binding PhoneNumber}" FontSize="14" FontAttributes="Bold"></Span>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <Label Text="{Binding TimerText}" HorizontalOptions="Center" FontSize="12" TextColor="#00796B" />
+
+            <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+                <Entry Text="{Binding OTP1}" MaxLength="1" Keyboard="Numeric" WidthRequest="50" />
+                <Entry Text="{Binding OTP2}" MaxLength="1" Keyboard="Numeric" WidthRequest="50" />
+                <Entry Text="{Binding OTP3}" MaxLength="1" Keyboard="Numeric" WidthRequest="50" />
+                <Entry Text="{Binding OTP4}" MaxLength="1" Keyboard="Numeric" WidthRequest="50" />
+            </HorizontalStackLayout>
+
+            <Button Text="Submit" Command="{Binding SubmitCommand}" WidthRequest="250" BackgroundColor="#00796B" TextColor="White" />
+
+            <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
+                <Label Text="Don't receive the OTP ? " VerticalTextAlignment="Center" FontSize="12" TextColor="Gray" />
+                <Label Text="Resend OTP" FontSize="16" VerticalTextAlignment="Center" TextColor="#00796B" FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ResendCodeCommand}"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+            <Button Text="Change Number" WidthRequest="200" Command="{Binding ChangePhoneNumberCommand}" BackgroundColor="#00796B" TextColor="White" />
+        </VerticalStackLayout>
+        </Border>
+    </ScrollView>
 </ContentPage>
