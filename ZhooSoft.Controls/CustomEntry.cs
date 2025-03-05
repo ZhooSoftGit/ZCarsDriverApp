@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ZhooSoft.Controls
 {
-    internal class BorderedEntry
+    public class CustomEntry : Entry
     {
+        
     }
 }

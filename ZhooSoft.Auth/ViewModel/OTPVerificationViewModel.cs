@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.ComponentModel;
 using System.Windows.Input;
 using ZhooSoft.Core;
 
@@ -35,11 +36,11 @@ namespace ZhooSoft.Auth.ViewModel
             StartTimer();
             SubmitCommand = new RelayCommand(OnSubmit);
             ResendCodeCommand = new RelayCommand(OnResendCode);
-            ChangePhoneNumberCommand = new RelayCommand(OnChangePhoneNumber);
+            ChangePhoneNumberCommand = new AsyncRelayCommand(OnChangePhoneNumber);
         }
         public ICommand SubmitCommand { get; }
         public ICommand ResendCodeCommand { get; }
-        public ICommand ChangePhoneNumberCommand { get; }
+        public IAsyncRelayCommand ChangePhoneNumberCommand { get; }
         private async void StartTimer()
         {
             while (_secondsRemaining > 0)
@@ -57,21 +58,25 @@ namespace ZhooSoft.Auth.ViewModel
         {
             string enteredOTP = Otp1 + Otp2 + Otp3 + Otp4;
             // Validate OTP and proceed with verification
-            
+
         }
 
         private void OnResendCode()
         {
+            Otp1 = string.Empty;
+            Otp2 = string.Empty;
+            Otp3 = string.Empty;
+            Otp4 = string.Empty;
             _secondsRemaining = 90;
             IsResendVisible = false;
             IsTimerVisible = true;
             StartTimer();
         }
 
-        private void OnChangePhoneNumber()
+        private async Task OnChangePhoneNumber()
         {
             _secondsRemaining = -1;
-            _navigationService.PopAsync();
+            await _navigationService.PopAsync();
         }
 
         public override void OnAppearing()

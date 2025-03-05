@@ -61,6 +61,15 @@ namespace ZhooSoft.Auth.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Change Number.
+        /// </summary>
+        internal static string ChangNoTxt {
+            get {
+                return ResourceManager.GetString("ChangNoTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Continue.
         /// </summary>
         internal static string ContinueButton {
@@ -93,6 +102,51 @@ namespace ZhooSoft.Auth.Resources.Strings {
         internal static string LoginTitle {
             get {
                 return ResourceManager.GetString("LoginTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Don&apos;t receive the OTP ? .
+        /// </summary>
+        internal static string OtpResentTxt {
+            get {
+                return ResourceManager.GetString("OtpResentTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resend OTP.
+        /// </summary>
+        internal static string OtpReTxt {
+            get {
+                return ResourceManager.GetString("OtpReTxt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the OTP Sent to .
+        /// </summary>
+        internal static string OtpSubTitle {
+            get {
+                return ResourceManager.GetString("OtpSubTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OTP Verification.
+        /// </summary>
+        internal static string OtpTitle {
+            get {
+                return ResourceManager.GetString("OtpTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Submit.
+        /// </summary>
+        internal static string Submit {
+            get {
+                return ResourceManager.GetString("Submit", resourceCulture);
             }
         }
     }

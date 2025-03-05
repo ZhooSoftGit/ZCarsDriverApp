@@ -1,4 +1,6 @@
 ﻿
+
+
 namespace ZhooSoft.Core.NavigationBase
 {
     public class NavigationService : INavigationService
@@ -25,9 +27,12 @@ namespace ZhooSoft.Core.NavigationBase
 
         public async Task PopAsync()
         {
-            if (Application.Current.MainPage is NavigationPage nvpage)
+            if (Application.Current != null && Application.Current.Windows != null && Application.Current.Windows.Count > 0)
             {
-                await nvpage.PopAsync();
+                if (Application.Current.Windows[0].Page is NavigationPage nvpage)
+                {
+                    await nvpage.PopAsync();
+                }
             }
         }
 
@@ -43,9 +48,12 @@ namespace ZhooSoft.Core.NavigationBase
 
         public async Task PushAsync(Page page)
         {
-            if (Application.Current.MainPage is NavigationPage nvpage)
+            if (Application.Current != null && Application.Current.Windows != null && Application.Current.Windows.Count > 0)
             {
-                await nvpage.PushAsync(page);
+                if (Application.Current.Windows[0].Page is NavigationPage nvpage)
+                {
+                    await nvpage.PushAsync(page);
+                }
             }
         }
 

@@ -4,6 +4,7 @@ using ZCarsDriver.CoreHelper;
 using ZhooSoft.Auth;
 using ZhooSoft.Auth.ViewModel;
 using ZhooSoft.Auth.Views;
+using ZhooSoft.Controls;
 using ZhooSoft.Core;
 using ZhooSoft.Core.NavigationBase;
 
@@ -17,6 +18,10 @@ namespace ZCarsDriver
             builder
                 .UseMauiApp<App>()
                 .ConfigureSyncfusionToolkit()
+                .ConfigureMauiHandlers(handlers =>
+                {
+                    handlers.AddHandler(typeof(CustomEntry), typeof(CustomEntryHandler));
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
