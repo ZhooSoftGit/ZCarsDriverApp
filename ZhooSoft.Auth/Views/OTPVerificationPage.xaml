@@ -9,6 +9,11 @@
     <ScrollView>
         <Border StrokeShape="Rectangle, 2,2,2,2">
             <VerticalStackLayout Padding="20" BackgroundColor="White" Spacing="15" VerticalOptions="Center" MaximumWidthRequest="400" MaximumHeightRequest="500">
+
+                <ctrl:CustomBorder BackgroundColor="#00796B" BorderColor="#D84315" WidthRequest="100" HeightRequest="100">
+                    <Image Source="drivericon.png" WidthRequest="80" HeightRequest="80"></Image>
+                </ctrl:CustomBorder>
+
                 <Label Text="{x:Static resource:AppResources.OtpTitle}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
                 <Label FontSize="12" HorizontalTextAlignment="Center">
                     <Label.FormattedText>

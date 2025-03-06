@@ -49,15 +49,15 @@ namespace ZCarsDriver
 
         private static IServiceCollection AddViewModel(this IServiceCollection services)
         {
-            services.AddSingleton<LoginViewModel>();
-            services.AddSingleton<OTPVerificationViewModel>();
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<OTPVerificationViewModel>();
             return services;
         }
 
         private static IServiceCollection AddPages(this IServiceCollection services)
         {
-            services.AddSingleton<LoginPage>();
-            services.AddSingleton<OTPVerificationPage>();
+            services.AddTransient<LoginPage>();
+            services.AddTransient<OTPVerificationPage>();
             return services;
         }
 
