@@ -1,50 +1,129 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ZhooSoft.Auth.Views.OTPVerificationPage"             
-             xmlns:resource="clr-namespace:ZhooSoft.Auth.Resources.Strings"
-             xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
-             NavigationPage.HasNavigationBar="False"
-             Title="OTPVerificationPage">
+<ContentPage
+    x:Class="ZhooSoft.Auth.Views.OTPVerificationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
+    xmlns:resource="clr-namespace:ZhooSoft.Auth.Resources.Strings"
+    Title="OTPVerificationPage"
+    NavigationPage.HasNavigationBar="False">
     <ScrollView>
         <Border StrokeShape="Rectangle, 2,2,2,2">
-            <VerticalStackLayout Padding="20" BackgroundColor="White" Spacing="15" VerticalOptions="Center" MaximumWidthRequest="400" MaximumHeightRequest="500">
+            <VerticalStackLayout
+                Padding="20"
+                BackgroundColor="White"
+                MaximumHeightRequest="500"
+                MaximumWidthRequest="400"
+                Spacing="15"
+                VerticalOptions="Center">
 
-                <ctrl:CustomBorder BackgroundColor="#00796B" BorderColor="#D84315" WidthRequest="100" HeightRequest="100">
-                    <Image Source="drivericon.png" WidthRequest="80" HeightRequest="80"></Image>
+                <ctrl:CustomBorder
+                    BackgroundColor="#00796B"
+                    BorderColor="#D84315"
+                    HeightRequest="100"
+                    WidthRequest="100">
+                    <Image
+                        HeightRequest="80"
+                        Source="drivericon.png"
+                        WidthRequest="80" />
                 </ctrl:CustomBorder>
 
-                <Label Text="{x:Static resource:AppResources.OtpTitle}" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" />
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="24"
+                    HorizontalOptions="Center"
+                    Text="{x:Static resource:AppResources.OtpTitle}" />
                 <Label FontSize="12" HorizontalTextAlignment="Center">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span FontSize="14" Text="{x:Static resource:AppResources.OtpSubTitle}"></Span>
-                            <Span Text="{Binding PhoneNumber}" FontSize="14" FontAttributes="Bold"></Span>
+                            <Span FontSize="14" Text="{x:Static resource:AppResources.OtpSubTitle}" />
+                            <Span
+                                FontAttributes="Bold"
+                                FontSize="14"
+                                Text="{Binding PhoneNumber}" />
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
 
-                <Label Text="{Binding TimerText}" HorizontalOptions="Center" FontSize="12" TextColor="#00796B" />
+                <Label
+                    FontSize="12"
+                    HorizontalOptions="Center"
+                    Text="{Binding TimerText}"
+                    TextColor="#00796B" />
 
-                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
-                    <ctrl:CustomEntry x:Name="otp1" Text="{Binding Otp1}" HorizontalTextAlignment="Center" ReturnType="Done" MaxLength="1" Keyboard="Numeric" WidthRequest="50" TextChanged="otp1_TextChanged" />
-                    <ctrl:CustomEntry x:Name="otp2" Text="{Binding Otp2}" HorizontalTextAlignment="Center" MaxLength="1" ReturnType="Done" Keyboard="Numeric" WidthRequest="50" TextChanged="otp2_TextChanged" />
-                    <ctrl:CustomEntry x:Name="otp3" Text="{Binding Otp3}" HorizontalTextAlignment="Center" MaxLength="1" ReturnType="Done" Keyboard="Numeric" WidthRequest="50" TextChanged="otp3_TextChanged" />
-                    <ctrl:CustomEntry x:Name="otp4" Text="{Binding Otp4}" HorizontalTextAlignment="Center" MaxLength="1" ReturnType="Done" Keyboard="Numeric" WidthRequest="50" TextChanged="otp4_TextChanged" />
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
+                    <ctrl:CustomEntry
+                        x:Name="otp1"
+                        HorizontalTextAlignment="Center"
+                        Keyboard="Numeric"
+                        MaxLength="1"
+                        ReturnType="Done"
+                        Text="{Binding Otp1}"
+                        TextChanged="otp1_TextChanged"
+                        WidthRequest="50" />
+                    <ctrl:CustomEntry
+                        x:Name="otp2"
+                        HorizontalTextAlignment="Center"
+                        Keyboard="Numeric"
+                        MaxLength="1"
+                        ReturnType="Done"
+                        Text="{Binding Otp2}"
+                        TextChanged="otp2_TextChanged"
+                        WidthRequest="50" />
+                    <ctrl:CustomEntry
+                        x:Name="otp3"
+                        HorizontalTextAlignment="Center"
+                        Keyboard="Numeric"
+                        MaxLength="1"
+                        ReturnType="Done"
+                        Text="{Binding Otp3}"
+                        TextChanged="otp3_TextChanged"
+                        WidthRequest="50" />
+                    <ctrl:CustomEntry
+                        x:Name="otp4"
+                        HorizontalTextAlignment="Center"
+                        Keyboard="Numeric"
+                        MaxLength="1"
+                        ReturnType="Done"
+                        Text="{Binding Otp4}"
+                        TextChanged="otp4_TextChanged"
+                        WidthRequest="50" />
                 </HorizontalStackLayout>
 
-                <Button Text="{x:Static resource:AppResources.Submit}" Command="{Binding SubmitCommand}" WidthRequest="250" BackgroundColor="#00796B" TextColor="White" />
+                <Button
+                    BackgroundColor="#00796B"
+                    Command="{Binding SubmitCommand}"
+                    Text="{x:Static resource:AppResources.Submit}"
+                    TextColor="White"
+                    WidthRequest="250" />
 
-                <HorizontalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="5">
-                    <Label Text="{x:Static resource:AppResources.OtpResentTxt}" VerticalTextAlignment="Center" FontSize="12" TextColor="Gray" />
-                    <Label Text="{x:Static resource:AppResources.OtpReTxt}" FontSize="16" VerticalTextAlignment="Center" TextColor="#00796B" FontAttributes="Bold">
+                <HorizontalStackLayout
+                    HorizontalOptions="Center"
+                    Spacing="5"
+                    VerticalOptions="Center">
+                    <Label
+                        FontSize="12"
+                        Text="{x:Static resource:AppResources.OtpResentTxt}"
+                        TextColor="Gray"
+                        VerticalTextAlignment="Center" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        Text="{x:Static resource:AppResources.OtpReTxt}"
+                        TextColor="#00796B"
+                        VerticalTextAlignment="Center">
                         <Label.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ResendCodeCommand}"></TapGestureRecognizer>
+                            <TapGestureRecognizer Command="{Binding ResendCodeCommand}" />
                         </Label.GestureRecognizers>
                     </Label>
                 </HorizontalStackLayout>
 
-                <Button Text="{x:Static resource:AppResources.ChangNoTxt}" WidthRequest="200" Command="{Binding ChangePhoneNumberCommand}" BackgroundColor="#00796B" TextColor="White" />
+                <Button
+                    BackgroundColor="#00796B"
+                    Command="{Binding ChangePhoneNumberCommand}"
+                    Text="{x:Static resource:AppResources.ChangNoTxt}"
+                    TextColor="White"
+                    WidthRequest="200" />
             </VerticalStackLayout>
         </Border>
     </ScrollView>

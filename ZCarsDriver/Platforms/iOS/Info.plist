@@ -28,5 +28,22 @@
 	</array>
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/appicon.appiconset</string>
+
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location for ride services</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to upload documents</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library for uploads</string>
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need permission to save images</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need microphone access for video recording</string>
+
+	<key>NSAppTransportSecurity</key>
 </dict>
 </plist>

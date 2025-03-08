@@ -117,13 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
   <data name="ContinueButton" xml:space="preserve">
     <value>Continue</value>
+  </data>
+  <data name="Dashboard" xml:space="preserve">
+    <value>Dashboard</value>
+  </data>
+  <data name="Driver" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="DrivingProfile" xml:space="preserve">
+    <value>Driving Profile</value>
+  </data>
+  <data name="LaunchDashboard" xml:space="preserve">
+    <value>Launch Dashboard</value>
   </data>
   <data name="LoginSubtitle" xml:space="preserve">
     <value>Please confirm your country code and enter your phone number.</value>
   </data>
   <data name="LoginTitle" xml:space="preserve">
     <value>Log in</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="Notification" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Payment Method</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
+  <data name="ReferFriend" xml:space="preserve">
+    <value>Refer To Friend</value>
+  </data>
+  <data name="Registration" xml:space="preserve">
+    <value>Registration</value>
+  </data>
+  <data name="RideHistory" xml:space="preserve">
+    <value>Ride History</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="UserProfile" xml:space="preserve">
+    <value>User Profile</value>
   </data>
 </root>

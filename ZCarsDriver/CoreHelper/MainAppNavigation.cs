@@ -1,4 +1,6 @@
 ﻿
+using ZCarsDriver.Views;
+using ZCarsDriver.Views.Common;
 using ZhooSoft.Auth;
 
 namespace ZCarsDriver.CoreHelper
@@ -10,15 +12,34 @@ namespace ZCarsDriver.CoreHelper
             throw new NotImplementedException();
         }
 
-        public void NavigateToMain(bool IsInitialLoad = false)
+        public async void NavigateToMain(bool IsInitialLoad = false)
         {
             if (IsInitialLoad)
             {
+                if (await CheckPermission())
+                {
+                    Application.Current.Windows[0].Page = new NavigationPage(new HomeViewPage());
+                }
+
                 //var appBasePage = new AppBasePage();
                 //NavigationPage.SetHasNavigationBar(appBasePage, false);
                 //Application.Current.MainPage = new NavigationPage(appBasePage);
 
                 // Application.Current.MainPage = new NavigationPage(new BTMMainPage());
+            }
+        }
+
+        private async Task<bool> CheckPermission()
+        {
+            var locationPermission = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
+            if (locationPermission != PermissionStatus.Granted)
+            {
+                Application.Current.Windows[0].Page = new EnableLocationPage();
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 

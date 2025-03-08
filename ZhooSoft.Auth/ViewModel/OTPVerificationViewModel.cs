@@ -59,6 +59,7 @@ namespace ZhooSoft.Auth.ViewModel
             string enteredOTP = Otp1 + Otp2 + Otp3 + Otp4;
             // Validate OTP and proceed with verification
 
+            ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
         }
 
         private void OnResendCode()

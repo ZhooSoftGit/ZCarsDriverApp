@@ -1,4 +1,4 @@
-﻿namespace ZhooSoft.Core.View
+﻿namespace ZhooSoft.Core
 {
     public abstract class BaseContentPage<T> : ContentPage, IViewFor<T> where T : ViewModelBase, new()
     {

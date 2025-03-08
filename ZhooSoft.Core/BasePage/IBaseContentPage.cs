@@ -1,4 +1,4 @@
-﻿namespace ZhooSoft.Core.View
+﻿namespace ZhooSoft.Core
 {
     public interface IViewFor
     {

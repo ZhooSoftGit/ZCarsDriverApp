@@ -18,6 +18,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Plugin.Maui.OCR" Version="1.0.15" />
 	</ItemGroup>
 
 </Project>
