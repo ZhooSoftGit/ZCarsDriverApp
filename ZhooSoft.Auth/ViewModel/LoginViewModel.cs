@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using ZhooSoft.Auth.Views;
@@ -47,7 +48,29 @@ namespace ZhooSoft.Auth.ViewModel
 
         private bool ValidatePhoneNumber()
         {
-            return Regex.IsMatch(PhoneNumber, @"^\d{10}$");
+            if (PhoneNumber == null) return false;
+
+            // Regex for validating an Indian phone number
+            string pattern = @"^(\+91[-\s]?)?[7-9]{1}[0-9]{9}$";
+
+            string phoneNumber = PhoneNumber;
+
+            Regex regex = new Regex(pattern);
+
+            // Return true if the phone number matches the regex pattern
+
+            if (PhoneNumber == null)
+            {
+                return false;
+            }
+            if (regex.IsMatch(phoneNumber))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)

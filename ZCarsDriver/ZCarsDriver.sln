@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.ServiceBase", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhooSoft.Auth", "..\ZhooSoft.Auth\ZhooSoft.Auth.csproj", "{367A38AD-A438-45C5-9F42-17EF96E37C04}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZCars.Model", "..\ZCars.Model\ZCars.Model.csproj", "{518C7733-5627-4918-8635-71A8893969FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,8 +66,15 @@ Global
 		{367A38AD-A438-45C5-9F42-17EF96E37C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{367A38AD-A438-45C5-9F42-17EF96E37C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{367A38AD-A438-45C5-9F42-17EF96E37C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{518C7733-5627-4918-8635-71A8893969FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{518C7733-5627-4918-8635-71A8893969FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{518C7733-5627-4918-8635-71A8893969FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{518C7733-5627-4918-8635-71A8893969FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F064D194-66D7-406F-B428-337A05A33F87}
 	EndGlobalSection
 EndGlobal
