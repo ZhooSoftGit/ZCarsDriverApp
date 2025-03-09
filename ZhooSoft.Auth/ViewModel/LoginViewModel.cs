@@ -1,8 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
+using ZhooCars.Services;
+using ZhooSoft.Auth.Resources.Strings;
 using ZhooSoft.Auth.Views;
 using ZhooSoft.Core;
 
@@ -10,9 +11,9 @@ namespace ZhooSoft.Auth.ViewModel
 {
     public partial class LoginViewModel : ViewModelBase
     {
-        [ObservableProperty]
-        private string _phoneNumber;
+        #region Fields
 
+        private IAccountService _accountService;
 
         [ObservableProperty]
         private string _errorMessage;
@@ -20,12 +21,45 @@ namespace ZhooSoft.Auth.ViewModel
         [ObservableProperty]
         private bool _isPhoneValid;
 
+        [ObservableProperty]
+        private string _phoneNumber;
+
+        #endregion
+
+        #region Constructors
+
+        public LoginViewModel(IAccountService accountService)
+        {
+            _accountService = accountService;
+            SendOtpCommand = new Command(async () => await OnSendOtp());
+        }
+
+        #endregion
+
+        #region Properties
 
         public ICommand SendOtpCommand { get; }
 
-        public LoginViewModel()
+        #endregion
+
+        #region Methods
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
         {
-            SendOtpCommand = new Command(async () => await OnSendOtp());
+            base.OnPropertyChanged(e);
+
+            if (e.PropertyName == nameof(PhoneNumber))
+            {
+                if (ValidatePhoneNumber())
+                {
+                    IsPhoneValid = true;
+                    ErrorMessage = string.Empty;
+                }
+                else
+                {
+                    IsPhoneValid = false;
+                }
+            }
         }
 
         private async Task OnSendOtp()
@@ -37,13 +71,31 @@ namespace ZhooSoft.Auth.ViewModel
                 return;
             }
 
-            var nvparm = new Dictionary<string, object>()
+            var result = await _accountService.SendOtpAsync(PhoneNumber);
+
+            if (result.IsSuccess)
             {
-                {"phoneNumber", PhoneNumber },
-                {"sessionId", "" }
-            };
-            //Send OTP from API
-            await _navigationService.PushAsync(ServiceHelper.GetService<OTPVerificationPage>(), nvparm);
+                var nvparm = new Dictionary<string, object>()
+                            {
+                                {"phoneNumber", PhoneNumber },
+                                {"sessionId", "" }
+                            };
+                await _navigationService.PushAsync(ServiceHelper.GetService<OTPVerificationPage>(), nvparm);
+            }
+            else
+            {
+
+                await ShowOtpError();
+            }
+        }
+
+        private async Task ShowOtpError()
+        {
+            var isRetry = await _alertService.ShowConfirmation(AppResources.Error, AppResources.OtpFailedMsg, AppResources.Retry, AppResources.Cancel);
+            if (isRetry)
+            {
+                await OnSendOtp();
+            }
         }
 
         private bool ValidatePhoneNumber()
@@ -73,22 +125,6 @@ namespace ZhooSoft.Auth.ViewModel
             }
         }
 
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
-
-            if (e.PropertyName == nameof(PhoneNumber))
-            {
-                if (ValidatePhoneNumber())
-                {
-                    IsPhoneValid = true;
-                    ErrorMessage = string.Empty;
-                }
-                else
-                {
-                    IsPhoneValid = false;
-                }
-            }
-        }
+        #endregion
     }
 }

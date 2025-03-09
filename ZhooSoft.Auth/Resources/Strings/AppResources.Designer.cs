@@ -61,6 +61,15 @@ namespace ZhooSoft.Auth.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Change Number.
         /// </summary>
         internal static string ChangNoTxt {
@@ -75,6 +84,15 @@ namespace ZhooSoft.Auth.Resources.Strings {
         internal static string ContinueButton {
             get {
                 return ResourceManager.GetString("ContinueButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
             }
         }
         
@@ -102,6 +120,15 @@ namespace ZhooSoft.Auth.Resources.Strings {
         internal static string LoginTitle {
             get {
                 return ResourceManager.GetString("LoginTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OTP Sent is Failed. Please Retry..
+        /// </summary>
+        internal static string OtpFailedMsg {
+            get {
+                return ResourceManager.GetString("OtpFailedMsg", resourceCulture);
             }
         }
         
@@ -138,6 +165,15 @@ namespace ZhooSoft.Auth.Resources.Strings {
         internal static string OtpTitle {
             get {
                 return ResourceManager.GetString("OtpTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retry.
+        /// </summary>
+        internal static string Retry {
+            get {
+                return ResourceManager.GetString("Retry", resourceCulture);
             }
         }
         

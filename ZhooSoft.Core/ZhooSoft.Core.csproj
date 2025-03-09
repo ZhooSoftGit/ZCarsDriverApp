@@ -21,4 +21,16 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
+	  <PackageReference Include="AndHUD">
+	    <Version>2.1.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-ios'">
+	  <PackageReference Include="BTProgressHUD">
+	    <Version>2.2.0</Version>
+	  </PackageReference>
+	</ItemGroup>
+
 </Project>

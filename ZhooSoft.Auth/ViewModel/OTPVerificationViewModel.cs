@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.ComponentModel;
 using System.Windows.Input;
+using ZhooCars.Services;
 using ZhooSoft.Core;
 
 namespace ZhooSoft.Auth.ViewModel
@@ -20,6 +20,9 @@ namespace ZhooSoft.Auth.ViewModel
         private string _timerText;
 
         [ObservableProperty]
+        private bool showError;
+
+        [ObservableProperty]
         private string _phoneNumber;
 
         [ObservableProperty]
@@ -30,17 +33,21 @@ namespace ZhooSoft.Auth.ViewModel
 
         private int _secondsRemaining;
 
-        public OTPVerificationViewModel()
+        public OTPVerificationViewModel(IAccountService accountService)
         {
             _secondsRemaining = 60; // Set initial countdown time (1:30)
             StartTimer();
-            SubmitCommand = new RelayCommand(OnSubmit);
+            SubmitCommand = new AsyncRelayCommand(OnSubmit);
             ResendCodeCommand = new RelayCommand(OnResendCode);
             ChangePhoneNumberCommand = new AsyncRelayCommand(OnChangePhoneNumber);
+            _accountService = accountService;
         }
         public ICommand SubmitCommand { get; }
         public ICommand ResendCodeCommand { get; }
         public IAsyncRelayCommand ChangePhoneNumberCommand { get; }
+
+        private readonly IAccountService _accountService;
+
         private async void StartTimer()
         {
             while (_secondsRemaining > 0)
@@ -54,12 +61,29 @@ namespace ZhooSoft.Auth.ViewModel
             IsResendVisible = true;
         }
 
-        private void OnSubmit()
+        private async Task OnSubmit()
         {
-            string enteredOTP = Otp1 + Otp2 + Otp3 + Otp4;
-            // Validate OTP and proceed with verification
+            string enteredOtp = Otp1.Trim() + Otp2.Trim() + Otp3.Trim() + Otp4.Trim();
 
-            ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
+
+            if (enteredOtp.Length == 4)
+            {
+                var result = await _accountService.VerifyOtpAsync(PhoneNumber, enteredOtp);
+
+                if (result.IsSuccess)
+                {
+                    ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
+                }
+                else
+                {
+                    Otp1 = Otp2 = Otp3 = Otp4 = string.Empty;
+                    ShowError = true;
+                }
+            }
+            else
+            {
+                ShowError = true;
+            }
         }
 
         private void OnResendCode()

@@ -8,13 +8,13 @@ namespace ZhooCars.Services
     {
         #region Fields
 
-        private readonly ApiService _apiService;
+        private readonly IApiService _apiService;
 
         #endregion
 
         #region Constructors
 
-        public AccountService(ApiService apiService)
+        public AccountService(IApiService apiService)
         {
             _apiService = apiService;
         }

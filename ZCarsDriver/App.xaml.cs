@@ -15,5 +15,10 @@ namespace ZCarsDriver
           
             return new Window(nvPage);
         }
+
+        private void CheckLogin()
+        {
+            //var login = 
+        }
     }
 }

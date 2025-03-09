@@ -1,4 +1,5 @@
 using ZhooSoft.Auth.ViewModel;
+using ZhooSoft.Core;
 
 namespace ZhooSoft.Auth.Views;
 
@@ -7,6 +8,6 @@ public partial class LoginPage : ContentPage
 	public LoginPage()
 	{
 		InitializeComponent();
-		BindingContext = new LoginViewModel();
+		BindingContext = ServiceHelper.GetService<LoginViewModel>();
 	}
 }

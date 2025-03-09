@@ -27,7 +27,7 @@ namespace ZCarsDriver.Services.Services
 
         public async Task<ApiResponse<bool>> ApproveDocumentAsync(int documentId, DocumentApprovalRequest request)
         {
-            return await _apiService.PutAsync<bool>($"{ApiConstants.BaseUrl}{ApiConstants.DocumentApprove}/{documentId}", request);
+            return await _apiService.PostAsync<bool>($"{ApiConstants.BaseUrl}{ApiConstants.DocumentApprove}/{documentId}", request);
         }
 
         public async Task<ApiResponse<SignedUrlResponse>> GenerateSignedUrlAsync(SignedUrlRequest signedUrlRequest)

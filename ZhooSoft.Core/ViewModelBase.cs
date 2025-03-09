@@ -1,26 +1,53 @@
-﻿using ZhooSoft.Core.NavigationBase;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Windows.Input;
+using ZhooSoft.Core.Alerts;
+using ZhooSoft.Core.NavigationBase;
 
 namespace ZhooSoft.Core
 {
     public partial class ViewModelBase : ObservableObject
     {
-        public ICommand BackCommand { get; }
-
-        public Dictionary<string, object> NavigationParams { get; set; } = new Dictionary<string, object>();
-        public ICommand OpenFlyout { get; }
-        public INavigationService _navigationService { get; set; }
-
-        public IHelperService _helperService { get; set; }
+        #region Fields
 
         [ObservableProperty]
         private string pageTitleName;
+        private bool _isBusy;
+
+        #endregion
+
+        #region Constructors
 
         public ViewModelBase()
         {
             _navigationService = ServiceHelper.GetService<INavigationService>();
+            _alertService = ServiceHelper.GetService<IAlertService>();
             BackCommand = new Command(GoBack);
+        }
+
+        #endregion
+
+        #region Properties
+
+        public IAlertService _alertService { get; set; }
+
+        public INavigationService _navigationService { get; set; }
+
+        public ICommand BackCommand { get; }
+
+        public Dictionary<string, object> NavigationParams { get; set; } = new Dictionary<string, object>();
+
+        public ICommand OpenFlyout { get; }
+
+        #endregion
+
+        #region Methods
+
+        public virtual void OnAppearing()
+        {
+        }
+
+        public virtual void OnDisappearing()
+        {
         }
 
         private void GoBack(object obj)
@@ -28,16 +55,32 @@ namespace ZhooSoft.Core
             _navigationService.PopAsync();
         }
 
-        private async void OpenFlyoutPanel(object obj)
+        public bool IsBusy
         {
-            //await _navigationService.(new SamplePopup(), true);
+            get
+            {
+                return _isBusy;
+            }
+            set
+            {
+                _isBusy = value;
+                ShowProgress(_isBusy);
+
+            }
         }
 
-        public virtual void OnAppearing()
+        protected void ShowProgress(bool show)
         {
+            if (show)
+            {
+                ServiceHelper.GetService<IProgressService>().ShowProgress("Please wait");
+            }
+            else
+            {
+                ServiceHelper.GetService<IProgressService>().HideProgress();
+            }
         }
-        public virtual void OnDisappearing()
-        {
-        }
+
+        #endregion
     }
 }

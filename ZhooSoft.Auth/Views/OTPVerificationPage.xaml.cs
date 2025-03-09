@@ -1,14 +1,18 @@
-using System.Runtime.CompilerServices;
 using ZhooSoft.Auth.ViewModel;
+using ZhooSoft.Controls;
+using ZhooSoft.Core;
 
 namespace ZhooSoft.Auth.Views;
 
 public partial class OTPVerificationPage : ContentPage
 {
+    private List<Entry> _otpEntries;
     public OTPVerificationPage()
     {
         InitializeComponent();
-        BindingContext = new OTPVerificationViewModel();
+        BindingContext = ServiceHelper.GetService<OTPVerificationViewModel>();
+        // Store the OTP entry fields in a list for easier navigation
+        _otpEntries = new List<Entry> { otp1, otp2, otp3, otp4 };
     }
 
     protected override void OnAppearing()
@@ -20,35 +24,44 @@ public partial class OTPVerificationPage : ContentPage
         }
     }
 
-    private void otp1_TextChanged(object sender, TextChangedEventArgs e)
+    private void OtpEntry_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (e.NewTextValue != null && e.NewTextValue.Length > 0)
+        if (sender is Entry entry)
         {
-            otp2.Focus();
+            int index = _otpEntries.IndexOf(entry);
+
+            // Move focus to next entry when a digit is entered
+            if (!string.IsNullOrEmpty(e.NewTextValue) && e.NewTextValue.Length == 1)
+            {
+                if (index < _otpEntries.Count - 1)
+                {
+                    _otpEntries[index + 1].Focus();
+                }
+            }
         }
     }
 
-    private void otp2_TextChanged(object sender, TextChangedEventArgs e)
+    private void OtpEntry_Unfocused(object sender, FocusEventArgs e)
     {
-        if (e.NewTextValue != null && e.NewTextValue.Length > 0)
+        if (sender is CustomEntry entry)
         {
-            otp3.Focus();
+            entry.TextChanged -= OtpEntry_Backspace;
+            entry.TextChanged += OtpEntry_Backspace;
         }
     }
 
-    private void otp3_TextChanged(object sender, TextChangedEventArgs e)
+    private void OtpEntry_Backspace(object sender, TextChangedEventArgs e)
     {
-        if (e.NewTextValue != null && e.NewTextValue.Length > 0)
+        if (sender is Entry entry && e.NewTextValue == string.Empty)
         {
-            otp4.Focus();
-        }
-    }
+            int index = _otpEntries.IndexOf(entry);
 
-    private void otp4_TextChanged(object sender, TextChangedEventArgs e)
-    {
-        if (otp1.Text == string.Empty && otp2.Text == string.Empty && otp3.Text == string.Empty && otp4.Text == string.Empty)
-        {
-            otp1.Focus();
+            // Move focus to previous entry when backspace is pressed
+            if (index > 0)
+            {
+                _otpEntries[index - 1].Focus();
+                _otpEntries[index - 1].Text = ""; // Clear previous entry
+            }
         }
     }
 }

@@ -7,7 +7,8 @@
     xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
     xmlns:resource="clr-namespace:ZCarsDriver.Resources.Strings"
     xmlns:vm="clr-namespace:ZCarsDriver.ViewModel"
-    x:TypeArguments="vm:HomeViewModel">
+    x:TypeArguments="vm:HomeViewModel"
+    NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="Fill" VerticalOptions="Fill">
 
@@ -20,7 +21,6 @@
                 HorizontalOptions="Fill"
                 VerticalOptions="Fill">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
@@ -76,128 +76,131 @@
 
                 </Grid>
 
-                <ctrl:CustomBorder
-                    Grid.Row="1"
-                    Padding="15"
-                    BackgroundColor="#00796B"
-                    CornerRadius="10"
-                    HeightRequest="120">
-                    <Grid ColumnDefinitions="*, Auto">
-                        <StackLayout VerticalOptions="Center">
-                            <Label
-                                FontAttributes="Bold"
-                                FontSize="20"
-                                Text="Get 20% Off"
-                                TextColor="White" />
-                            <Label
-                                FontSize="14"
-                                Text="on Your First Ride"
-                                TextColor="White" />
-                        </StackLayout>
-                        <Image
-                            HeightRequest="80"
-                            Source="banner1.png"
-                            WidthRequest="80" />
-                    </Grid>
-                </ctrl:CustomBorder>
-
-                <!--  Booking Options  -->
                 <Grid
-                    Grid.Row="2"
-                    Padding="5"
-                    ColumnDefinitions="*, *"
-                    ColumnSpacing="10"
-                    RowDefinitions="Auto, Auto"
-                    RowSpacing="10">
-                    <!--  Profile Register  -->
+                    Grid.Row="1"
+                    Padding="20"
+                    HorizontalOptions="Fill"
+                    RowDefinitions="auto,*"
+                    RowSpacing="10"
+                    VerticalOptions="Fill">
+
                     <ctrl:CustomBorder
                         Grid.Row="0"
-                        Grid.Column="0"
-                        Padding="10"
+                        Margin="15"
                         BackgroundColor="#00796B"
-                        CornerRadius="10"
-                        HeightRequest="100">
-                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        CornerRadius="10">
+                        <Grid
+                            ColumnDefinitions="*, Auto"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill">
+
                             <Image
-                                HeightRequest="40"
-                                Source="profile.png"
-                                WidthRequest="40" />
-                            <Label
-                                FontSize="14"
-                                HorizontalTextAlignment="Center"
-                                Text="{Binding UserTileTxt}"
-                                TextColor="White" />
-                            <Button
-                                BackgroundColor="{x:StaticResource Secondary}"
-                                BorderColor="White"
-                                FontSize="14"
-                                HorizontalOptions="Center"
-                                InputTransparent="True"
-                                Text="{Binding ProfileStatus}"
-                                TextColor="White" />
-                        </StackLayout>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ProfileRegCmd}" />
-                        </Border.GestureRecognizers>
+                                HeightRequest="200"
+                                Source="banner1.png"
+                                WidthRequest="200" />
+                        </Grid>
                     </ctrl:CustomBorder>
 
-                    <!--  Driver Booking  -->
-                    <ctrl:CustomBorder
-                        Grid.Row="0"
-                        Grid.Column="1"
-                        Padding="10"
-                        BackgroundColor="#00796B"
-                        CornerRadius="10"
-                        HeightRequest="100">
-                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Image
-                                HeightRequest="40"
-                                Source="profile.png"
-                                WidthRequest="40" />
-                            <Label
-                                FontSize="14"
-                                HorizontalTextAlignment="Center"
-                                Text="{Binding DriverTileTxt}"
-                                TextColor="White" />
-                            <Button
-                                BackgroundColor="{x:StaticResource Secondary}"
-                                BorderColor="White"
-                                FontSize="14"
-                                HorizontalOptions="Center"
-                                InputTransparent="True"
-                                Text="{Binding DriverStatus}"
-                                TextColor="White" />
-                        </StackLayout>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding DriverRegCmd}" />
-                        </Border.GestureRecognizers>
-                    </ctrl:CustomBorder>
-
-                    <!--  Dashboard  -->
-                    <ctrl:CustomBorder
+                    <!--  Booking Options  -->
+                    <Grid
                         Grid.Row="1"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        Padding="10"
-                        BackgroundColor="#00796B"
-                        CornerRadius="10"
-                        HeightRequest="100">
-                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Image
-                                HeightRequest="40"
-                                Source="drivericon.png"
-                                WidthRequest="40" />
-                            <Label
-                                FontSize="14"
-                                HorizontalTextAlignment="Center"
-                                Text="{x:Static resource:AppResources.LaunchDashboard}"
-                                TextColor="White" />
-                        </StackLayout>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding LaunchDashBoard}" />
-                        </Border.GestureRecognizers>
-                    </ctrl:CustomBorder>
+                        Padding="5"
+                        ColumnDefinitions="*, *"
+                        ColumnSpacing="10"
+                        RowDefinitions="Auto, Auto"
+                        RowSpacing="10">
+                        <!--  Profile Register  -->
+                        <ctrl:CustomBorder
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Padding="10"
+                            BackgroundColor="#00796B"
+                            CornerRadius="10">
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image
+                                    HeightRequest="40"
+                                    Source="profile.png"
+                                    WidthRequest="40" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{Binding UserTileTxt}"
+                                    TextColor="White" />
+                                <Button
+                                    BackgroundColor="{x:StaticResource Secondary}"
+                                    BorderColor="White"
+                                    FontSize="14"
+                                    WidthRequest="100"
+                                    HorizontalOptions="Center"
+                                    InputTransparent="True"
+                                    Text="{Binding ProfileStatus}"
+                                    TextColor="White" />
+                            </StackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ProfileRegCmd}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+
+                        <!--  Driver Booking  -->
+                        <ctrl:CustomBorder
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Padding="10"
+                            BackgroundColor="#00796B"
+                            CornerRadius="10"
+                            HeightRequest="100">
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image
+                                    HeightRequest="40"
+                                    Source="profile.png"
+                                    WidthRequest="40" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{Binding DriverTileTxt}"
+                                    TextColor="White" />
+                                <Button
+                                    BackgroundColor="{x:StaticResource Secondary}"
+                                    BorderColor="White"
+                                    FontSize="14"
+                                    HorizontalOptions="Center"
+                                    InputTransparent="True"
+                                    Text="{Binding DriverStatus}"
+                                    TextColor="White" />
+                            </StackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding DriverRegCmd}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+
+                        <!--  Dashboard  -->
+                        <ctrl:CustomBorder
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Padding="10"
+                            BackgroundColor="#00796B"
+                            CornerRadius="10"
+                            HeightRequest="100">
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image
+                                    HeightRequest="40"
+                                    Source="drivericon.png"
+                                    WidthRequest="40" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{x:Static resource:AppResources.LaunchDashboard}"
+                                    TextColor="White" />
+                            </StackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding LaunchDashBoard}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+                    </Grid>
+
                 </Grid>
+
             </Grid>
 
             <!--  Transparent Layout  -->
