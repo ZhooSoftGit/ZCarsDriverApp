@@ -1,19 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ZCarsDriver.Services.Contracts;
+using ZhooCars.Model.DTOs.DriverApp;
+using ZhooSoft.ServiceBase;
 
 namespace ZCarsDriver.Services.Services
 {
     public class VehicleLocationService : IVehicleLocationService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public VehicleLocationService(IApiService apiService)
         {
             _apiService = apiService;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task<ApiResponse<VehicleLocationDto>> GetVehicleLocationAsync(int vehicleId)
         {
@@ -30,5 +38,7 @@ namespace ZCarsDriver.Services.Services
         {
             return await _apiService.PostAsync<bool>(ApiConstants.UpdateVehicleStatus, locationDto);
         }
+
+        #endregion
     }
 }

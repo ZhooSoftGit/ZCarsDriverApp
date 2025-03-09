@@ -1,16 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZhooCars.Model.DTOs;
+﻿using ZhooCars.Model.DTOs;
 using ZhooSoft.ServiceBase;
 
 namespace ZCarsDriver.Services.Contracts
 {
+    #region Interfaces
+
     public interface IRideHistoryService
     {
+        #region Methods
+
         Task<ApiResponse<IEnumerable<DriverRideHistoryDto>>> GetDriverRideHistoryAsync(int userId, RideHistoryFilterDto filterDto);
+
         Task<ApiResponse<IEnumerable<PassengerRideHistoryDto>>> GetPassengerRideHistoryAsync(int userId, RideHistoryFilterDto filterDto);
+
+        #endregion
     }
+
+    #endregion
 }

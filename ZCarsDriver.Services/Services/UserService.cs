@@ -1,19 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ZCarsDriver.Services.Contracts;
+using ZhooSoft.ServiceBase;
 
 namespace ZCarsDriver.Services.Services
 {
     public class UserService : IUserService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public UserService(IApiService apiService)
         {
             _apiService = apiService;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task<ApiResponse<UserDetailDto>> GetUserDashBoardDetailsAsync(string? phoneNumber = null)
         {
@@ -32,5 +39,7 @@ namespace ZCarsDriver.Services.Services
             var url = string.IsNullOrEmpty(phoneNumber) ? ApiConstants.UpsertUserDetails : $"{ApiConstants.UpsertUserDetails}?phoneNumber={phoneNumber}";
             return await _apiService.PostAsync<bool>(url, userDetails);
         }
+
+        #endregion
     }
 }

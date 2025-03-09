@@ -7,12 +7,22 @@ namespace ZCarsDriver.Services.Services
 {
     public class DriverService : IDriverService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public DriverService(IApiService apiService)
         {
             _apiService = apiService;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task<ApiResponse<DriverDetailDto>> GetDriverByIdAsync(int userId)
         {
@@ -33,5 +43,7 @@ namespace ZCarsDriver.Services.Services
         {
             return await _apiService.PostAsync<DriverDetailDto>($"{ApiConstants.BaseUrl}{ApiConstants.DriverDetailUpdate}?userId={userId}", driverDto);
         }
+
+        #endregion
     }
 }

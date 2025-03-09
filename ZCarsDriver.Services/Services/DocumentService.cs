@@ -8,12 +8,22 @@ namespace ZCarsDriver.Services.Services
 {
     public class DocumentService : IDocumentService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public DocumentService(IApiService apiService)
         {
             _apiService = apiService;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task<ApiResponse<bool>> ApproveDocumentAsync(int documentId, DocumentApprovalRequest request)
         {
@@ -41,5 +51,7 @@ namespace ZCarsDriver.Services.Services
             var url = string.IsNullOrEmpty(phoneNumber) ? $"{ApiConstants.BaseUrl}{ApiConstants.DocumentUpsert}" : $"{ApiConstants.BaseUrl}{ApiConstants.DocumentUpsert}?phoneNumber={phoneNumber}";
             return await _apiService.PostAsync<DocumentDto>(url, dto);
         }
+
+        #endregion
     }
 }

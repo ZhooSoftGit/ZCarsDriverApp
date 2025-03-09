@@ -1,19 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ZCarsDriver.Services.Contracts;
+using ZhooCars.Model.DTOs;
+using ZhooCars.Model.Request;
+using ZhooCars.Model.Response;
+using ZhooSoft.ServiceBase;
 
 namespace ZCarsDriver.Services.Services
 {
     public class DriverShiftLogService : IDriverShiftLogService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public DriverShiftLogService(IApiService apiService)
         {
             _apiService = apiService;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task<ApiResponse<bool>> CheckInAsync(CheckInRequest request)
         {
@@ -30,5 +40,7 @@ namespace ZCarsDriver.Services.Services
             var url = $"{ApiConstants.GetShiftLogs}?fromDate={fromDate:o}&toDate={toDate:o}&page={page}&pageSize={pageSize}";
             return await _apiService.GetAsync<PagedResponse<DriverShiftLogDto>>(url);
         }
+
+        #endregion
     }
 }

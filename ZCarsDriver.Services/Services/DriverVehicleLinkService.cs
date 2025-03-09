@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZCarsDriver.Services.Contracts;
+﻿using ZCarsDriver.Services.Contracts;
 using ZhooCars.Model.DTOs;
 using ZhooSoft.ServiceBase;
 
@@ -11,12 +6,22 @@ namespace ZCarsDriver.Services.Services
 {
     public class DriverVehicleLinkService : IDriverVehicleLinkService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public DriverVehicleLinkService(IApiService apiService)
         {
             _apiService = apiService;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task<ApiResponse<bool>> DeleteVehicleLinkAsync(int linkId)
         {
@@ -42,5 +47,7 @@ namespace ZCarsDriver.Services.Services
         {
             return await _apiService.PostAsync<bool>($"{ApiConstants.BaseUrl}{ApiConstants.DriverVehicleVerifyLink}", request);
         }
+
+        #endregion
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZCarsDriver.Services.Contracts;
+﻿using ZCarsDriver.Services.Contracts;
 using ZhooCars.Common;
 using ZhooCars.Model.DTOs;
 using ZhooCars.Model.Response;
@@ -13,31 +8,31 @@ namespace ZCarsDriver.Services.Services
 {
     public class ServiceRequestService : IServiceRequestService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public ServiceRequestService(IApiService apiService)
         {
             _apiService = apiService;
         }
 
-        public async Task<ApiResponse<ServiceRequestDto>> CreateServiceRequestAsync(CreateServiceRequestDto requestDto)
-        {
-            return await _apiService.PostAsync<ServiceRequestDto>($"{ApiConstants.BaseUrl}{ApiConstants.CreateServiceRequest}", requestDto);
-        }
+        #endregion
 
-        public async Task<ApiResponse<bool>> NotifyNearbyProvidersAsync(int ticketId)
-        {
-            return await _apiService.PostAsync<bool>(string.Format($"{ApiConstants.BaseUrl}{ApiConstants.NotifyNearbyProviders}", ticketId), null);
-        }
+        #region Methods
 
         public async Task<ApiResponse<bool>> AssignServiceRequestAsync(int ticketId, int providerId)
         {
             return await _apiService.PostAsync<bool>(string.Format($"{ApiConstants.BaseUrl}{ApiConstants.AssignServiceRequest}", ticketId, providerId), null);
         }
 
-        public async Task<ApiResponse<bool>> UpdateServiceStatusAsync(int ticketId, ServiceRequestStatus status)
+        public async Task<ApiResponse<ServiceRequestDto>> CreateServiceRequestAsync(CreateServiceRequestDto requestDto)
         {
-            return await _apiService.PostAsync<bool>(string.Format($"{ApiConstants.BaseUrl}{ApiConstants.UpdateServiceRequestStatus}", ticketId), new UpdateStatusDto { Status = status });
+            return await _apiService.PostAsync<ServiceRequestDto>($"{ApiConstants.BaseUrl}{ApiConstants.CreateServiceRequest}", requestDto);
         }
 
         public async Task<ApiResponse<PagedResponse<ServiceRequestDto>>> GetFilteredServiceRequestsAsync(ServiceRequestFilterDto filter)
@@ -49,5 +44,17 @@ namespace ZCarsDriver.Services.Services
         {
             return await _apiService.GetAsync<ServiceRequestDetailsDto>(string.Format($"{ApiConstants.BaseUrl}{ApiConstants.GetServiceRequestDetails}", ticketId));
         }
+
+        public async Task<ApiResponse<bool>> NotifyNearbyProvidersAsync(int ticketId)
+        {
+            return await _apiService.PostAsync<bool>(string.Format($"{ApiConstants.BaseUrl}{ApiConstants.NotifyNearbyProviders}", ticketId), null);
+        }
+
+        public async Task<ApiResponse<bool>> UpdateServiceStatusAsync(int ticketId, ServiceRequestStatus status)
+        {
+            return await _apiService.PostAsync<bool>(string.Format($"{ApiConstants.BaseUrl}{ApiConstants.UpdateServiceRequestStatus}", ticketId), new UpdateStatusDto { Status = status });
+        }
+
+        #endregion
     }
 }

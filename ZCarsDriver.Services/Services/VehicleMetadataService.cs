@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZCarsDriver.Services.Contracts;
+﻿using ZCarsDriver.Services.Contracts;
 using ZhooCars.Model.DTOs;
 using ZhooSoft.ServiceBase;
 
@@ -11,12 +6,22 @@ namespace ZCarsDriver.Services.Services
 {
     public class VehicleMetadataService : IVehicleMetadataService
     {
+        #region Fields
+
         private readonly IApiService _apiService;
+
+        #endregion
+
+        #region Constructors
 
         public VehicleMetadataService(IApiService apiService)
         {
             _apiService = apiService;
         }
+
+        #endregion
+
+        #region Methods
 
         public async Task<ApiResponse<IEnumerable<VehicleModelDto>>> GetVehicleModelsAsync()
         {
@@ -32,5 +37,7 @@ namespace ZCarsDriver.Services.Services
         {
             return await _apiService.GetAsync<IEnumerable<VehicleTypeDto>>($"{ApiConstants.BaseUrl}{ApiConstants.VehicleTypes}");
         }
+
+        #endregion
     }
 }

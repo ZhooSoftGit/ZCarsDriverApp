@@ -7,10 +7,17 @@ namespace ZhooCars.Services
 
     public interface IAccountService
     {
+        #region Methods
+
         Task<ApiResponse<TokenResponse?>> RefreshTokenAsync(string refreshToken);
-        Task<ApiResponse<bool>> SendOtpAsync(string phoneNumber);
+
         Task<ApiResponse<bool>> ReSendOtpAsync(string phoneNumber);
+
+        Task<ApiResponse<bool>> SendOtpAsync(string phoneNumber);
+
         Task<ApiResponse<TokenResponse?>> VerifyOtpAsync(string phoneNumber, string otpCode);
+
+        #endregion
     }
 
     #endregion

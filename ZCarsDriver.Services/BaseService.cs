@@ -1,9 +1,6 @@
-﻿
-
-namespace ZhooCars.Services
+﻿namespace ZhooCars.Services
 {
     public class BaseService
     {
-       
     }
 }
