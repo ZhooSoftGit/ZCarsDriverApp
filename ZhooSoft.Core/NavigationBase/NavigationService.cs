@@ -70,5 +70,6 @@ namespace ZhooSoft.Core.NavigationBase
         {
             throw new NotImplementedException();
         }
+
     }
 }

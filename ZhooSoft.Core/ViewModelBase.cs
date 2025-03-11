@@ -73,7 +73,7 @@ namespace ZhooSoft.Core
         {
             if (show)
             {
-                ServiceHelper.GetService<IProgressService>().ShowProgress("Please wait");
+                ServiceHelper.GetService<IProgressService>().ShowProgress("Please wait");                
             }
             else
             {

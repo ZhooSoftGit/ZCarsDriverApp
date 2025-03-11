@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using ZCarsDriver.Resources.Strings;
+using ZCarsDriver.Views.Driver;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
@@ -10,14 +11,6 @@ namespace ZCarsDriver.ViewModel
     {
         #region Fields
 
-        [ObservableProperty]
-        private string driverStatus = "Open";
-
-        [ObservableProperty]
-        private string driverTileTxt = AppResources.DrivingProfile;
-
-        [ObservableProperty]
-        private string profileStatus = "Open";
 
         [ObservableProperty]
         private string userName = "User Name";
@@ -25,8 +18,6 @@ namespace ZCarsDriver.ViewModel
         [ObservableProperty]
         private string userRole = "User Role";
 
-        [ObservableProperty]
-        private string userTileTxt = AppResources.UserProfile;
 
         #endregion
 
@@ -34,9 +25,6 @@ namespace ZCarsDriver.ViewModel
 
         public HomeViewModel()
         {
-            ProfileRegCommand = new RelayCommand(ProfileReg);
-            DriverRegCommand = new RelayCommand(DriverReg);
-            LaunchDashBoardCommand = new RelayCommand(LaunchDashBoard);
             ShowRideHistoryCommand = new RelayCommand(ShowRideHistory);
             ShowPaymentCommand = new RelayCommand(ShowPayment);
             OpenNotificationCommand = new RelayCommand(OpenNotification);
@@ -44,16 +32,14 @@ namespace ZCarsDriver.ViewModel
             OpenSettingsCommand = new RelayCommand(OpenSettings);
             LogoutCommand = new RelayCommand(Logout);
 
-            
+            TileClickCmd = new RelayCommand<string>(OnTileClicked);
         }
 
         #endregion
 
         #region Properties
 
-        public ICommand DriverRegCommand { get; }
 
-        public ICommand LaunchDashBoardCommand { get; }
 
         public ICommand LogoutCommand { get; }
 
@@ -63,11 +49,11 @@ namespace ZCarsDriver.ViewModel
 
         public ICommand OpenSettingsCommand { get; }
 
-        public ICommand ProfileRegCommand { get; }
-
         public ICommand ShowPaymentCommand { get; }
 
         public ICommand ShowRideHistoryCommand { get; }
+
+        public ICommand TileClickCmd { get; }
 
         #endregion
 
@@ -76,19 +62,49 @@ namespace ZCarsDriver.ViewModel
         public override void OnAppearing()
         {
             base.OnAppearing();
-
-            UserTileTxt = AppResources.UserProfile + AppResources.Registration;
-            driverTileTxt = AppResources.DrivingProfile + AppResources.Registration;
         }
 
-        private void DriverReg()
+        private void OnTileClicked(string option)
         {
-        }
+            if (string.IsNullOrEmpty(option))
+                return;
 
-        private void LaunchDashBoard()
-        {
-        }
+            switch (option)
+            {
+                case "Driver":
+                    var page = ServiceHelper.GetService<RegistrationBasePage>();
+                    var nvparam = new Dictionary<string, object>
+                    {
+                        {"Tile", "Driver" }
+                    };
+                    _navigationService.PushAsync(page, nvparam);
+                    break;
 
+                case "Vendor":
+                    // Navigate to Vendor Registration Page
+                    Shell.Current.GoToAsync("//VendorRegistrationPage");
+                    break;
+
+                case "ServiceProvider":
+                    // Navigate to Service Provider Registration Page
+                    Shell.Current.GoToAsync("//ServiceProviderRegistrationPage");
+                    break;
+
+                case "SparParts":
+                    // Navigate to Spare Parts Registration Page
+                    Shell.Current.GoToAsync("//SparPartsRegistrationPage");
+                    break;
+
+                case "BuyAndSell":
+                    // Navigate to Buy and Sell Page
+                    Shell.Current.GoToAsync("//BuyAndSellPage");
+                    break;
+
+                default:
+                    // Handle unknown case
+                    break;
+            }
+        }
         private void Logout()
         {
         }
@@ -102,10 +118,6 @@ namespace ZCarsDriver.ViewModel
         }
 
         private void OpenSettings()
-        {
-        }
-
-        private void ProfileReg()
         {
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
 using ZCarsDriver.CoreHelper;
 using ZCarsDriver.Services.Contracts;
@@ -6,6 +7,7 @@ using ZCarsDriver.Services.Services;
 using ZCarsDriver.Services.Session;
 using ZCarsDriver.ViewModel;
 using ZCarsDriver.Views;
+using ZCarsDriver.Views.Driver;
 using ZhooCars.Services;
 using ZhooSoft.Auth;
 using ZhooSoft.Auth.ViewModel;
@@ -25,6 +27,7 @@ namespace ZCarsDriver
             builder
                 .UseMauiApp<App>()
                 .ConfigureSyncfusionToolkit()
+                .UseMauiCommunityToolkit()
                 .ConfigureMauiHandlers(handlers =>
                 {
                     handlers.AddHandler(typeof(CustomEntry), typeof(CustomEntryHandler));
@@ -59,6 +62,7 @@ namespace ZCarsDriver
             services.AddTransient<LoginViewModel>();
             services.AddTransient<OTPVerificationViewModel>();
             services.AddTransient<HomeViewModel>();
+            services.AddTransient<RegistrationBaseViewModel>();
             return services;
         }
 
@@ -67,6 +71,7 @@ namespace ZCarsDriver
             services.AddTransient<LoginPage>();
             services.AddTransient<OTPVerificationPage>();
             services.AddTransient<HomeViewPage>();
+            services.AddTransient<RegistrationBasePage>();
             return services;
         }
 
