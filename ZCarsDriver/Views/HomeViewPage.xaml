@@ -107,9 +107,9 @@
                         Padding="5"
                         ColumnDefinitions="*, *"
                         ColumnSpacing="10"
-                        RowDefinitions="Auto, Auto"
+                        RowDefinitions="Auto, Auto, Auto, Auto"
                         RowSpacing="10">
-                        <!--  Profile Register  -->
+                        <!--  Driver Register  -->
                         <ctrl:CustomBorder
                             Grid.Row="0"
                             Grid.Column="0"
@@ -124,31 +124,21 @@
                                 <Label
                                     FontSize="14"
                                     HorizontalTextAlignment="Center"
-                                    Text="{Binding UserTileTxt}"
-                                    TextColor="White" />
-                                <Button
-                                    BackgroundColor="{x:StaticResource Secondary}"
-                                    BorderColor="White"
-                                    FontSize="14"
-                                    WidthRequest="100"
-                                    HorizontalOptions="Center"
-                                    InputTransparent="True"
-                                    Text="{Binding ProfileStatus}"
-                                    TextColor="White" />
+                                    Text="{x:Static resource:AppResources.Driver}"
+                                    TextColor="{x:StaticResource White}" />
                             </StackLayout>
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ProfileRegCmd}" />
+                                <TapGestureRecognizer Command="{Binding TileClickCmd}" CommandParameter="{x:Static resource:AppResources.Driver}" />
                             </Border.GestureRecognizers>
                         </ctrl:CustomBorder>
 
-                        <!--  Driver Booking  -->
+                        <!--  Vendor Register  -->
                         <ctrl:CustomBorder
                             Grid.Row="0"
                             Grid.Column="1"
                             Padding="10"
                             BackgroundColor="#00796B"
-                            CornerRadius="10"
-                            HeightRequest="100">
+                            CornerRadius="10">
                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image
                                     HeightRequest="40"
@@ -157,46 +147,87 @@
                                 <Label
                                     FontSize="14"
                                     HorizontalTextAlignment="Center"
-                                    Text="{Binding DriverTileTxt}"
-                                    TextColor="White" />
-                                <Button
-                                    BackgroundColor="{x:StaticResource Secondary}"
-                                    BorderColor="White"
-                                    FontSize="14"
-                                    HorizontalOptions="Center"
-                                    InputTransparent="True"
-                                    Text="{Binding DriverStatus}"
-                                    TextColor="White" />
+                                    Text="{x:Static resource:AppResources.Vendor}"
+                                    TextColor="{x:StaticResource White}" />
+
                             </StackLayout>
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding DriverRegCmd}" />
+                                <TapGestureRecognizer Command="{Binding TileClickCmd}" CommandParameter="{x:Static resource:AppResources.Vendor}" />
                             </Border.GestureRecognizers>
                         </ctrl:CustomBorder>
 
-                        <!--  Dashboard  -->
+                        <!--  Service Provider Register  -->
                         <ctrl:CustomBorder
                             Grid.Row="1"
                             Grid.Column="0"
-                            Grid.ColumnSpan="2"
                             Padding="10"
                             BackgroundColor="#00796B"
-                            CornerRadius="10"
-                            HeightRequest="100">
+                            CornerRadius="10">
                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image
                                     HeightRequest="40"
-                                    Source="drivericon.png"
+                                    Source="profile.png"
                                     WidthRequest="40" />
                                 <Label
                                     FontSize="14"
                                     HorizontalTextAlignment="Center"
-                                    Text="{x:Static resource:AppResources.LaunchDashboard}"
-                                    TextColor="White" />
+                                    Text="{x:Static resource:AppResources.ServiceProvider}"
+                                    TextColor="{x:StaticResource White}" />
+
                             </StackLayout>
                             <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding LaunchDashBoard}" />
+                                <TapGestureRecognizer Command="{Binding TileClickCmd}" CommandParameter="{x:Static resource:AppResources.ServiceProvider}" />
                             </Border.GestureRecognizers>
                         </ctrl:CustomBorder>
+
+                        <!--  Spar Parts Register  -->
+                        <ctrl:CustomBorder
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Padding="10"
+                            BackgroundColor="#00796B"
+                            CornerRadius="10">
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image
+                                    HeightRequest="40"
+                                    Source="profile.png"
+                                    WidthRequest="40" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{x:Static resource:AppResources.SparParts}"
+                                    TextColor="{x:StaticResource White}" />
+
+                            </StackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TileClickCmd}" CommandParameter="{x:Static resource:AppResources.SparParts}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+
+                        <!--  Buy and Sell  -->
+                        <ctrl:CustomBorder
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Padding="10"
+                            BackgroundColor="#00796B"
+                            CornerRadius="10">
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <Image
+                                    HeightRequest="40"
+                                    Source="profile.png"
+                                    WidthRequest="40" />
+                                <Label
+                                    FontSize="14"
+                                    HorizontalTextAlignment="Center"
+                                    Text="{x:Static resource:AppResources.BuyAndSell}"
+                                    TextColor="{x:StaticResource White}" />
+
+                            </StackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TileClickCmd}" CommandParameter="{x:Static resource:AppResources.BuyAndSell}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+
                     </Grid>
 
                 </Grid>

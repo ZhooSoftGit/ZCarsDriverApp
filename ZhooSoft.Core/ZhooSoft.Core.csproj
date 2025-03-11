@@ -33,4 +33,8 @@
 	  </PackageReference>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\ZCars.Model\ZCars.Model.csproj" />
+	</ItemGroup>
+
 </Project>

@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
@@ -7,11 +8,14 @@ namespace ZhooSoft.ServiceBase
     public class ApiService : IApiService
     {
         private readonly HttpClient _httpClient;
+        private readonly IHttpAuthHelper _authHelper;
         private readonly JsonSerializerOptions _jsonOptions = new() { PropertyNameCaseInsensitive = true };
+        private AuthInfo _authInfo { get; set; }
 
-        public ApiService(HttpClient httpClient)
+        public ApiService(HttpClient httpClient, IHttpAuthHelper authHelper)
         {
             _httpClient = httpClient;
+            _authHelper = authHelper;
         }
 
         public async Task<ApiResponse<T>> GetAsync<T>(string url)
@@ -27,7 +31,7 @@ namespace ZhooSoft.ServiceBase
                     IsSuccess = true,
                     Data = dummyData
                 };
-
+                await SetAuthData();
                 var response = await _httpClient.GetAsync(url);
                 return await HandleResponse<T>(response);
             }
@@ -51,7 +55,7 @@ namespace ZhooSoft.ServiceBase
                     Data = dummyData
                 };
 
-
+                await SetAuthData();
                 var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync(url, content);
                 return await HandleResponse<T>(response);
@@ -66,6 +70,7 @@ namespace ZhooSoft.ServiceBase
         {
             try
             {
+                await SetAuthData();
                 var content = new StringContent(JsonSerializer.Serialize(data), Encoding.UTF8, "application/json");
                 var response = await _httpClient.PutAsync(url, content);
                 return await HandleResponse<T>(response);
@@ -80,6 +85,7 @@ namespace ZhooSoft.ServiceBase
         {
             try
             {
+                await SetAuthData();
                 var response = await _httpClient.DeleteAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
@@ -113,6 +119,15 @@ namespace ZhooSoft.ServiceBase
         private ApiResponse<T> HandleException<T>(Exception ex)
         {
             return new ApiResponse<T> { IsSuccess = false, Message = $"Exception: {ex.Message}" };
+        }
+
+        private async Task SetAuthData()
+        {
+            if (_authInfo == null)
+            {
+                _authInfo = await _authHelper.GetUserAuthInfo();
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _authInfo.Token);
+            }
         }
 
 

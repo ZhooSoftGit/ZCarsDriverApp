@@ -3,6 +3,7 @@ using Syncfusion.Maui.Toolkit.Hosting;
 using ZCarsDriver.CoreHelper;
 using ZCarsDriver.Services.Contracts;
 using ZCarsDriver.Services.Services;
+using ZCarsDriver.Services.Session;
 using ZCarsDriver.ViewModel;
 using ZCarsDriver.Views;
 using ZhooCars.Services;
@@ -80,8 +81,9 @@ namespace ZCarsDriver
 #if IOS
             services.AddSingleton<IProgressService, ProgressService_iOS>();
 #endif
-
+            services.AddSingleton<IUserSessionManager, UserSessionManager>();
             services.AddSingleton<HttpClient>();
+            services.AddSingleton<IHttpAuthHelper, HttpAuthHelper>();
 
             services.AddSingleton<IApiService, ApiService>();
 

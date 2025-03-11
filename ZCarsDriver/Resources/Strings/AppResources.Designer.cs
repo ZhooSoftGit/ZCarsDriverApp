@@ -79,6 +79,15 @@ namespace ZCarsDriver.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Buy and Sell.
+        /// </summary>
+        internal static string BuyAndSell {
+            get {
+                return ResourceManager.GetString("BuyAndSell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed.
         /// </summary>
         internal static string Completed {
@@ -214,6 +223,15 @@ namespace ZCarsDriver.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Service Provider.
+        /// </summary>
+        internal static string ServiceProvider {
+            get {
+                return ResourceManager.GetString("ServiceProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         internal static string Settings {
@@ -223,11 +241,29 @@ namespace ZCarsDriver.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spar Parts.
+        /// </summary>
+        internal static string SparParts {
+            get {
+                return ResourceManager.GetString("SparParts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User Profile.
         /// </summary>
         internal static string UserProfile {
             get {
                 return ResourceManager.GetString("UserProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vendor.
+        /// </summary>
+        internal static string Vendor {
+            get {
+                return ResourceManager.GetString("Vendor", resourceCulture);
             }
         }
     }

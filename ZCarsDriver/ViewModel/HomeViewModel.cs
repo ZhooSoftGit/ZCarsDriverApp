@@ -43,6 +43,8 @@ namespace ZCarsDriver.ViewModel
             OpenReferFriendCommand = new RelayCommand(OpenReferFriend);
             OpenSettingsCommand = new RelayCommand(OpenSettings);
             LogoutCommand = new RelayCommand(Logout);
+
+            
         }
 
         #endregion

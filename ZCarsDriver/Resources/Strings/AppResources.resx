@@ -123,6 +123,9 @@
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
+  <data name="BuyAndSell" xml:space="preserve">
+    <value>Buy and Sell</value>
+  </data>
   <data name="Completed" xml:space="preserve">
     <value>Completed</value>
   </data>
@@ -168,10 +171,19 @@
   <data name="RideHistory" xml:space="preserve">
     <value>Ride History</value>
   </data>
+  <data name="ServiceProvider" xml:space="preserve">
+    <value>Service Provider</value>
+  </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="SparParts" xml:space="preserve">
+    <value>Spar Parts</value>
+  </data>
   <data name="UserProfile" xml:space="preserve">
     <value>User Profile</value>
+  </data>
+  <data name="Vendor" xml:space="preserve">
+    <value>Vendor</value>
   </data>
 </root>

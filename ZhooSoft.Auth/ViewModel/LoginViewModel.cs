@@ -71,7 +71,11 @@ namespace ZhooSoft.Auth.ViewModel
                 return;
             }
 
+            IsBusy = true;
+
             var result = await _accountService.SendOtpAsync(PhoneNumber);
+
+            IsBusy = false;
 
             if (result.IsSuccess)
             {

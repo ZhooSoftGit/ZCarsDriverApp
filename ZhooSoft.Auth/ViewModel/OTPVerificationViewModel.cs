@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
+using ZCarsDriver.Services.Session;
 using ZhooCars.Services;
 using ZhooSoft.Core;
 
@@ -33,7 +34,7 @@ namespace ZhooSoft.Auth.ViewModel
 
         private int _secondsRemaining;
 
-        public OTPVerificationViewModel(IAccountService accountService)
+        public OTPVerificationViewModel(IAccountService accountService, IUserSessionManager userSessionManager)
         {
             _secondsRemaining = 60; // Set initial countdown time (1:30)
             StartTimer();
@@ -41,12 +42,14 @@ namespace ZhooSoft.Auth.ViewModel
             ResendCodeCommand = new RelayCommand(OnResendCode);
             ChangePhoneNumberCommand = new AsyncRelayCommand(OnChangePhoneNumber);
             _accountService = accountService;
+            _userSessionManager = userSessionManager;
         }
         public ICommand SubmitCommand { get; }
         public ICommand ResendCodeCommand { get; }
         public IAsyncRelayCommand ChangePhoneNumberCommand { get; }
 
         private readonly IAccountService _accountService;
+        private readonly IUserSessionManager _userSessionManager;
 
         private async void StartTimer()
         {
@@ -68,10 +71,23 @@ namespace ZhooSoft.Auth.ViewModel
 
             if (enteredOtp.Length == 4)
             {
+                IsBusy = true;
                 var result = await _accountService.VerifyOtpAsync(PhoneNumber, enteredOtp);
-
+                IsBusy = false;
                 if (result.IsSuccess)
                 {
+                    // Create a API to get session details
+
+                    await _userSessionManager.SaveUserSessionAsync(new Core.Session.UserSession
+                    {
+                        Name = "Rajesh",
+                        PhoneNumber = PhoneNumber,
+                        RefreshToken = result.Data.RefreshToken,
+                        Token = result.Data.Token,
+                        Roles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User }
+                    });
+
+
                     ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
                 }
                 else

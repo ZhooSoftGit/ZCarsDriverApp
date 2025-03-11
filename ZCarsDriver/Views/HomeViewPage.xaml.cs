@@ -8,7 +8,9 @@ public partial class HomeViewPage : BaseContentPage<HomeViewModel>
 	public HomeViewPage()
 	{
 		InitializeComponent();
-	}
+        transparentLayout.IsVisible = false;
+        menuLayer.IsVisible = false;
+    }
 
     private void TapGestureRecognizer_Tapped_1(object sender, TappedEventArgs e)
     {
