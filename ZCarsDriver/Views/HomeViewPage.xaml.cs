@@ -5,9 +5,9 @@ namespace ZCarsDriver.Views;
 
 public partial class HomeViewPage : BaseContentPage<HomeViewModel>
 {
-	public HomeViewPage()
-	{
-		InitializeComponent();
+    public HomeViewPage()
+    {
+        InitializeComponent();
         transparentLayout.IsVisible = false;
         menuLayer.IsVisible = false;
     }

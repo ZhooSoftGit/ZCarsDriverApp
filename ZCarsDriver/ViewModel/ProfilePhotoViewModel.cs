@@ -1,10 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ZhooSoft.Core;
 
@@ -12,13 +6,14 @@ namespace ZCarsDriver.ViewModel
 {
     public partial class ProfilePhotoViewModel : ViewModelBase
     {
+        #region Fields
+
         [ObservableProperty]
         private ImageSource profilePhoto;
 
-        public ICommand UploadPhotoCommand { get; }
-        public ICommand TakePhotoCommand { get; }
-        public ICommand RemovePhotoCommand { get; }
-        public ICommand SaveCommand { get; }
+        #endregion
+
+        #region Constructors
 
         public ProfilePhotoViewModel()
         {
@@ -26,6 +21,55 @@ namespace ZCarsDriver.ViewModel
             TakePhotoCommand = new Command(async () => await TakePhotoAsync());
             RemovePhotoCommand = new Command(RemovePhoto);
             SaveCommand = new Command(SaveProfilePhoto);
+        }
+
+        #endregion
+
+        #region Properties
+
+        public ICommand RemovePhotoCommand { get; }
+
+        public ICommand SaveCommand { get; }
+
+        public ICommand TakePhotoCommand { get; }
+
+        public ICommand UploadPhotoCommand { get; }
+
+        #endregion
+
+        #region Methods
+
+        private void RemovePhoto()
+        {
+            ProfilePhoto = null;
+        }
+
+        private void SaveProfilePhoto()
+        {
+            if (ProfilePhoto == null)
+            {
+                Console.WriteLine("Please upload or capture a photo before saving.");
+                return;
+            }
+
+            Console.WriteLine("Profile photo saved successfully.");
+        }
+
+        private async Task TakePhotoAsync()
+        {
+            try
+            {
+                var photo = await MediaPicker.CapturePhotoAsync();
+                if (photo != null)
+                {
+                    using var stream = await photo.OpenReadAsync();
+                    ProfilePhoto = ImageSource.FromStream(() => stream);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error capturing photo: {ex.Message}");
+            }
         }
 
         private async Task UploadPhotoAsync()
@@ -49,38 +93,6 @@ namespace ZCarsDriver.ViewModel
             }
         }
 
-        private async Task TakePhotoAsync()
-        {
-            try
-            {
-                var photo = await MediaPicker.CapturePhotoAsync();
-                if (photo != null)
-                {
-                    using var stream = await photo.OpenReadAsync();
-                    ProfilePhoto = ImageSource.FromStream(() => stream);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error capturing photo: {ex.Message}");
-            }
-        }
-
-        private void RemovePhoto()
-        {
-            ProfilePhoto = null;
-        }
-
-        private void SaveProfilePhoto()
-        {
-            if (ProfilePhoto == null)
-            {
-                Console.WriteLine("Please upload or capture a photo before saving.");
-                return;
-            }
-
-            Console.WriteLine("Profile photo saved successfully.");
-            // Implement actual save logic (e.g., upload to server)
-        }
+        #endregion
     }
 }

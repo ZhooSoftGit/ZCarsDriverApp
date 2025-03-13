@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace ZhooSoft.Controls
 {
@@ -8,6 +9,16 @@ namespace ZhooSoft.Controls
         public static readonly BindableProperty FormFieldsProperty =
             BindableProperty.Create(nameof(FormFields), typeof(ObservableCollection<FormField>), typeof(FormControl), new ObservableCollection<FormField>(), propertyChanged: OnFormFieldsChanged);
 
+        public ICommand FormValueChangedCommand { get; }
+
+        public FormControl()
+        {
+            FormValueChangedCommand = new Command(() => OnFormValueChanged());
+        }
+        private void OnFormValueChanged()
+        {
+            FormValueChangedCommand.Execute(null);
+        }
         public ObservableCollection<FormField> FormFields
         {
             get => (ObservableCollection<FormField>)GetValue(FormFieldsProperty);
@@ -59,6 +70,28 @@ namespace ZhooSoft.Controls
                         inputControl.SetBinding(SfEntry.SfTextProperty, nameof(FormField.Value), BindingMode.TwoWay);
                         break;
 
+                    case FieldType.Telephone:
+                        inputControl = new SfEntry
+                        {
+                            Keyboard = Keyboard.Telephone,
+                            Hint = field.Placeholder,
+                            SfText = field.Value,
+                            BindingContext = field
+                        };
+                        inputControl.SetBinding(SfEntry.SfTextProperty, nameof(FormField.Value), BindingMode.TwoWay);
+                        break;
+
+                    case FieldType.Email:
+                        inputControl = new SfEntry
+                        {
+                            Keyboard = Keyboard.Email,
+                            Hint = field.Placeholder,
+                            SfText = field.Value,
+                            BindingContext = field
+                        };
+                        inputControl.SetBinding(SfEntry.SfTextProperty, nameof(FormField.Value), BindingMode.TwoWay);
+                        break;
+
                     case FieldType.Date:
                         inputControl = new DatePicker
                         {
@@ -88,7 +121,9 @@ namespace ZhooSoft.Controls
                     case FieldType.RadioButton:
                         var rg = new RadioGroup();
                         rg.ItemsSource = field.Options;
+                        rg.Orientation = field.StackOrientation;
                         rg.SetBinding(RadioGroup.SelectedValueProperty, nameof(FormField.Value), BindingMode.TwoWay);
+                        inputControl = rg;
                         break;
                 }
 
@@ -103,6 +138,8 @@ namespace ZhooSoft.Controls
     {
         Text,
         Number,
+        Telephone,
+        Email,
         Date,
         Picker,
         Checkbox,
@@ -124,12 +161,17 @@ namespace ZhooSoft.Controls
         private bool _isChecked;
 
         [ObservableProperty]
+        private bool _isRequired;
+
+        [ObservableProperty]
         private List<string> _options;
 
         [ObservableProperty]
         private string _placeholder;
 
         [ObservableProperty]
-        private DateTime _dateValue;
+        private DateTime? _dateValue;
+
+        public StackOrientation StackOrientation = StackOrientation.Horizontal;
     }
 }

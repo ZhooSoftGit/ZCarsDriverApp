@@ -5,8 +5,8 @@ namespace ZCarsDriver.Views.Driver;
 
 public partial class ProfilePhotoPage : BaseContentPage<ProfilePhotoViewModel>
 {
-	public ProfilePhotoPage()
-	{
-		InitializeComponent();
-	}
+    public ProfilePhotoPage()
+    {
+        InitializeComponent();
+    }
 }

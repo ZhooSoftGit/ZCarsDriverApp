@@ -14,6 +14,7 @@ using ZhooSoft.Auth.ViewModel;
 using ZhooSoft.Auth.Views;
 using ZhooSoft.Controls;
 using ZhooSoft.Core;
+using ZhooSoft.Core.Alerts;
 using ZhooSoft.Core.NavigationBase;
 using ZhooSoft.ServiceBase;
 
@@ -21,6 +22,8 @@ namespace ZCarsDriver
 {
     public static class MauiProgram
     {
+        #region Methods
+
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -39,13 +42,12 @@ namespace ZCarsDriver
                 });
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             builder.Services.AddServices();
             builder.Services.AddViewModel();
             builder.Services.AddPages();
-
 
             builder.Services.AddSingleton<IMainAppNavigation, MainAppNavigation>();
 
@@ -53,18 +55,7 @@ namespace ZCarsDriver
 
             ServiceHelper.Initialize(app.Services);
 
-
             return app;
-        }
-
-        private static IServiceCollection AddViewModel(this IServiceCollection services)
-        {
-            services.AddTransient<LoginViewModel>();
-            services.AddTransient<OTPVerificationViewModel>();
-            services.AddTransient<HomeViewModel>();
-            services.AddTransient<RegistrationBaseViewModel>();
-            services.AddTransient<DrivingLicenseViewModel>();
-            return services;
         }
 
         private static IServiceCollection AddPages(this IServiceCollection services)
@@ -74,12 +65,15 @@ namespace ZCarsDriver
             services.AddTransient<HomeViewPage>();
             services.AddTransient<RegistrationBasePage>();
             services.AddTransient<DrivingLicensePage>();
+
+            services.AddTransient<CommonFormPage>();
             return services;
         }
 
         private static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddSingleton<INavigationService, NavigationService>();
+            services.AddSingleton<IAlertService, AlertService>();
 
 #if ANDROID
             services.AddSingleton<IProgressService, ProgressService_Android>();
@@ -114,5 +108,18 @@ namespace ZCarsDriver
 
             return services;
         }
+
+        private static IServiceCollection AddViewModel(this IServiceCollection services)
+        {
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<OTPVerificationViewModel>();
+            services.AddTransient<HomeViewModel>();
+            services.AddTransient<RegistrationBaseViewModel>();
+            services.AddTransient<DrivingLicenseViewModel>();
+            services.AddTransient<DynamicFormViewModel>();
+            return services;
+        }
+
+        #endregion
     }
 }

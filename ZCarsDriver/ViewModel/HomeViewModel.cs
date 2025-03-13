@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
-using ZCarsDriver.Resources.Strings;
 using ZCarsDriver.Views.Driver;
 using ZhooCars.Common;
 using ZhooSoft.Core;
@@ -12,13 +11,11 @@ namespace ZCarsDriver.ViewModel
     {
         #region Fields
 
-
         [ObservableProperty]
         private string userName = "User Name";
 
         [ObservableProperty]
         private string userRole = "User Role";
-
 
         #endregion
 
@@ -39,8 +36,6 @@ namespace ZCarsDriver.ViewModel
         #endregion
 
         #region Properties
-
-
 
         public ICommand LogoutCommand { get; }
 
@@ -65,11 +60,15 @@ namespace ZCarsDriver.ViewModel
             base.OnAppearing();
         }
 
+        private void Logout()
+        {
+        }
+
         private async void OnTileClicked(string option)
         {
             if (string.IsNullOrEmpty(option))
                 return;
-
+            option = option.Replace(" ", "");
             switch (option)
             {
                 case "Driver":
@@ -121,9 +120,6 @@ namespace ZCarsDriver.ViewModel
                     // Handle unknown case
                     break;
             }
-        }
-        private void Logout()
-        {
         }
 
         private void OpenNotification()

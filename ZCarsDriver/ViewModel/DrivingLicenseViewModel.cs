@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ZCarsDriver.UIModel;
 using ZhooSoft.Core;
@@ -66,16 +65,18 @@ namespace ZCarsDriver.ViewModel
 
         #region Methods
 
-        public override void OnAppearing()
+        public override async void OnAppearing()
         {
             base.OnAppearing();
-
+            IsBusy = true;
             if (NavigationParams != null && NavigationParams["checklist"] is CheckListItem item)
             {
                 _checklistItem = item;
                 UpdatePageData();
                 BothSide = !item.FrontOnly;
             }
+            await Task.Delay(100);
+            IsBusy = false;
         }
 
         private void RemoveBack()
@@ -99,7 +100,7 @@ namespace ZCarsDriver.ViewModel
         private async Task SaveLicense()
         {
             if (!IsSaveEnabled) return;
-            _checklistItem.IsCompleted = true;            
+            _checklistItem.IsCompleted = true;
             await _navigationService.PopAsync();
         }
 

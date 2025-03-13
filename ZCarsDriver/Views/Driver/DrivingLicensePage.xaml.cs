@@ -5,8 +5,8 @@ namespace ZCarsDriver.Views.Driver;
 
 public partial class DrivingLicensePage : BaseContentPage<DrivingLicenseViewModel>
 {
-	public DrivingLicensePage()
-	{
-		InitializeComponent();
-	}
+    public DrivingLicensePage()
+    {
+        InitializeComponent();
+    }
 }

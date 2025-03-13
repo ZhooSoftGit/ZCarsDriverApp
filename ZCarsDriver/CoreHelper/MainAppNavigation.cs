@@ -1,5 +1,4 @@
-﻿
-using ZCarsDriver.Views;
+﻿using ZCarsDriver.Views;
 using ZCarsDriver.Views.Common;
 using ZhooSoft.Auth;
 
@@ -7,6 +6,8 @@ namespace ZCarsDriver.CoreHelper
 {
     public class MainAppNavigation : IMainAppNavigation
     {
+        #region Methods
+
         public void NavigateToDetail(NavigationPage detailPage)
         {
             throw new NotImplementedException();
@@ -29,6 +30,11 @@ namespace ZCarsDriver.CoreHelper
             }
         }
 
+        public void NavigateToNotification()
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<bool> CheckPermission()
         {
             var locationPermission = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
@@ -43,9 +49,6 @@ namespace ZCarsDriver.CoreHelper
             }
         }
 
-        public void NavigateToNotification()
-        {
-            throw new NotImplementedException();
-        }
+        #endregion
     }
 }

@@ -1,24 +1,30 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ZCarsDriver.UIHelper;
 
 namespace ZCarsDriver.UIModel
 {
     public partial class CheckListItem : ObservableObject
     {
-        [ObservableProperty]
-        private string _itemName;
+        #region Fields
 
         [ObservableProperty]
         private bool _isCompleted;
+
+        [ObservableProperty]
+        private string _itemName;
+
+        #endregion
+
+        #region Properties
+
+        public CheckListType CheckListType { get; set; }
+
+        public bool FrontOnly { get; set; }
 
         public bool IsDocument { get; set; }
 
         public bool IsForm { get; set; }
 
-        public bool FrontOnly { get; set; }
+        #endregion
     }
 }

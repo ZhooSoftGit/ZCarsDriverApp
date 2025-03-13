@@ -1,10 +1,11 @@
-﻿using ObjCRuntime;
-using UIKit;
+﻿using UIKit;
 
 namespace ZCarsDriver
 {
     public class Program
     {
+        #region Methods
+
         // This is the main entry point of the application.
         static void Main(string[] args)
         {
@@ -12,5 +13,7 @@ namespace ZCarsDriver
             // you can specify it here.
             UIApplication.Main(args, null, typeof(AppDelegate));
         }
+
+        #endregion
     }
 }

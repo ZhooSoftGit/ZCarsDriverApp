@@ -90,6 +90,9 @@
 	  <MauiXaml Update="Views\Common\EnableLocationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Driver\CommonFormPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Driver\DrivingLicensePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

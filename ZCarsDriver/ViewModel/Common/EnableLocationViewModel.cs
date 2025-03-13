@@ -6,13 +6,24 @@ namespace ZCarsDriver.ViewModel.Common
 {
     public class EnableLocationViewModel : ViewModelBase
     {
-        public ICommand EnableLocationCommand { get; }
-        public ICommand SkipCommand { get; }
+        #region Constructors
 
         public EnableLocationViewModel()
         {
             EnableLocationCommand = new Command(async () => await RequestLocationPermission());
         }
+
+        #endregion
+
+        #region Properties
+
+        public ICommand EnableLocationCommand { get; }
+
+        public ICommand SkipCommand { get; }
+
+        #endregion
+
+        #region Methods
 
         private async Task RequestLocationPermission()
         {
@@ -26,5 +37,7 @@ namespace ZCarsDriver.ViewModel.Common
                 await Shell.Current.DisplayAlert("Permission Denied", "Please enable location in settings.", "OK");
             }
         }
+
+        #endregion
     }
 }

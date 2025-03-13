@@ -110,11 +110,13 @@
                             </Image>
                         </Grid>
                         <Label
-                            HorizontalOptions="Center"
+                            HorizontalOptions="Fill"
+                            HorizontalTextAlignment="Center"
                             IsVisible="{Binding IsFrontUploaded, Converter={toolkit:InvertedBoolConverter}}"
                             Text="⬆ Upload (Front)"
                             TextColor="{StaticResource Primary}"
-                            VerticalOptions="Center">
+                            VerticalOptions="Fill"
+                            VerticalTextAlignment="Center">
                             <Label.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding UploadFrontCommand}" />
                             </Label.GestureRecognizers>

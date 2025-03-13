@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace ZhooSoft.Controls
 {
@@ -23,6 +24,7 @@ namespace ZhooSoft.Controls
             set => SetValue(SfTextProperty, value);
         }
 
+        public ICommand TextChangedCommand { get; }
 
         public Keyboard Keyboard
         {
@@ -32,11 +34,18 @@ namespace ZhooSoft.Controls
 
         public SfEntry()
         {
+            
             _entry = new Entry();
             ApplyCustomStyle();
             _entry.SetBinding(Entry.TextProperty, new Binding(nameof(SfText), source: this, mode: BindingMode.TwoWay));
             _entry.SetBinding(Entry.KeyboardProperty, new Binding(nameof(Keyboard), source: this));
+            _entry.TextChanged += (s, e) => OnTextchanged(e);
             Content = _entry;
+        }
+
+        private void OnTextchanged(object e)
+        {
+            TextChangedCommand?.Execute(e);
         }
 
         private void ApplyCustomStyle()

@@ -1,18 +1,15 @@
-﻿using Microsoft.Maui.Storage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZCarsDriver.UIHelper
+﻿namespace ZCarsDriver.UIHelper
 {
     public static class UIHelper
     {
-        public static async Task<FileResult> PickFile()
+        #region Methods
+
+        public static double GetFileSizeAsync(FileResult fileResult)
         {
-            var result = await FilePicker.Default.PickAsync();
-            return result;
+            var filePath = fileResult.FullPath; // Works on Windows, MacCatalyst, and Android (not iOS)
+            var fileInfo = new FileInfo(filePath);
+            var kbsize = fileInfo.Length / 1024.0;
+            return kbsize; // File size in bytes
         }
 
         public static async Task<ImageSource?> GetImageSource(FileResult? result = null)
@@ -39,12 +36,12 @@ namespace ZCarsDriver.UIHelper
             return null;
         }
 
-        public static double GetFileSizeAsync(FileResult fileResult)
+        public static async Task<FileResult> PickFile()
         {
-            var filePath = fileResult.FullPath; // Works on Windows, MacCatalyst, and Android (not iOS)
-            var fileInfo = new FileInfo(filePath);
-            var kbsize = fileInfo.Length / 1024.0;
-            return kbsize; // File size in bytes
+            var result = await FilePicker.Default.PickAsync();
+            return result;
         }
+
+        #endregion
     }
 }
