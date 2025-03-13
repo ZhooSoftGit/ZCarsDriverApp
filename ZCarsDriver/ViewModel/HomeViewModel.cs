@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using ZCarsDriver.Resources.Strings;
 using ZCarsDriver.Views.Driver;
+using ZhooCars.Common;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
@@ -64,7 +65,7 @@ namespace ZCarsDriver.ViewModel
             base.OnAppearing();
         }
 
-        private void OnTileClicked(string option)
+        private async void OnTileClicked(string option)
         {
             if (string.IsNullOrEmpty(option))
                 return;
@@ -75,29 +76,45 @@ namespace ZCarsDriver.ViewModel
                     var page = ServiceHelper.GetService<RegistrationBasePage>();
                     var nvparam = new Dictionary<string, object>
                     {
-                        {"Tile", "Driver" }
+                        {"Tile", UserRoles.Driver }
                     };
-                    _navigationService.PushAsync(page, nvparam);
+                    await _navigationService.PushAsync(page, nvparam);
                     break;
 
                 case "Vendor":
-                    // Navigate to Vendor Registration Page
-                    Shell.Current.GoToAsync("//VendorRegistrationPage");
+                    page = ServiceHelper.GetService<RegistrationBasePage>();
+                    nvparam = new Dictionary<string, object>
+                    {
+                        {"Tile", UserRoles.Vendor }
+                    };
+                    await _navigationService.PushAsync(page, nvparam);
                     break;
 
                 case "ServiceProvider":
-                    // Navigate to Service Provider Registration Page
-                    Shell.Current.GoToAsync("//ServiceProviderRegistrationPage");
+                    page = ServiceHelper.GetService<RegistrationBasePage>();
+                    nvparam = new Dictionary<string, object>
+                    {
+                        {"Tile", UserRoles.ServiceProvider }
+                    };
+                    await _navigationService.PushAsync(page, nvparam);
                     break;
 
                 case "SparParts":
-                    // Navigate to Spare Parts Registration Page
-                    Shell.Current.GoToAsync("//SparPartsRegistrationPage");
+                    page = ServiceHelper.GetService<RegistrationBasePage>();
+                    nvparam = new Dictionary<string, object>
+                    {
+                        {"Tile", UserRoles.SparPartsDistributor }
+                    };
+                    await _navigationService.PushAsync(page, nvparam);
                     break;
 
                 case "BuyAndSell":
-                    // Navigate to Buy and Sell Page
-                    Shell.Current.GoToAsync("//BuyAndSellPage");
+                    page = ServiceHelper.GetService<RegistrationBasePage>();
+                    nvparam = new Dictionary<string, object>
+                    {
+                        {"Tile", UserRoles.BuyAndSell }
+                    };
+                    await _navigationService.PushAsync(page, nvparam);
                     break;
 
                 default:

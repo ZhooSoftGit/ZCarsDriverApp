@@ -17,7 +17,8 @@
         Vendor = 4,
         ServiceProvider = 5,
         SparPartsDistributor = 6,
-        Owner = 7
+        Owner = 7,
+        BuyAndSell = 8
     }
 
     public enum DocumentTypes

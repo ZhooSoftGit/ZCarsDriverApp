@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<base:BaseContentPage
+    x:Class="ZCarsDriver.Views.Driver.DrivingLicensePage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:ZhooSoft.Core;assembly=ZhooSoft.Core"
+    xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:ZCarsDriver.ViewModel"
+    x:TypeArguments="vm:DrivingLicenseViewModel"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid
+        HorizontalOptions="Fill"
+        RowDefinitions="Auto, *"
+        VerticalOptions="Fill">
+
+        <!--  Header  -->
+        <Grid
+            x:Name="headerLayout"
+            Grid.Row="0"
+            Padding="15"
+            BackgroundColor="{StaticResource Primary}"
+            HorizontalOptions="Fill">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Image
+                Grid.Column="0"
+                Margin="10,0,0,0"
+                HorizontalOptions="Start"
+                Source="back.png"
+                VerticalOptions="Center">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BackCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+
+            <Label
+                Grid.Column="1"
+                FontSize="18"
+                Text="{Binding PageTitleName}"
+                TextColor="White"
+                VerticalOptions="Center" />
+        </Grid>
+
+        <!--  Content  -->
+        <ScrollView Grid.Row="1" Padding="20">
+            <VerticalStackLayout Spacing="20">
+
+                <!--  Instructions  -->
+                <ctrl:CustomBorder
+                    Padding="10"
+                    BackgroundColor="White"
+                    CornerRadius="10">
+                    <VerticalStackLayout>
+                        <Label
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Text="Instructions" />
+                        <Label Text="{Binding Instructions}" />
+                    </VerticalStackLayout>
+                </ctrl:CustomBorder>
+
+                <!--  Attachments  -->
+                <Label
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Text="Attachments" />
+
+                <!--  Uploaded File (Front)  -->
+                <ctrl:CustomBorder
+                    Padding="10"
+                    BorderColor="Gray"
+                    CornerRadius="10">
+                    <Grid
+                        ColumnDefinitions="*"
+                        HorizontalOptions="Fill"
+                        RowDefinitions="*"
+                        VerticalOptions="Fill">
+                        <Grid
+                            ColumnDefinitions="Auto, *, Auto"
+                            IsVisible="{Binding IsFrontUploaded}"
+                            VerticalOptions="Center">
+                            <Image
+                                Grid.Column="0"
+                                HeightRequest="50"
+                                Source="{Binding FrontLicenseImage}"
+                                WidthRequest="50" />
+
+                            <Label Grid.Column="1">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding FrontFileName}" TextColor="{StaticResource Primary}" />
+                                        <Span Text="&#10;" />
+                                        <Span Text="{Binding FrontFileSize}" TextColor="{StaticResource Gray100}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Image
+                                Grid.Column="2"
+                                HeightRequest="25"
+                                Source="delete_icon.png"
+                                WidthRequest="25">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RemoveFrontCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                        <Label
+                            HorizontalOptions="Center"
+                            IsVisible="{Binding IsFrontUploaded, Converter={toolkit:InvertedBoolConverter}}"
+                            Text="⬆ Upload (Front)"
+                            TextColor="{StaticResource Primary}"
+                            VerticalOptions="Center">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UploadFrontCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+
+                </ctrl:CustomBorder>
+
+                <!--  Uploaded File (Back)  -->
+                <ctrl:CustomBorder
+                    Padding="10"
+                    BorderColor="{StaticResource Primary}"
+                    CornerRadius="10"
+                    IsVisible="{Binding BothSide}">
+                    <Grid
+                        ColumnDefinitions="*"
+                        HorizontalOptions="Fill"
+                        RowDefinitions="*"
+                        VerticalOptions="Fill">
+                        <Grid
+                            ColumnDefinitions="Auto, *, Auto"
+                            IsVisible="{Binding IsBackUploaded}"
+                            VerticalOptions="Center">
+                            <Image
+                                Grid.Column="0"
+                                HeightRequest="50"
+                                Source="{Binding BackLicenseImage}"
+                                WidthRequest="50" />
+
+                            <Label Grid.Column="1">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{Binding BackFileName}" TextColor="{StaticResource Primary}" />
+                                        <Span Text="{Binding BackFileSize}" TextColor="{StaticResource Gray100}" />
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Image
+                                Grid.Column="2"
+                                HeightRequest="25"
+                                Source="delete_icon.png"
+                                WidthRequest="25">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding RemoveBackCommand}" />
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Grid>
+                        <Label
+                            HorizontalOptions="Fill"
+                            HorizontalTextAlignment="Center"
+                            IsVisible="{Binding IsBackUploaded, Converter={toolkit:InvertedBoolConverter}}"
+                            Text="⬆ Upload (Back)"
+                            TextColor="{StaticResource Primary}"
+                            VerticalOptions="Fill">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UploadBackCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Grid>
+
+
+                </ctrl:CustomBorder>
+
+
+
+                <!--  Save Button  -->
+                <Button
+                    BackgroundColor="{StaticResource Primary}"
+                    Command="{Binding SaveCommand}"
+                    CornerRadius="10"
+                    FontSize="18"
+                    HeightRequest="50"
+                    IsEnabled="{Binding IsSaveEnabled}"
+                    Text="Save Continue"
+                    TextColor="White">
+                    <Button.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsSaveEnabled}"
+                            TargetType="Button"
+                            Value="False">
+                            <Setter Property="Opacity" Value="0.7" />
+                        </DataTrigger>
+                        <DataTrigger
+                            Binding="{Binding IsSaveEnabled}"
+                            TargetType="Button"
+                            Value="True">
+                            <Setter Property="Opacity" Value="1" />
+                        </DataTrigger>
+                    </Button.Triggers>
+                </Button>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</base:BaseContentPage>

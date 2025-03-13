@@ -26,7 +26,6 @@ namespace ZhooSoft.Controls
         public CustomBorder()
         {
             StrokeThickness = 2;
-            BorderColor = Colors.Black;
             CornerRadius = 10;
             StrokeShape = new RoundRectangle { CornerRadius = CornerRadius };
             Stroke = BorderColor;

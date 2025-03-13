@@ -63,6 +63,7 @@ namespace ZCarsDriver
             services.AddTransient<OTPVerificationViewModel>();
             services.AddTransient<HomeViewModel>();
             services.AddTransient<RegistrationBaseViewModel>();
+            services.AddTransient<DrivingLicenseViewModel>();
             return services;
         }
 
@@ -72,6 +73,7 @@ namespace ZCarsDriver
             services.AddTransient<OTPVerificationPage>();
             services.AddTransient<HomeViewPage>();
             services.AddTransient<RegistrationBasePage>();
+            services.AddTransient<DrivingLicensePage>();
             return services;
         }
 

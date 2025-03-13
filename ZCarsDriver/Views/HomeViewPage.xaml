@@ -119,7 +119,7 @@
                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image
                                     HeightRequest="40"
-                                    Source="profile.png"
+                                    Source="tile_driver.png"
                                     WidthRequest="40" />
                                 <Label
                                     FontSize="14"
@@ -142,7 +142,7 @@
                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image
                                     HeightRequest="40"
-                                    Source="profile.png"
+                                    Source="tile_vendor.png"
                                     WidthRequest="40" />
                                 <Label
                                     FontSize="14"
@@ -166,7 +166,7 @@
                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image
                                     HeightRequest="40"
-                                    Source="profile.png"
+                                    Source="tile_service.png"
                                     WidthRequest="40" />
                                 <Label
                                     FontSize="14"
@@ -214,7 +214,7 @@
                             <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
                                 <Image
                                     HeightRequest="40"
-                                    Source="profile.png"
+                                    Source="tile_vendor.png"
                                     WidthRequest="40" />
                                 <Label
                                     FontSize="14"

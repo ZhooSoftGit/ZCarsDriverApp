@@ -14,5 +14,11 @@ namespace ZCarsDriver.UIModel
 
         [ObservableProperty]
         private bool _isCompleted;
+
+        public bool IsDocument { get; set; }
+
+        public bool IsForm { get; set; }
+
+        public bool FrontOnly { get; set; }
     }
 }

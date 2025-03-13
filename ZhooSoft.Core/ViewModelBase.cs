@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using ZhooSoft.Core.Alerts;
 using ZhooSoft.Core.NavigationBase;
@@ -9,9 +10,10 @@ namespace ZhooSoft.Core
     {
         #region Fields
 
+        private bool _isBusy;
+
         [ObservableProperty]
         private string pageTitleName;
-        private bool _isBusy;
 
         #endregion
 
@@ -21,7 +23,7 @@ namespace ZhooSoft.Core
         {
             _navigationService = ServiceHelper.GetService<INavigationService>();
             _alertService = ServiceHelper.GetService<IAlertService>();
-            BackCommand = new Command(GoBack);
+            BackCommand = new AsyncRelayCommand(GoBack);
         }
 
         #endregion
@@ -32,7 +34,21 @@ namespace ZhooSoft.Core
 
         public INavigationService _navigationService { get; set; }
 
-        public ICommand BackCommand { get; }
+        public IAsyncRelayCommand BackCommand { get; }
+
+        public bool IsBusy
+        {
+            get
+            {
+                return _isBusy;
+            }
+            set
+            {
+                _isBusy = value;
+                ShowProgress(_isBusy);
+
+            }
+        }
 
         public Dictionary<string, object> NavigationParams { get; set; } = new Dictionary<string, object>();
 
@@ -50,35 +66,21 @@ namespace ZhooSoft.Core
         {
         }
 
-        private void GoBack(object obj)
-        {
-            _navigationService.PopAsync();
-        }
-
-        public bool IsBusy
-        {
-            get
-            {
-                return _isBusy;
-            }
-            set
-            {
-                _isBusy = value;
-                ShowProgress(_isBusy);
-
-            }
-        }
-
         protected void ShowProgress(bool show)
         {
             if (show)
             {
-                ServiceHelper.GetService<IProgressService>().ShowProgress("Please wait");                
+                ServiceHelper.GetService<IProgressService>().ShowProgress("Please wait");
             }
             else
             {
                 ServiceHelper.GetService<IProgressService>().HideProgress();
             }
+        }
+
+        private async Task GoBack()
+        {
+            await _navigationService.PopAsync();
         }
 
         #endregion

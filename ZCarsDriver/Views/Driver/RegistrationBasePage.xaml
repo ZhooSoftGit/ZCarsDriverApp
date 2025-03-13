@@ -16,97 +16,116 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid
-        HorizontalOptions="Fill"
-        RowDefinitions="Auto, *, Auto"
-        VerticalOptions="Fill">
-
-        <!--  Title  -->
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
         <Grid
-            x:Name="headerLayout"
-            Grid.Row="0"
-            Padding="15"
-            BackgroundColor="{x:StaticResource Primary}"
             HorizontalOptions="Fill"
-            RowSpacing="1"
-            VerticalOptions="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Image
+            RowDefinitions="Auto, *, Auto"
+            VerticalOptions="Fill">
+
+            <!--  Title  -->
+            <Grid
+                x:Name="headerLayout"
                 Grid.Row="0"
-                Grid.Column="0"
-                Margin="10,0,0,0"
-                HorizontalOptions="Start"
-                Source="back.png"
+                Padding="15"
+                BackgroundColor="{x:StaticResource Primary}"
+                HorizontalOptions="Fill"
+                RowSpacing="1"
                 VerticalOptions="Center">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackCommand}" />
-                </Image.GestureRecognizers>
-            </Image>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="10,0,0,0"
+                    HorizontalOptions="Start"
+                    Source="back.png"
+                    VerticalOptions="Center">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
 
-            <Label
-                Grid.Row="0"
-                Grid.Column="1"
-                Text="{Binding PageTitleName}"
-                TextColor="{x:StaticResource White}" />
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="Medium"
+                    Text="{Binding PageTitleName}"
+                    TextColor="{x:StaticResource White}" />
 
+
+            </Grid>
+
+            <!--  Document List  -->
+            <CollectionView
+                x:Name="CheckListView"
+                Grid.Row="1"
+                ItemsSource="{Binding CheckListItems}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <ctrl:CustomBorder
+                            Margin="5"
+                            Padding="10"
+                            BackgroundColor="White"
+                            BorderColor="{x:StaticResource Primary}"
+                            CornerRadius="10">
+                            <Grid ColumnDefinitions="Auto, *, Auto">
+                                <Image
+                                    BackgroundColor="Gray"
+                                    HeightRequest="24"
+                                    Source="right_icon.png"
+                                    WidthRequest="24">
+                                    <Image.Triggers>
+                                        <DataTrigger
+                                            Binding="{Binding IsCompleted}"
+                                            TargetType="Image"
+                                            Value="False">
+                                            <Setter Property="Source" Value="notification.png" />
+                                        </DataTrigger>
+                                        <DataTrigger
+                                            Binding="{Binding IsCompleted}"
+                                            TargetType="Image"
+                                            Value="True">
+                                            <Setter Property="Source" Value="location.png" />
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+                                <Label
+                                    Grid.Column="1"
+                                    FontSize="18"
+                                    Text="{Binding ItemName}"
+                                    VerticalOptions="Center" />
+                                <Image
+                                    Grid.Column="2"
+                                    HeightRequest="30"
+                                    Source="right_arrow.png"
+                                    WidthRequest="30" />
+                            </Grid>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.CheckListCmd, Source={x:Reference CheckListView}}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!--  Submit Button  -->
+            <Button
+                Grid.Row="2"
+                BackgroundColor="Gray"
+                Command="{Binding SubmitApplicationCommand}"
+                CornerRadius="10"
+                FontSize="18"
+                HeightRequest="50"
+                IsEnabled="{Binding IsSubmitEnabled}"
+                Text="Submit Application"
+                TextColor="White" />
 
         </Grid>
-
-        <!--  Document List  -->
-        <CollectionView
-            x:Name="CheckListView"
-            Grid.Row="1"
-            ItemsSource="{Binding CheckListItems}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <ctrl:CustomBorder
-                        Margin="5"
-                        Padding="10"
-                        BackgroundColor="White"
-                        BorderColor="{x:StaticResource Primary}"
-                        CornerRadius="10">
-                        <Grid ColumnDefinitions="Auto, *, Auto">
-                            <Image
-                                HeightRequest="24"
-                                Source="{Binding IsCompleted, Converter={StaticResource BoolToCheckImageConverter}}"
-                                WidthRequest="24" />
-                            <Label
-                                Grid.Column="1"
-                                FontSize="18"
-                                Text="{Binding ItemName}"
-                                VerticalOptions="Center" />
-                            <Button
-                                Grid.Column="2"
-                                HeightRequest="30"
-                                IsEnabled="{Binding IsCompleted, Converter={StaticResource toolkit:InverseBool}}"
-                                Text="&gt;"
-                                WidthRequest="30" />
-                        </Grid>
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding Path=BindingContext.CheckListCmd, Source={x:Reference CheckListView}}" CommandParameter="{Binding .}" />
-                        </Border.GestureRecognizers>
-                    </ctrl:CustomBorder>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-        <!--  Submit Button  -->
-        <Button
-            Grid.Row="2"
-            BackgroundColor="Gray"
-            Command="{Binding SubmitApplicationCommand}"
-            CornerRadius="10"
-            FontSize="18"
-            HeightRequest="50"
-            IsEnabled="{Binding IsSubmitEnabled}"
-            Text="Submit Application"
-            TextColor="White" />
-
     </Grid>
+
 </base:BaseContentPage>
