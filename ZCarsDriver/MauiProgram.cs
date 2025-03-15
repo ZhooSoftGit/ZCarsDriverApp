@@ -18,6 +18,10 @@ using ZhooSoft.Core.Alerts;
 using ZhooSoft.Core.NavigationBase;
 using ZhooSoft.ServiceBase;
 
+#if ANDROID
+using Android.Content.Res;
+#endif
+
 namespace ZCarsDriver
 {
     public static class MauiProgram
@@ -49,13 +53,27 @@ namespace ZCarsDriver
             builder.Services.AddViewModel();
             builder.Services.AddPages();
 
+            
+
             builder.Services.AddSingleton<IMainAppNavigation, MainAppNavigation>();
 
             var app = builder.Build();
 
             ServiceHelper.Initialize(app.Services);
 
+            AddCustomUI();
+
             return app;
+        }
+
+        private static void AddCustomUI()
+        {
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(Entry), (handler, view) =>
+            {
+#if ANDROID
+            handler.PlatformView.BackgroundTintList = ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+#endif
+            });
         }
 
         private static IServiceCollection AddPages(this IServiceCollection services)

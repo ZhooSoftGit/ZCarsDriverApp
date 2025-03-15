@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ZhooSoft.Auth.Views.LoginPage"
-             xmlns:resource="clr-namespace:ZhooSoft.Auth.Resources.Strings"
-             xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
-             NavigationPage.HasNavigationBar="False"
-             Title="LoginPage">
+<ContentPage
+    x:Class="ZhooSoft.Auth.Views.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
+    xmlns:resource="clr-namespace:ZhooSoft.Auth.Resources.Strings"
+    Title="LoginPage"
+    NavigationPage.HasNavigationBar="False">
     <!--<VerticalStackLayout Padding="20">
         <Label Text="Enter your phone number" FontSize="20" />
 
@@ -18,59 +19,86 @@
                                 OutlineCornerRadius="5"
                                 Margin="0,10"/>
 
-        <Button Text="Send OTP" 
-                Command="{Binding SendOtpCommand}" 
+        <Button Text="Send OTP"
+                Command="{Binding SendOtpCommand}"
                 IsEnabled="{Binding IsPhoneValid}"
                 Margin="0,20" />
 
         <Label Text="{Binding ErrorMessage}" TextColor="Red" />
     </VerticalStackLayout>-->
-    <VerticalStackLayout Padding="30" Spacing="20" HorizontalOptions="Center" VerticalOptions="Center" MaximumWidthRequest="400">
+    <VerticalStackLayout
+        Padding="30"
+        HorizontalOptions="Center"
+        MaximumWidthRequest="400"
+        Spacing="20"
+        VerticalOptions="Center">
 
-        <Label Text="Welcome to ZCars" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center" TextColor="#00796B"></Label>
+        <Label
+            FontAttributes="Bold"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Text="Welcome to ZCars"
+            TextColor="#00796B" />
 
-        <ctrl:CustomBorder BackgroundColor="#00796B" BorderColor="#D84315" WidthRequest="100" HeightRequest="100">
-            <Image Source="drivericon.png" WidthRequest="80" HeightRequest="80"></Image>
+        <ctrl:CustomBorder
+            BackgroundColor="#00796B"
+            BorderColor="#D84315"
+            HeightRequest="100"
+            WidthRequest="100">
+            <Image
+                HeightRequest="80"
+                Source="drivericon.png"
+                WidthRequest="80" />
         </ctrl:CustomBorder>
-        <!-- Title -->
-        <Label Text="{x:Static resource:AppResources.LoginOrRegTitle}"
-               FontSize="20"
-               HorizontalOptions="Center"
-               FontAttributes="Bold"
-               TextColor="Black"/>
+        <!--  Title  -->
+        <Label
+            FontAttributes="Bold"
+            FontSize="20"
+            HorizontalOptions="Center"
+            Text="{x:Static resource:AppResources.LoginOrRegTitle}"
+            TextColor="Black" />
 
-        <!-- Subtitle -->
-        <Label Text="{x:Static resource:AppResources.LoginSubtitle}"
-               FontSize="14"
-               TextColor="Gray"/>
+        <!--  Subtitle  -->
+        <Label
+            FontSize="14"
+            Text="{x:Static resource:AppResources.LoginSubtitle}"
+            TextColor="Gray" />
 
-        <!-- Phone Number Container -->
-        <ctrl:SfEntry SfText="{Binding PhoneNumber}"
-                         Hint="Phone Number"
-                         Keyboard="Telephone"
-                      HeightRequest="100"
-                         CharMaxLength="10"
-                         Stroke="Gray"
-                         FocusedStrokeThickness="2"
-                         OutlineCornerRadius="5"
-                         Margin="0"/>
+        <!--  Phone Number Container  -->
+        <ctrl:SfEntry
+            Margin="0"
+            CharMaxLength="10"
+            FocusedStrokeThickness="2"
+            HeightRequest="100"
+            Hint="Phone Number"
+            Keyboard="Telephone"
+            OutlineCornerRadius="5"
+            SfText="{Binding PhoneNumber}"
+            Stroke="Gray" />
 
-        <!-- Continue Button -->
-        <Button Text="Continue"
-                TextColor="White"
-                BackgroundColor="#00796B"
-                CornerRadius="30"
-                FontSize="16"
-                Command="{Binding SendOtpCommand}" 
-                IsEnabled="{Binding IsPhoneValid}"
-                HeightRequest="50"
-                VerticalOptions="EndAndExpand">
+        <!--  Continue Button  -->
+        <Button
+            BackgroundColor="#00796B"
+            Command="{Binding SendOtpCommand}"
+            CornerRadius="30"
+            FontSize="16"
+            HeightRequest="50"
+            IsEnabled="{Binding IsPhoneValid}"
+            Text="Continue"
+            TextColor="White"
+            VerticalOptions="EndAndExpand">
             <Button.Triggers>
-                <DataTrigger TargetType="Button" Binding="{Binding IsPhoneValid}" Value="False">
-                    <Setter Property="Opacity" Value="0.7"/>
+                <DataTrigger
+                    Binding="{Binding IsPhoneValid}"
+                    TargetType="Button"
+                    Value="False">
+                    <Setter Property="Opacity" Value="0.7" />
                 </DataTrigger>
-                <DataTrigger TargetType="Button" Binding="{Binding IsPhoneValid}" Value="True">
-                    <Setter Property="Opacity" Value="1"/>
+                <DataTrigger
+                    Binding="{Binding IsPhoneValid}"
+                    TargetType="Button"
+                    Value="True">
+                    <Setter Property="Opacity" Value="1" />
                 </DataTrigger>
             </Button.Triggers>
         </Button>

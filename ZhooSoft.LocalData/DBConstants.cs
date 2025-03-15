@@ -14,6 +14,10 @@
         // enable multi-threaded database access
         SQLite.SQLiteOpenFlags.SharedCache;
 
+        public const string DB_VERSION_LABEL = "dbversion";
+
+        public const string DB_VERSION = "1.0";
+
         #endregion
 
         #region Properties

@@ -64,7 +64,10 @@ namespace ZhooSoft.Controls
 
                 radioButton.CheckedChanged += (s, e) =>
                 {
-                    if (e.Value) SelectedValue = (string)radioButton.Content;
+                    if (e.Value)
+                    {
+                        SelectedValue = (string)radioButton.Content;
+                    }
                 };
 
                 Children.Add(radioButton);

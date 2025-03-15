@@ -29,6 +29,11 @@ namespace ZhooSoft.LocalData.Util
         {
             try
             {
+                if (File.Exists(DBConstants.DatabasePath) && IsDeleteDB)
+                {
+                    Directory.Delete(DBConstants.DatabasePath);
+                }
+
                 database = new SQLiteConnection(DBConstants.DatabasePath, DBConstants.Flags);
             }
             catch (Exception ex)

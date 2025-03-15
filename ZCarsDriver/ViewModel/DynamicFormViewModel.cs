@@ -118,7 +118,8 @@ namespace ZCarsDriver.ViewModel
 
         private async Task Save()
         {
-            var isNotValid = FormFields.ToList().Exists(x => x.IsRequired && (string.IsNullOrEmpty(x.Value) && x.DateValue == null));
+            var isNotValid = FormFields.ToList().Exists(x => x.IsRequired 
+             && (string.IsNullOrEmpty(x.Value) && x.DateValue == null && x.IsChecked == null));
             if (isNotValid)
             {
                 await _alertService.ShowAlert("Validation", "Please fill the data", "Ok");

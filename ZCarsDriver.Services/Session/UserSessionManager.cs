@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-
+using ZhooCars.Common;
 using ZhooSoft.Core.Session;
 
 namespace ZCarsDriver.Services.Session
@@ -9,6 +9,9 @@ namespace ZCarsDriver.Services.Session
     {
         private const string UserSessionKey = "UserSession";
         private const string RefreshTokenKey = "RefreshToken";
+
+        private string _phoneNumber { get; set; }
+        private string _name { get; set; }
 
         private static readonly JsonSerializerOptions JsonOptions = new()
         {
@@ -38,6 +41,8 @@ namespace ZCarsDriver.Services.Session
             if (session != null)
             {
                 session.RefreshToken = await SecureStorage.GetAsync(RefreshTokenKey) ?? string.Empty;
+                _phoneNumber = session.PhoneNumber;
+                _name = session.Name;
             }
             return session;
         }
@@ -46,6 +51,21 @@ namespace ZCarsDriver.Services.Session
         {
             Preferences.Remove(UserSessionKey);
             SecureStorage.Remove(RefreshTokenKey);
+        }
+
+        public string GetUserPhoneNumber()
+        {
+            return _phoneNumber;
+        }
+
+        public string GetUserName()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserRoles> GetUserRoles()
+        {
+            throw new NotImplementedException();
         }
     }
 

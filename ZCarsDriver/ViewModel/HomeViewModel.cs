@@ -1,6 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using ZCarsDriver.Services.Contracts;
+using ZCarsDriver.Services.Session;
 using ZCarsDriver.Views.Driver;
 using ZhooCars.Common;
 using ZhooSoft.Core;
@@ -29,8 +32,9 @@ namespace ZCarsDriver.ViewModel
             OpenReferFriendCommand = new RelayCommand(OpenReferFriend);
             OpenSettingsCommand = new RelayCommand(OpenSettings);
             LogoutCommand = new RelayCommand(Logout);
-
             TileClickCmd = new RelayCommand<string>(OnTileClicked);
+
+            _userService = ServiceHelper.GetService<IUserService>();
         }
 
         #endregion
@@ -51,13 +55,29 @@ namespace ZCarsDriver.ViewModel
 
         public ICommand TileClickCmd { get; }
 
+        private readonly IUserService _userService;
+        private readonly IUserSessionManager _sessionManager;
+
         #endregion
 
         #region Methods
 
-        public override void OnAppearing()
+        public override async void OnAppearing()
         {
+            IsBusy = true;
             base.OnAppearing();
+            await LoadUserdata();
+            IsBusy = false;
+        }
+
+        private async Task LoadUserdata()
+        {
+            var userdata = await _userService.GetUserDetailsAsync();
+
+            if (userdata.IsSuccess && userdata.Data != null)
+            {
+                userName = userdata.Data.FirstName;
+            }
         }
 
         private void Logout()

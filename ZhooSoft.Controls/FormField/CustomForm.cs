@@ -96,7 +96,7 @@ namespace ZhooSoft.Controls
                         inputControl = new DatePicker
                         {
                             BindingContext = field
-                        };
+                        };                        
                         inputControl.SetBinding(DatePicker.DateProperty, nameof(FormField.DateValue), BindingMode.TwoWay);
                         break;
 
@@ -119,7 +119,10 @@ namespace ZhooSoft.Controls
                         inputControl = checkbox;
                         break;
                     case FieldType.RadioButton:
-                        var rg = new RadioGroup();
+                        var rg = new RadioGroup
+                        {
+                            BindingContext = field
+                        };
                         rg.ItemsSource = field.Options;
                         rg.Orientation = field.StackOrientation;
                         rg.SetBinding(RadioGroup.SelectedValueProperty, nameof(FormField.Value), BindingMode.TwoWay);
@@ -155,10 +158,10 @@ namespace ZhooSoft.Controls
         private FieldType _type;
 
         [ObservableProperty]
-        private string _value;
+        private string? _value;
 
         [ObservableProperty]
-        private bool _isChecked;
+        private bool? _isChecked;
 
         [ObservableProperty]
         private bool _isRequired;
