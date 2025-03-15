@@ -1,0 +1,167 @@
+<base:BaseContentPage
+    x:Class="ZCarsDriver.Views.Driver.OtpVerificationPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:base="clr-namespace:ZhooSoft.Core;assembly=ZhooSoft.Core"
+    xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:ZCarsDriver.ViewModel"
+    x:TypeArguments="vm:OtpVerificationViewModel"
+    NavigationPage.HasNavigationBar="False">
+
+    <Grid HorizontalOptions="Fill" VerticalOptions="Fill">
+        <Grid
+            HorizontalOptions="Fill"
+            RowDefinitions="Auto, *, Auto"
+            VerticalOptions="Fill">
+
+            <!--  Title  -->
+            <Grid
+                x:Name="headerLayout"
+                Grid.Row="0"
+                Padding="15"
+                BackgroundColor="{x:StaticResource Primary}"
+                HorizontalOptions="Fill"
+                RowSpacing="1"
+                VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="60" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Margin="10,0,0,0"
+                    HorizontalOptions="Start"
+                    Source="back.png"
+                    VerticalOptions="Center">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding BackCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+
+                <Label
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="Medium"
+                    Text="{Binding PageTitleName}"
+                    TextColor="{x:StaticResource White}" />
+
+
+            </Grid>
+
+            <Grid Grid.Row="1" RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
+                <!--  Title  -->
+                <Label
+                    Grid.Row="0"
+                    Margin="0,10,0,0"
+                    FontAttributes="Bold"
+                    FontSize="24"
+                    Text="Verify OTP"
+                    TextColor="Black" />
+
+                <!--  Subtitle  -->
+                <Label
+                    Grid.Row="1"
+                    Margin="0,5,0,20"
+                    FontSize="14"
+                    Text="Please enter the OTP sent to your phone."
+                    TextColor="Gray" />
+
+                <!--  OTP Entry Boxes  -->
+                <Grid
+                    Grid.Row="2"
+                    ColumnDefinitions="*,*,*,*"
+                    ColumnSpacing="10">
+                    <ctrl:CustomBorder
+                        BorderColor="{Binding OtpBorderColor}"
+                        CornerRadius="8"
+                        HeightRequest="50"
+                        WidthRequest="50">
+                        <Entry
+                            x:Name="Entry1"
+                            FontSize="20"
+                            HorizontalTextAlignment="Center"
+                            Keyboard="Numeric"
+                            MaxLength="1"
+                            Text="{Binding Otp1}"
+                            TextChanged="OtpEntry_TextChanged"
+                            VerticalOptions="Center" />
+                    </ctrl:CustomBorder>
+                    <ctrl:CustomBorder
+                        BorderColor="{Binding OtpBorderColor}"
+                        CornerRadius="8"
+                        HeightRequest="50"
+                        WidthRequest="50">
+                        <Entry
+                            x:Name="Entry2"
+                            FontSize="20"
+                            HorizontalTextAlignment="Center"
+                            Keyboard="Numeric"
+                            MaxLength="1"
+                            Text="{Binding Otp2}"
+                            TextChanged="OtpEntry_TextChanged"
+                            VerticalOptions="Center" />
+                    </ctrl:CustomBorder>
+                    <ctrl:CustomBorder
+                        BorderColor="{Binding OtpBorderColor}"
+                        CornerRadius="8"
+                        HeightRequest="50"
+                        WidthRequest="50">
+                        <Entry
+                            x:Name="Entry3"
+                            FontSize="20"
+                            HorizontalTextAlignment="Center"
+                            Keyboard="Numeric"
+                            MaxLength="1"
+                            Text="{Binding Otp3}"
+                            TextChanged="OtpEntry_TextChanged"
+                            VerticalOptions="Center" />
+                    </ctrl:CustomBorder>
+                    <ctrl:CustomBorder
+                        BorderColor="{Binding OtpBorderColor}"
+                        CornerRadius="8"
+                        HeightRequest="50"
+                        WidthRequest="50">
+                        <Entry
+                            x:Name="Entry4"
+                            FontSize="20"
+                            HorizontalTextAlignment="Center"
+                            Keyboard="Numeric"
+                            MaxLength="1"
+                            Text="{Binding Otp4}"
+                            TextChanged="OtpEntry_TextChanged"
+                            VerticalOptions="Center" />
+                    </ctrl:CustomBorder>
+                </Grid>
+
+                <!--  Resend OTP Timer  -->
+                <Button
+                    Grid.Row="4"
+                    Margin="0,20,0,10"
+                    BackgroundColor="Transparent"
+                    Command="{Binding ResendOtpCommand}"
+                    FontSize="14"
+                    IsEnabled="{Binding IsResendEnabled}"
+                    Text="{Binding ResendOtpText}"
+                    TextColor="Gray" />
+
+                <!--  Verify OTP Button  -->
+                <Button
+                    Grid.Row="5"
+                    BackgroundColor="Red"
+                    Command="{Binding VerifyOtpCommand}"
+                    CornerRadius="10"
+                    FontSize="16"
+                    HeightRequest="50"
+                    Text="Verify OTP"
+                    TextColor="White" />
+            </Grid>
+        </Grid>
+    </Grid>
+
+
+</base:BaseContentPage>
