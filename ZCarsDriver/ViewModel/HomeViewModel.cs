@@ -92,16 +92,24 @@ namespace ZCarsDriver.ViewModel
             switch (option)
             {
                 case "Driver":
-                    var page = ServiceHelper.GetService<RegistrationBasePage>();
+                    //var page = ServiceHelper.GetService<RegistrationBasePage>();
+                    //var nvparam = new Dictionary<string, object>
+                    //{
+                    //    {"Tile", UserRoles.Driver }
+                    //};
+                    //await _navigationService.PushAsync(page, nvparam);
+
+                    var page1 = ServiceHelper.GetService<DriverDashboardPage>();
                     var nvparam = new Dictionary<string, object>
                     {
                         {"Tile", UserRoles.Driver }
                     };
-                    await _navigationService.PushAsync(page, nvparam);
+                    await _navigationService.PushAsync(page1, nvparam);
+
                     break;
 
                 case "Vendor":
-                    page = ServiceHelper.GetService<RegistrationBasePage>();
+                    var page = ServiceHelper.GetService<RegistrationBasePage>();
                     nvparam = new Dictionary<string, object>
                     {
                         {"Tile", UserRoles.Vendor }

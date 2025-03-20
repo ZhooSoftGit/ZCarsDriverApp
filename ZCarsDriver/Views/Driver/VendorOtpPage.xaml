@@ -75,13 +75,11 @@
                 BorderColor="{x:StaticResource Primary}"
                 CornerRadius="10">
                 <Entry
-                    Focused="Entry_Focused"
                     FontSize="16"
                     Keyboard="Telephone"
                     Placeholder="Enter Phone Number"
                     Text="{Binding PhoneNumber}"
-                    TextColor="Black"
-                    Unfocused="Entry_Unfocused" />
+                    TextColor="Black" />
             </ctrl:CustomBorder>
 
             <!--  Get OTP Button  -->

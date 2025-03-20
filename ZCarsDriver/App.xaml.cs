@@ -1,4 +1,6 @@
-﻿using ZhooSoft.Auth.Views;
+﻿using ZCarsDriver.Views;
+using ZCarsDriver.Views.Driver;
+using ZhooSoft.Auth.Views;
 
 namespace ZCarsDriver
 {
@@ -17,7 +19,7 @@ namespace ZCarsDriver
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            var nvPage = new NavigationPage(new LoginPage());
+            var nvPage = new NavigationPage(new DriverDashboardPage());
 
             return new Window(nvPage);
         }

@@ -1,13 +1,16 @@
 ﻿
 
 
+using CommunityToolkit.Maui.Views;
+using ZCars.Model.DTOs.DriverApp;
+
 namespace ZhooSoft.Core.NavigationBase
 {
     public class NavigationService : INavigationService
     {
         public async Task ClosePopup()
         {
-            throw new NotImplementedException();
+            
         }
 
         public async Task OpenPopup()
@@ -97,5 +100,22 @@ namespace ZhooSoft.Core.NavigationBase
             throw new NotImplementedException();
         }
 
+        public async Task OpenRidePopup(BookingRequestModel requestModel, Popup popup)
+        {
+            if (Application.Current != null && Application.Current.Windows != null && Application.Current.Windows.Count > 0)
+            {
+                if (Application.Current.Windows[0].Page is NavigationPage nvpage && nvpage.Navigation.NavigationStack.Count > 0)
+                {
+                    if (popup.BindingContext is ViewModelBase vm)
+                    {
+                        vm.NavigationParams = new Dictionary<string, object> { { "RequestModel", requestModel } };
+                        vm.OnNavigatedTo();
+                    }
+
+                    var page = nvpage.Navigation.NavigationStack[0] as Page;
+                    await page.ShowPopupAsync(popup);
+                }
+            }
+        }
     }
 }

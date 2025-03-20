@@ -21,12 +21,10 @@ namespace ZCarsDriver.CoreHelper
                 {
                     Application.Current.Windows[0].Page = new NavigationPage(new HomeViewPage());
                 }
-
-                //var appBasePage = new AppBasePage();
-                //NavigationPage.SetHasNavigationBar(appBasePage, false);
-                //Application.Current.MainPage = new NavigationPage(appBasePage);
-
-                // Application.Current.MainPage = new NavigationPage(new BTMMainPage());
+            }
+            else
+            {
+                Application.Current.Windows[0].Page = new NavigationPage(new HomeViewPage());
             }
         }
 

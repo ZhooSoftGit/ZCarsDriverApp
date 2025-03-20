@@ -17,8 +17,11 @@ using ZhooSoft.Core;
 using ZhooSoft.Core.Alerts;
 using ZhooSoft.Core.NavigationBase;
 using ZhooSoft.ServiceBase;
+using CommunityToolkit.Maui.Maps;
+using ZCarsDriver.DPopup;
 
 #if ANDROID
+using ZhooSoft.Controls.Platforms.Android;
 using Android.Content.Res;
 #endif
 
@@ -26,6 +29,8 @@ namespace ZCarsDriver
 {
     public static class MauiProgram
     {
+        public static string GoogleMapsKey = "AIzaSyDz-0CVEdMMiWHfuXm_zXZp2t69963hCkY";
+
         #region Methods
 
         public static MauiApp CreateMauiApp()
@@ -53,9 +58,20 @@ namespace ZCarsDriver
             builder.Services.AddViewModel();
             builder.Services.AddPages();
 
-            
-
             builder.Services.AddSingleton<IMainAppNavigation, MainAppNavigation>();
+
+            builder.UseMauiApp<App>().UseMauiMaps()
+               .UseMauiCommunityToolkit()
+               .UseMauiCommunityToolkitMaps(GoogleMapsKey);
+
+#if ANDROID
+
+            builder.ConfigureMauiHandlers(handlers =>
+            {
+                handlers.AddHandler<CustomMapView, CustomMapHandler>();
+            });
+
+#endif
 
             var app = builder.Build();
 
@@ -83,6 +99,10 @@ namespace ZCarsDriver
             services.AddTransient<HomeViewPage>();
             services.AddTransient<RegistrationBasePage>();
             services.AddTransient<DrivingLicensePage>();
+            services.AddTransient<DriverDashboardPage>();
+
+            services.AddTransient<CustomMapWebView>();
+            services.AddTransient<BookingRequestPopup>();
 
             services.AddTransient<CommonFormPage>();
             return services;
@@ -135,6 +155,9 @@ namespace ZCarsDriver
             services.AddTransient<RegistrationBaseViewModel>();
             services.AddTransient<DrivingLicenseViewModel>();
             services.AddTransient<DynamicFormViewModel>();
+
+            services.AddTransient<DriverDashboardViewModel>();
+            services.AddTransient<CustomMapWebViewModel>();
             return services;
         }
 

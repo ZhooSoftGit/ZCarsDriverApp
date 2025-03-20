@@ -83,6 +83,11 @@ namespace ZhooSoft.Core
             await _navigationService.PopAsync();
         }
 
+        public virtual void OnNavigatedTo()
+        {
+
+        }
+
         #endregion
     }
 }

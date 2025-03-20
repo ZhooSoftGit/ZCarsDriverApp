@@ -1,4 +1,7 @@
-﻿namespace ZhooSoft.Core.NavigationBase
+﻿using CommunityToolkit.Maui.Views;
+using ZCars.Model.DTOs.DriverApp;
+
+namespace ZhooSoft.Core.NavigationBase
 {
     public interface INavigationService
     {
@@ -14,6 +17,8 @@
         Task ClosePopup();
 
         Task PopAsync(Dictionary<string, object> NavigationParams);
+
+        Task OpenRidePopup(BookingRequestModel requestModel, Popup popup);
 
         Task PopToRootAsync();
 
