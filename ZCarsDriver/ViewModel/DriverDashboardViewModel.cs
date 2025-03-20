@@ -5,6 +5,8 @@ using Microsoft.Maui.Maps;
 using System.Windows.Input;
 using ZCars.Model.DTOs.DriverApp;
 using ZCarsDriver.DPopup;
+using ZCarsDriver.Helpers;
+using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services;
 using ZhooCars.Common;
 using ZhooSoft.Auth;
@@ -92,7 +94,12 @@ namespace ZCarsDriver.ViewModel
                 RemainingBids = 3
             };
 
-            await _navigationService.OpenRidePopup(model, ServiceHelper.GetService<BookingRequestPopup>());
+            await ServiceHelper.GetService<IAppNavigation>().OpenRidePopup(model, ServiceHelper.GetService<BookingRequestPopup>());
+
+            //var cc = new CustomPopup();
+            //(cc.BindingContext as BookingRequestViewModel).BookingRequest = model;
+
+            //await _navigationService.OpenPopup(cc);
         }
 
         private async Task OnStartTrip()
@@ -122,7 +129,7 @@ namespace ZCarsDriver.ViewModel
         {
             _stopRealTimeUpdate = false;
             double destinationLat = 12.9716; // Example: Bangalore
-            double destinationLng = 77.5946;            
+            double destinationLng = 77.5946;
             _destination = new Location(destinationLat, destinationLng);
             await StartRealTimeTracking(_destination);
             _rideStatus = RideStatus.Assigned;
@@ -149,10 +156,24 @@ namespace ZCarsDriver.ViewModel
         }
 
 
-        public override void OnAppearing()
+        public async override void OnAppearing()
         {
             base.OnAppearing();
-            InitializeMap();
+            await GetCurrentRide();
+            if (AppHelper.CurrentRide == null)
+            {
+                InitializeMap();
+            }
+            else
+            {
+                await UpdateMapForRide();
+            }
+        }
+
+        private async Task GetCurrentRide()
+        {
+            //Create a API to get current Ride
+            //Assign to Apphelper
         }
 
         public async void InitializeMap()
@@ -216,21 +237,7 @@ namespace ZCarsDriver.ViewModel
         private async Task ToggleOnlineStatus()
         {
             //API call to on or off online
-
-            var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
-
-            if (location != null)
-            {
-                double userLat = location.Latitude;
-                double userLng = location.Longitude;
-
-                double destinationLat = 12.9716; // Example: Bangalore
-                double destinationLng = 77.5946;
-
-                await PlotRouteOnMap(userLat, userLng, destinationLat, destinationLng);
-            }
-
-            //await _alertService.ShowAlert("message", "online", "ok");
+            await _alertService.ShowAlert("message", "online", "ok");
         }
 
 
@@ -282,6 +289,30 @@ namespace ZCarsDriver.ViewModel
                 Console.WriteLine($"Error plotting route: {ex.Message}");
             }
             return null;
+        }
+
+        private async Task UpdateMapForRide()
+        {
+            var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+
+            if (location != null)
+            {
+                double userLat = location.Latitude;
+                double userLng = location.Longitude;
+
+                double destinationLat = 12.9716; // Example: Bangalore
+                double destinationLng = 77.5946;
+
+                await PlotRouteOnMap(userLat, userLng, destinationLat, destinationLng);
+            }
+        }
+
+        internal async Task RefreshPage()
+        {
+            if (AppHelper.CurrentRide != null)
+            {
+                await UpdateMapForRide();
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ZhooSoft.Core.NavigationBase
         Task PushModalAsync(Page page);
         Task PopAsync();
 
-        //Task OpenPopup(PopupPage page);
+        Task OpenPopup(Popup popup);
 
         //Task OpenPopup(PopupPage page, Dictionary<string, object> navigationParams);
 
@@ -18,7 +18,7 @@ namespace ZhooSoft.Core.NavigationBase
 
         Task PopAsync(Dictionary<string, object> NavigationParams);
 
-        Task OpenRidePopup(BookingRequestModel requestModel, Popup popup);
+        
 
         Task PopToRootAsync();
 

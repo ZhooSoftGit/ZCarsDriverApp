@@ -102,6 +102,9 @@
 	  <MauiXaml Update="DPopup\BookingRequestPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="DPopup\CustomPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Common\EnableLocationPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -19,6 +19,8 @@ using ZhooSoft.Core.NavigationBase;
 using ZhooSoft.ServiceBase;
 using CommunityToolkit.Maui.Maps;
 using ZCarsDriver.DPopup;
+using ZCarsDriver.NavigationExtension;
+
 
 #if ANDROID
 using ZhooSoft.Controls.Platforms.Android;
@@ -112,6 +114,7 @@ namespace ZCarsDriver
         {
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<IAlertService, AlertService>();
+            services.AddSingleton<IAppNavigation, AppNavigation>();
 
 #if ANDROID
             services.AddSingleton<IProgressService, ProgressService_Android>();

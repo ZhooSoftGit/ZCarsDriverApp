@@ -13,9 +13,16 @@ namespace ZhooSoft.Core.NavigationBase
             
         }
 
-        public async Task OpenPopup()
+        public async Task OpenPopup(Popup popup)
         {
-
+            if (Application.Current != null && Application.Current.Windows != null && Application.Current.Windows.Count > 0)
+            {
+                if (Application.Current.Windows[0].Page is NavigationPage nvpage && nvpage.Navigation.NavigationStack.Count > 0)
+                {
+                    var page = nvpage.Navigation.NavigationStack.Last();
+                    await page.ShowPopupAsync(popup);
+                }
+            }
         }
 
         public Task ClosePopup(Dictionary<string, object> navigationParams, bool IsBackPopup = false)
@@ -100,22 +107,6 @@ namespace ZhooSoft.Core.NavigationBase
             throw new NotImplementedException();
         }
 
-        public async Task OpenRidePopup(BookingRequestModel requestModel, Popup popup)
-        {
-            if (Application.Current != null && Application.Current.Windows != null && Application.Current.Windows.Count > 0)
-            {
-                if (Application.Current.Windows[0].Page is NavigationPage nvpage && nvpage.Navigation.NavigationStack.Count > 0)
-                {
-                    if (popup.BindingContext is ViewModelBase vm)
-                    {
-                        vm.NavigationParams = new Dictionary<string, object> { { "RequestModel", requestModel } };
-                        vm.OnNavigatedTo();
-                    }
-
-                    var page = nvpage.Navigation.NavigationStack[0] as Page;
-                    await page.ShowPopupAsync(popup);
-                }
-            }
-        }
+        
     }
 }

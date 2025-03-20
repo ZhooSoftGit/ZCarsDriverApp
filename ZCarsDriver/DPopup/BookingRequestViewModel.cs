@@ -1,8 +1,14 @@
 ﻿using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using System.Timers;
 using System.Windows.Input;
 using ZCars.Model.DTOs.DriverApp;
+using ZCarsDriver.Helpers;
+using ZCarsDriver.NavigationExtension;
+using ZCarsDriver.Services.Contracts;
+using ZCarsDriver.UIModel;
+using ZhooCars.Common;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.DPopup
@@ -31,8 +37,9 @@ namespace ZCarsDriver.DPopup
 
         public BookingRequestViewModel()
         {
-            AcceptCommand = new Command(OnAccept);
-            RejectCommand = new Command(OnReject);
+            AcceptCommand = new AsyncRelayCommand(OnAccept);
+            RejectCommand = new AsyncRelayCommand(OnReject);
+            _taxiBookingService = ServiceHelper.GetService<ITaxiBookingService>();
             InitiateTimer();
         }
 
@@ -40,11 +47,13 @@ namespace ZCarsDriver.DPopup
 
         #region Properties
 
-        public ICommand AcceptCommand { get; }
+        public IAsyncRelayCommand AcceptCommand { get; }
 
         public Popup CurrentPopup { get; set; }
 
-        public ICommand RejectCommand { get; }
+        public IAsyncRelayCommand RejectCommand { get; }
+
+        private readonly ITaxiBookingService? _taxiBookingService;
 
         public int TimerValue { get; set; }
 
@@ -69,16 +78,37 @@ namespace ZCarsDriver.DPopup
             _timer.Start();
         }
 
-        private void OnAccept()
+        private async Task OnAccept()
         {
-            // Perform logic for accepting the ride
-            Application.Current.MainPage.DisplayAlert("Success", "Ride Accepted", "OK");
+            IsBusy = true;
+            _timer.Dispose();
+            var result = await _taxiBookingService.AcceptRideAsync(new ZhooCars.Model.DTOs.AcceptRideRequest
+            {
+                RideRequestId = BookingRequest.BoookingRequestId,
+                VehicleId = 12,
+                DriverId = 123
+            });
+
+            if (result.IsSuccess)
+            {
+                var ride = new CurrentRide
+                {
+                    BookingRequest = BookingRequest,
+                    RideDetails = result.Data
+                };
+
+                AppHelper.CurrentRide = ride;
+            }
+            IsBusy = false;
+            await CurrentPopup.CloseAsync(RideStatus.Assigned);
         }
 
-        private void OnReject()
+        private async Task OnReject()
         {
+            _timer.Dispose();
             // Perform logic for rejecting the ride
             Application.Current.MainPage.DisplayAlert("Info", "Ride Rejected", "OK");
+            await CurrentPopup.CloseAsync(RideStatus.Cancelled);
         }
 
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)

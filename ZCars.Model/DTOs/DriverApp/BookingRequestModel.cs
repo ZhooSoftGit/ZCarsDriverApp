@@ -16,5 +16,6 @@ namespace ZCars.Model.DTOs.DriverApp
         public string PickupTime { get; set; }
         public string DropoffLocation { get; set; }
         public int RemainingBids { get; set; }
+        public int BoookingRequestId { get; set; }
     }
 }
