@@ -13,16 +13,18 @@ namespace ZhooSoft.Core.NavigationBase
             
         }
 
-        public async Task OpenPopup(Popup popup)
+        public async Task<object?> OpenPopup(Popup popup)
         {
             if (Application.Current != null && Application.Current.Windows != null && Application.Current.Windows.Count > 0)
             {
                 if (Application.Current.Windows[0].Page is NavigationPage nvpage && nvpage.Navigation.NavigationStack.Count > 0)
                 {
                     var page = nvpage.Navigation.NavigationStack.Last();
-                    await page.ShowPopupAsync(popup);
+                    return await page.ShowPopupAsync(popup);
                 }
             }
+
+            return null;
         }
 
         public Task ClosePopup(Dictionary<string, object> navigationParams, bool IsBackPopup = false)

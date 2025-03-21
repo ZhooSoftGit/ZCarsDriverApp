@@ -75,10 +75,106 @@
         </ctrl:CustomBorder>
 
 
+
+        <!--  Bottom Section  -->
+        <Grid
+            Margin="10,0,50,150"
+            Padding="10"
+            BackgroundColor="Transparent"
+            ColumnDefinitions="Auto, * , Auto"
+            RowDefinitions="Auto, Auto"
+            VerticalOptions="End">
+            <!--  Google Maps Icon  -->
+
+            <ctrl:CustomBorder
+                BackgroundColor="{x:StaticResource Primary}"
+                CornerRadius="20"
+                HeightRequest="40"
+                HorizontalOptions="Start"
+                IsVisible="{Binding OnTrip}"
+                VerticalOptions="Center"
+                WidthRequest="40">
+                <Image
+                    HeightRequest="24"
+                    Source="cell_icon.png"
+                    WidthRequest="24" />
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenCallCommand}" />
+                </Border.GestureRecognizers>
+            </ctrl:CustomBorder>
+
+
+            <!--  User Name Section  -->
+            <ctrl:CustomBorder
+                Grid.Column="1"
+                Padding="10"
+                BackgroundColor="White"
+                HorizontalOptions="Center"
+                IsVisible="{Binding OnTrip}"
+                VerticalOptions="Center">
+                <Grid
+                    ColumnDefinitions="auto,auto,auto"
+                    HorizontalOptions="Center"
+                    IsVisible="{Binding OnTrip}"
+                    VerticalOptions="Center">
+                    <Image
+                        HeightRequest="24"
+                        Source="profile.png"
+                        VerticalOptions="Center"
+                        WidthRequest="24" />
+                    <Label
+                        Grid.Column="1"
+                        Padding="10"
+                        FontSize="16"
+                        Text="rajesh"
+                        VerticalOptions="Center" />
+                    <ImageButton
+                        Grid.Column="2"
+                        Command="{Binding ToggleDropdownCommand}"
+                        HeightRequest="30"
+                        Source="right_arrow.png"
+                        VerticalOptions="Center"
+                        WidthRequest="30" />
+                </Grid>
+
+                <ctrl:CustomBorder.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenRideOptionCmd}" />
+                </ctrl:CustomBorder.GestureRecognizers>
+            </ctrl:CustomBorder>
+
+
+            <!--  Move to region  -->
+
+            <ctrl:CustomBorder
+                Grid.Column="2"
+                BackgroundColor="{x:StaticResource Primary}"
+                CornerRadius="20"
+                HeightRequest="40"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                WidthRequest="40">
+                <Image
+                    HeightRequest="24"
+                    Source="current_gps.png"
+                    WidthRequest="24">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding CurrentLocCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CurrentLocCommand}" />
+                </Border.GestureRecognizers>
+            </ctrl:CustomBorder>
+        </Grid>
+
+
+
         <StackLayout
+            Margin="10"
             Padding="10"
             BackgroundColor="White"
-            HorizontalOptions="Fill"
+            HorizontalOptions="Start"
+            IsVisible="{Binding OnTrip, Converter={toolkit:InvertedBoolConverter}}"
             Orientation="Horizontal"
             VerticalOptions="End">
             <Switch x:Name="onlineSwitch" IsToggled="{Binding IsOnline}">
@@ -103,6 +199,17 @@
                 </Label.Triggers>
             </Label>
         </StackLayout>
+
+        <Button
+            Margin="10"
+            Padding="10"
+            BackgroundColor="{x:StaticResource Primary}"
+            Command="{Binding OnTripAction}"
+            HorizontalOptions="Fill"
+            IsVisible="{Binding OnTrip}"
+            Text="{Binding ActionText}"
+            VerticalOptions="End" />
+
     </Grid>
 
     <!--<Grid HorizontalOptions="Fill" VerticalOptions="Fill">

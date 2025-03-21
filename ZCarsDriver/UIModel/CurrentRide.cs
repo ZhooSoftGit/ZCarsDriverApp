@@ -1,5 +1,5 @@
 ﻿using ZCars.Model.DTOs.DriverApp;
-using ZCarsDriver.Core.DBModel;
+using ZhooCars.Common;
 using ZhooCars.Model.DTOs;
 
 namespace ZCarsDriver.UIModel
@@ -9,5 +9,7 @@ namespace ZCarsDriver.UIModel
         public BookingRequestModel BookingRequest { get; set; }
 
         public RideTripDto RideDetails { get; set; }
+
+        public RideStatus RideStatus { get; set; }
     }
 }

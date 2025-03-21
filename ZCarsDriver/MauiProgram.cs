@@ -103,6 +103,9 @@ namespace ZCarsDriver
             services.AddTransient<DrivingLicensePage>();
             services.AddTransient<DriverDashboardPage>();
 
+            services.AddTransient<CancelTripPage>();
+            services.AddTransient<TripDetailsPage>();
+
             services.AddTransient<CustomMapWebView>();
             services.AddTransient<BookingRequestPopup>();
 
@@ -158,6 +161,9 @@ namespace ZCarsDriver
             services.AddTransient<RegistrationBaseViewModel>();
             services.AddTransient<DrivingLicenseViewModel>();
             services.AddTransient<DynamicFormViewModel>();
+
+            services.AddTransient<CancelTripViewModel>();
+            services.AddTransient<TripDetailsViewModel>();
 
             services.AddTransient<DriverDashboardViewModel>();
             services.AddTransient<CustomMapWebViewModel>();

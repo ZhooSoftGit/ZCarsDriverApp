@@ -94,7 +94,8 @@ namespace ZCarsDriver.DPopup
                 var ride = new CurrentRide
                 {
                     BookingRequest = BookingRequest,
-                    RideDetails = result.Data
+                    RideDetails = result.Data,
+                    RideStatus = RideStatus.Assigned
                 };
 
                 AppHelper.CurrentRide = ride;

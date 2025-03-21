@@ -2,57 +2,64 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls.Maps;
 using Microsoft.Maui.Maps;
-using System.Windows.Input;
+using System.ComponentModel;
 using ZCars.Model.DTOs.DriverApp;
 using ZCarsDriver.DPopup;
 using ZCarsDriver.Helpers;
 using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services;
+using ZCarsDriver.Views.Driver;
 using ZhooCars.Common;
+using ZhooCars.Model.DTOs;
 using ZhooSoft.Auth;
 using ZhooSoft.Controls;
 using ZhooSoft.Core;
-using Map = Microsoft.Maui.Controls.Maps.Map;
 
 namespace ZCarsDriver.ViewModel
 {
     public partial class DriverDashboardViewModel : ViewModelBase
     {
+        #region Fields
+
+        public CustomMapView CurrentMap;
+
         [ObservableProperty]
-        private int _tripCount;
+        private string _actionText = "Reached";
+
+        [ObservableProperty]
+        private BookingRequestModel _bookingRequestModel;
+
+        private Location _destination;
 
         [ObservableProperty]
         private decimal _earnings;
 
+        private bool _endTrip;
+
         [ObservableProperty]
         private bool _isOnline;
 
-        private bool _stopRealTimeUpdate;
+        [ObservableProperty]
+        private bool _onTrip;
 
+        private OsrmService _osrmService;
+
+        [ObservableProperty]
         private RideStatus _rideStatus;
+
+        [ObservableProperty]
+        private RideTripDto _rideTrip;
+
+        private bool _startRealTimeUpdate;
 
         private bool _startTrip;
 
-        private bool _endTrip;
+        [ObservableProperty]
+        private int _tripCount;
 
-        public CustomMapView CurrentMap;
+        #endregion
 
-        public IAsyncRelayCommand ToggleOnlineStatusCommand { get; }
-
-        public IAsyncRelayCommand OnStartPickupCmd { get; }
-
-        public IAsyncRelayCommand OnReachedPickupCmd { get; }
-
-        public IAsyncRelayCommand OnStartTripCmd { get; }
-
-        public IAsyncRelayCommand OnEndTripCmd { get; }
-
-        public IAsyncRelayCommand ShowTripCmd { get; }
-
-        public IAsyncRelayCommand GotoDashboard { get; }
-
-        private OsrmService _osrmService;
-        private Location _destination;
+        #region Constructors
 
         public DriverDashboardViewModel()
         {
@@ -60,129 +67,54 @@ namespace ZCarsDriver.ViewModel
             Earnings = 0.00m;
             IsOnline = false;
             ToggleOnlineStatusCommand = new AsyncRelayCommand(ToggleOnlineStatus);
-            OnStartPickupCmd = new AsyncRelayCommand(OnStartPickup);
-            OnReachedPickupCmd = new AsyncRelayCommand(OnReachedPickup);
-            OnStartTripCmd = new AsyncRelayCommand(OnStartTrip);
-            OnEndTripCmd = new AsyncRelayCommand(OnEndTrip);
-            ShowTripCmd = new AsyncRelayCommand(OnShowTrip);
 
+            ShowTripCmd = new AsyncRelayCommand(OnShowTrip);
             GotoDashboard = new AsyncRelayCommand(OngotoDashboard);
+            OpenRideOptionCmd = new AsyncRelayCommand(OpenRideOption);
+
+            OpenCallCommand = new AsyncRelayCommand(OpenCall);
+            ToggleDropdownCommand = new RelayCommand(ToggleDropdown);
+            CurrentLocCommand = new AsyncRelayCommand(ShowCurrentLocation);
+            OnTripAction = new AsyncRelayCommand(HandleTripAction);
+
             _osrmService = new OsrmService();
         }
 
-        private async Task OngotoDashboard()
-        {
-            var result = await _alertService.ShowConfirmation("Info", "Are you Leaving the driver dashboard?", "Ok", "Cancel");
+        #endregion
 
-            if (result)
-            {
-                ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain();
-            }
-        }
+        #region Properties
 
-        private async Task OnShowTrip()
-        {
-            var model = new BookingRequestModel
-            {
-                BookingType = "Local",
-                Fare = "₹ 194",
-                DistanceAndPayment = "0.1 Km / Cash",
-                PickupLocation = "Muthanampalayam, Tiruppur",
-                PickupAddress = "3/21, Muthanampalayam, Tiruppur, Tamil Nadu 641606, India",
-                PickupTime = "06 Feb 2024, 07:15 PM",
-                DropoffLocation = "Tiruppur Old Bus Stand",
-                RemainingBids = 3
-            };
+        public IAsyncRelayCommand CurrentLocCommand { get; }
 
-            await ServiceHelper.GetService<IAppNavigation>().OpenRidePopup(model, ServiceHelper.GetService<BookingRequestPopup>());
+        public IAsyncRelayCommand GotoDashboard { get; }
 
-            //var cc = new CustomPopup();
-            //(cc.BindingContext as BookingRequestViewModel).BookingRequest = model;
+        public IAsyncRelayCommand OnTripAction { get; }
 
-            //await _navigationService.OpenPopup(cc);
-        }
+        public IAsyncRelayCommand OpenCallCommand { get; }
 
-        private async Task OnStartTrip()
-        {
-            _stopRealTimeUpdate = false;
-            _startTrip = true;
-            _rideStatus = RideStatus.Started;
-            double destinationLat = 12.9716; // Example: Bangalore
-            double destinationLng = 77.5946;
-            _destination = new Location(destinationLat, destinationLng);
-            await StartRealTimeTracking(_destination);
-        }
+        public IAsyncRelayCommand OpenRideOptionCmd { get; }
 
-        private async Task OnEndTrip()
-        {
-            _stopRealTimeUpdate = true;
-            _rideStatus = RideStatus.Completed;
-        }
+        public IAsyncRelayCommand ShowTripCmd { get; }
 
-        private async Task OnReachedPickup()
-        {
-            _rideStatus = RideStatus.Reached;
-            _stopRealTimeUpdate = true;
-        }
+        public IRelayCommand ToggleDropdownCommand { get; }
 
-        private async Task OnStartPickup()
-        {
-            _stopRealTimeUpdate = false;
-            double destinationLat = 12.9716; // Example: Bangalore
-            double destinationLng = 77.5946;
-            _destination = new Location(destinationLat, destinationLng);
-            await StartRealTimeTracking(_destination);
-            _rideStatus = RideStatus.Assigned;
-        }
+        public IAsyncRelayCommand ToggleOnlineStatusCommand { get; }
 
-        private async Task StartRealTimeTracking(Location destLocation)
-        {
-            while (!_stopRealTimeUpdate)
-            {
-                try
-                {
-                    var location = await Geolocation.GetLastKnownLocationAsync();
-                    if (location == null) continue;
+        #endregion
 
-                    await PlotRouteOnMap(location.Latitude, location.Longitude, destLocation.Latitude, destLocation.Longitude);
-
-                    await Task.Delay(5000);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Error: {ex.Message}");
-                }
-            }
-        }
-
-
-        public async override void OnAppearing()
-        {
-            base.OnAppearing();
-            await GetCurrentRide();
-            if (AppHelper.CurrentRide == null)
-            {
-                InitializeMap();
-            }
-            else
-            {
-                await UpdateMapForRide();
-            }
-        }
-
-        private async Task GetCurrentRide()
-        {
-            //Create a API to get current Ride
-            //Assign to Apphelper
-        }
+        #region Methods
 
         public async void InitializeMap()
         {
             try
             {
+                StopRealTimeTracking();
+                OnTrip = false;
                 var location = await GetDriverLocation();
                 if (location != null)
                 {
+                    CurrentMap.MapElements.Clear();
+                    CurrentMap.Pins.Clear();
                     var position = new Location(location.Latitude, location.Longitude);
                     var pin = new CustomPin
                     {
@@ -204,42 +136,20 @@ namespace ZCarsDriver.ViewModel
             }
         }
 
-        private async Task<Location> GetDriverLocation()
+        public async override void OnAppearing()
         {
-            try
+            base.OnAppearing();
+            await GetCurrentRide();
+            if (AppHelper.CurrentRide == null)
             {
-                var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
-                return location;
+                StopRealTimeTracking();
+                InitializeMap();
             }
-            catch (Exception ex)
+            else
             {
-                await _alertService.ShowAlert("Error", "Enable Location", "Ok");
+                await RefreshPage();
             }
-            return null;
         }
-
-        public async Task DrawPolyline()
-        {
-            var endlocation = new Location(11.076375, 76.9997);
-            var route = new Polygon
-            {
-                StrokeColor = Colors.Blue,
-                StrokeWidth = 5,
-                Geopath =
-                    {
-                        await GetDriverLocation(), // Start point
-                        endlocation, // End point
-                    }
-            };
-            CurrentMap.MapElements.Add(route);
-        }
-
-        private async Task ToggleOnlineStatus()
-        {
-            //API call to on or off online
-            await _alertService.ShowAlert("message", "online", "ok");
-        }
-
 
         public async Task<double?> PlotRouteOnMap(double startLat, double startLng, double endLat, double endLng)
         {
@@ -291,28 +201,240 @@ namespace ZCarsDriver.ViewModel
             return null;
         }
 
-        private async Task UpdateMapForRide()
+        internal async Task RefreshPage()
         {
-            var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+            if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.RideStatus == RideStatus.Assigned)
+            {
+                RideStatus = RideStatus.Assigned;
+                OnTrip = true;
+                await OnStartPickup();
+            }
+            else if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.RideStatus == RideStatus.Started)
+            {
+                OnTrip = true;
+                ActionText = "End Trip";
+                await OnStartTrip();
+            }
+        }
+
+        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if (e.PropertyName == nameof(RideStatus))
+            {
+                switch (RideStatus)
+                {
+                    case RideStatus.Assigned:
+                        {
+                            ActionText = "Reached";
+                        }
+                        break;
+                    case RideStatus.Reached:
+                        {
+                            ActionText = "Started";
+                        }
+                        break;
+                    case RideStatus.Started:
+                        {
+                            ActionText = "Completed";
+                        }
+                        break;
+                    case RideStatus.Completed:
+                        {
+
+                        }
+                        break;
+                    case RideStatus.Cancelled:
+                        {
+
+                        }
+                        break;
+                }
+            }
+        }
+
+        private async void Geolocation_LocationChanged(object? sender, GeolocationLocationChangedEventArgs e)
+        {
+            await PlotRouteOnMap(e.Location.Latitude, e.Location.Longitude, _destination.Latitude, _destination.Longitude);
+        }
+
+        private async Task GetCurrentRide()
+        {
+        }
+
+        private async Task<Location> GetDriverLocation()
+        {
+            try
+            {
+                var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+                return location;
+            }
+            catch (Exception ex)
+            {
+                await _alertService.ShowAlert("Error", "Enable Location", "Ok");
+            }
+            return null;
+        }
+
+        private async Task HandleTripAction()
+        {
+            if (AppHelper.CurrentRide.RideStatus == RideStatus.Assigned)
+            {
+                OnTrip = true;
+                RideStatus = RideStatus.Reached;
+                AppHelper.CurrentRide.RideStatus = RideStatus.Reached;
+                await OnReachedPickup();
+            }
+            else if (AppHelper.CurrentRide.RideStatus == RideStatus.Reached)
+            {
+                OnTrip = true;
+                RideStatus = RideStatus.Started;
+                AppHelper.CurrentRide.RideStatus = RideStatus.Started;
+                await OnStartPickup();
+            }
+            else if (AppHelper.CurrentRide.RideStatus == RideStatus.Started)
+            {
+                OnTrip = false;
+                RideStatus = RideStatus.Completed;
+                AppHelper.CurrentRide.RideStatus = RideStatus.Completed;
+                await OnEndTrip();
+            }
+        }
+
+        private async Task OnEndTrip()
+        {
+            StopRealTimeTracking();
+            _rideStatus = RideStatus.Completed;
+            OnTrip = false;
+            AppHelper.CurrentRide = null;
+        }
+
+        private async Task OngotoDashboard()
+        {
+            var result = await _alertService.ShowConfirmation("Info", "Are you Leaving the driver dashboard?", "Ok", "Cancel");
+
+            if (result)
+            {
+                ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain();
+            }
+        }
+
+        private async Task OnReachedPickup()
+        {
+            _rideStatus = RideStatus.Reached;
+            StopRealTimeTracking();
+        }
+
+        private async Task OnShowTrip()
+        {
+        }
+
+        private async Task OnStartPickup()
+        {
+            _startRealTimeUpdate = true;
+            _destination = new Location(AppHelper.CurrentRide.BookingRequest.PickupLatitude, AppHelper.CurrentRide.BookingRequest.PickupLongitude);
+            _rideStatus = RideStatus.Assigned;
+            OnTrip = true;
+            await StartRealTimeTracking();
+        }
+
+        private async Task OnStartTrip()
+        {
+            _startRealTimeUpdate = true;
+            _startTrip = true;
+            _rideStatus = RideStatus.Started;
+            OnTrip = true;
+
+            _destination = new Location(AppHelper.CurrentRide.BookingRequest.DropLatitude, AppHelper.CurrentRide.BookingRequest.DropLongitude);
+
+            await StartRealTimeTracking();
+        }
+
+        private async Task OpenCall()
+        {
+            // Logic to open phone call
+            await _alertService.ShowAlert("message", "call is going", "ok");
+        }
+
+        private async Task OpenRideOption()
+        {
+            var SelectedOption = await _navigationService.OpenPopup(new TripOptionPopup());
+
+            if (SelectedOption is PopupEnum result)
+            {
+                if (result == PopupEnum.TripDetails)
+                {
+                    await _navigationService.PushAsync(ServiceHelper.GetService<TripDetailsPage>());
+                }
+                if (result == PopupEnum.CallRide)
+                {
+                    await _alertService.ShowAlert("message", "call", "Ok");
+                }
+                if (result == PopupEnum.CancelRide)
+                {
+                    await _navigationService.PushAsync(ServiceHelper.GetService<CancelTripPage>());
+                }
+            }
+        }
+
+        private async Task ShowCurrentLocation()
+        {
+            var location = await GetDriverLocation();
+            if (location != null)
+            {
+                CurrentMap.MoveToRegion(MapSpan.FromCenterAndRadius(location, Distance.FromKilometers(1)));
+            }
+        }
+
+        private async Task StartRealTimeTracking()
+        {
+            var location = await Geolocation.GetLastKnownLocationAsync();
 
             if (location != null)
             {
-                double userLat = location.Latitude;
-                double userLng = location.Longitude;
-
-                double destinationLat = 12.9716; // Example: Bangalore
-                double destinationLng = 77.5946;
-
-                await PlotRouteOnMap(userLat, userLng, destinationLat, destinationLng);
+                await PlotRouteOnMap(location.Latitude, location.Longitude, _destination.Latitude, _destination.Longitude);
+                Geolocation.LocationChanged -= Geolocation_LocationChanged;
+                Geolocation.LocationChanged += Geolocation_LocationChanged;
             }
         }
 
-        internal async Task RefreshPage()
+        private void StopRealTimeTracking()
         {
-            if (AppHelper.CurrentRide != null)
-            {
-                await UpdateMapForRide();
-            }
+            _startRealTimeUpdate = false;
+            Geolocation.LocationChanged -= Geolocation_LocationChanged;
         }
+
+        private void ToggleDropdown()
+        {
+            // Logic to show/hide dropdown
+            Console.WriteLine("Dropdown toggled");
+        }
+
+        private async Task ToggleOnlineStatus()
+        {
+            //API call to on or off online
+            await _alertService.ShowAlert("message", "online", "ok");
+
+            var model = new BookingRequestModel
+            {
+                BookingType = RideTypeEnum.Local,
+                Fare = "₹ 194",
+                DistanceAndPayment = "0.1 Km / Cash",
+                PickupLocation = "Muthanampalayam, Tiruppur",
+                PickupAddress = "3/21, Muthanampalayam, Tiruppur, Tamil Nadu 641606, India",
+                PickupLatitude = 11.0176,
+                PickupLongitude = 76.9674,
+                PickupTime = "06 Feb 2024, 07:15 PM",
+                DropoffLocation = "Tiruppur Old Bus Stand",
+                DropLatitude = 10.9902,
+                DropLongitude = 76.9629,
+                RemainingBids = 3
+            };
+
+            await ServiceHelper.GetService<IAppNavigation>().OpenRidePopup(model, ServiceHelper.GetService<BookingRequestPopup>());
+        }
+
+        #endregion
     }
 }
