@@ -5,9 +5,12 @@ using Microsoft.Maui.Maps;
 using System.ComponentModel;
 using ZCars.Model.DTOs.DriverApp;
 using ZCarsDriver.DPopup;
+using ZCarsDriver.DPopupVM;
 using ZCarsDriver.Helpers;
 using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services;
+using ZCarsDriver.Services.AppService;
+using ZCarsDriver.Services.Contracts;
 using ZCarsDriver.Views.Driver;
 using ZhooCars.Common;
 using ZhooCars.Model.DTOs;
@@ -42,8 +45,10 @@ namespace ZCarsDriver.ViewModel
         [ObservableProperty]
         private bool _onTrip;
 
-        private OsrmService _osrmService;
-
+        private IOsrmService _osrmService;
+        private ICallService? _callService;
+        private IRideTripService? _rideTripService;
+        private ITaxiBookingService? _taxiService;
         [ObservableProperty]
         private RideStatus _rideStatus;
 
@@ -77,7 +82,15 @@ namespace ZCarsDriver.ViewModel
             CurrentLocCommand = new AsyncRelayCommand(ShowCurrentLocation);
             OnTripAction = new AsyncRelayCommand(HandleTripAction);
 
-            _osrmService = new OsrmService();
+            InitializeService();
+        }
+
+        private void InitializeService()
+        {
+            _osrmService = ServiceHelper.GetService<IOsrmService>();
+            _callService = ServiceHelper.GetService<ICallService>();
+            _rideTripService = ServiceHelper.GetService<IRideTripService>();
+            _taxiService = ServiceHelper.GetService<ITaxiBookingService>();
         }
 
         #endregion
@@ -156,20 +169,11 @@ namespace ZCarsDriver.ViewModel
             try
             {
                 // Get encoded polyline from OSRM
-                var result = await _osrmService.GetEncodedPolylineAsync(startLat, startLng, endLat, endLng);
+                var result = await _osrmService.GetRoutePoints(startLat, startLng, endLat, endLng);
 
-                if (string.IsNullOrEmpty(result.EncodedPolyline))
+                if (result.Locations == null || result.Locations.Count() == 0)
                 {
                     Console.WriteLine("No route found!");
-                    return null;
-                }
-
-                // Decode the polyline
-                var routePoints = PolylineDecoder.DecodePolyline(result.EncodedPolyline);
-
-                if (routePoints == null || routePoints.Count == 0)
-                {
-                    Console.WriteLine("Failed to decode polyline.");
                     return null;
                 }
 
@@ -183,15 +187,44 @@ namespace ZCarsDriver.ViewModel
                     StrokeWidth = 5
                 };
 
-                foreach (var (lat, lng) in routePoints)
+                foreach (var loc in result.Locations)
                 {
-                    polyline.Geopath.Add(new Location(lat, lng));
+                    polyline.Geopath.Add(loc);
                 }
 
                 CurrentMap.MapElements.Add(polyline);
 
+                CurrentMap.Pins.Clear();
+
+                var pin1 = new CustomPin
+                {
+                    Label = "Your Location",
+                    Type = PinType.Place,
+                    Location = new Location(result.Locations.First().Latitude, result.Locations.First().Longitude),
+                    Address = "Location",
+                    ImageSource = "car_icon.png"
+                };
+
+                var pin2 = new CustomPin
+                {
+                    Label = "Your Location",
+                    Type = PinType.Generic,
+                    Location = new Location(result.Locations.Last().Latitude, result.Locations.Last().Longitude),
+                    Address = "Location",
+                    ImageSource = "pin.png"
+                };
+
+                CurrentMap.Pins.Add(pin1);
+
+                CurrentMap.Pins.Add(pin2);
+
                 // Center the map
                 CurrentMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Location(startLat, startLng), Distance.FromKilometers(10)));
+
+                //var bearing = PolylineDecoder.CalculateBearing(result.Locations.First(), result.Locations.Last());
+
+                //await CurrentMap.RotateTo(bearing, 500, Easing.BounceIn);
+
                 return result.Distance;
             }
             catch (Exception ex)
@@ -208,6 +241,12 @@ namespace ZCarsDriver.ViewModel
                 RideStatus = RideStatus.Assigned;
                 OnTrip = true;
                 await OnStartPickup();
+            }
+            if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.RideStatus == RideStatus.Reached)
+            {
+                RideStatus = RideStatus.Reached;
+                OnTrip = false;
+                await OnReachedPickup();
             }
             else if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.RideStatus == RideStatus.Started)
             {
@@ -291,7 +330,7 @@ namespace ZCarsDriver.ViewModel
                 OnTrip = true;
                 RideStatus = RideStatus.Started;
                 AppHelper.CurrentRide.RideStatus = RideStatus.Started;
-                await OnStartPickup();
+                await OnStartTrip();
             }
             else if (AppHelper.CurrentRide.RideStatus == RideStatus.Started)
             {
@@ -304,10 +343,45 @@ namespace ZCarsDriver.ViewModel
 
         private async Task OnEndTrip()
         {
-            StopRealTimeTracking();
-            _rideStatus = RideStatus.Completed;
-            OnTrip = false;
-            AppHelper.CurrentRide = null;
+            var pp = new OnStartOtpPopup();
+
+            if (pp.BindingContext is OnStartOtpViewModel vm)
+            {
+                vm.ShowEndTrip = true;
+                vm.ShowOtp = false;
+            }
+
+            var result = await _navigationService.OpenPopup(pp);
+
+            if (result is bool isEnd && isEnd)
+            {
+                IsBusy = true;
+                StopRealTimeTracking();
+                _rideStatus = RideStatus.Completed;
+                OnTrip = false;
+                var rideTripInfo = await _rideTripService.EndTripAsync(new EndTripDto
+                {
+                    Distance = 1,
+                    EndLatitude = 10.09,
+                    EndLongitude = 2002.90,
+                    RideTripId = 1,
+                    StartLatitude = 22,
+                    StartLongitude = 22
+                });
+                AppHelper.CurrentRide = null;
+                IsBusy = false;
+
+                pp = new OnStartOtpPopup();
+
+                if (pp.BindingContext is OnStartOtpViewModel vm1)
+                {
+                    vm1.ShowEndTrip = false;
+                    vm1.ShowOtp = false;
+                    vm1.ShowRideSuccess = true;
+                }
+
+                await _navigationService.OpenPopup(pp);
+            }
         }
 
         private async Task OngotoDashboard()
@@ -322,8 +396,14 @@ namespace ZCarsDriver.ViewModel
 
         private async Task OnReachedPickup()
         {
+            IsBusy = true;
             _rideStatus = RideStatus.Reached;
+            await _rideTripService.ReachPickupAsync(new UpdateTripStatusDto
+            {
+                RideTripId = 1
+            });
             StopRealTimeTracking();
+            IsBusy = false;
         }
 
         private async Task OnShowTrip()
@@ -332,29 +412,45 @@ namespace ZCarsDriver.ViewModel
 
         private async Task OnStartPickup()
         {
+            IsBusy = true;
             _startRealTimeUpdate = true;
             _destination = new Location(AppHelper.CurrentRide.BookingRequest.PickupLatitude, AppHelper.CurrentRide.BookingRequest.PickupLongitude);
             _rideStatus = RideStatus.Assigned;
             OnTrip = true;
+            await _rideTripService.StartTripAsync(new UpdateTripStatusDto
+            {
+                RideTripId = 1
+            });
             await StartRealTimeTracking();
+            IsBusy = false;
         }
 
         private async Task OnStartTrip()
         {
-            _startRealTimeUpdate = true;
-            _startTrip = true;
-            _rideStatus = RideStatus.Started;
-            OnTrip = true;
+            IsBusy = true;
+            var result = await _navigationService.OpenPopup(new OnStartOtpPopup());
 
-            _destination = new Location(AppHelper.CurrentRide.BookingRequest.DropLatitude, AppHelper.CurrentRide.BookingRequest.DropLongitude);
+            if (result is string otp && otp.Length == 4)
+            {
+                var response = await _rideTripService.StartTripAsync(new UpdateTripStatusDto { RideTripId = 1, OTP = otp });
 
-            await StartRealTimeTracking();
+                if (response.IsSuccess)
+                {
+                    _startRealTimeUpdate = true;
+                    _startTrip = true;
+                    _rideStatus = RideStatus.Started;
+                    OnTrip = true;
+                    _destination = new Location(AppHelper.CurrentRide.BookingRequest.DropLatitude, AppHelper.CurrentRide.BookingRequest.DropLongitude);
+                    await StartRealTimeTracking();
+                }
+            }
+            IsBusy = false;
         }
 
         private async Task OpenCall()
         {
             // Logic to open phone call
-            await _alertService.ShowAlert("message", "call is going", "ok");
+            await _callService?.MakePhoneCall("8344273152");
         }
 
         private async Task OpenRideOption()
@@ -369,7 +465,7 @@ namespace ZCarsDriver.ViewModel
                 }
                 if (result == PopupEnum.CallRide)
                 {
-                    await _alertService.ShowAlert("message", "call", "Ok");
+                    await OpenCall();
                 }
                 if (result == PopupEnum.CancelRide)
                 {
@@ -394,6 +490,14 @@ namespace ZCarsDriver.ViewModel
             if (location != null)
             {
                 await PlotRouteOnMap(location.Latitude, location.Longitude, _destination.Latitude, _destination.Longitude);
+                if (Geolocation.Default.IsListeningForeground)
+                {
+                    Geolocation.Default.StopListeningForeground();
+                }
+
+                await Geolocation.StartListeningForegroundAsync(new GeolocationListeningRequest
+                { DesiredAccuracy = GeolocationAccuracy.Best, MinimumTime = TimeSpan.FromSeconds(3) });
+
                 Geolocation.LocationChanged -= Geolocation_LocationChanged;
                 Geolocation.LocationChanged += Geolocation_LocationChanged;
             }
@@ -403,6 +507,11 @@ namespace ZCarsDriver.ViewModel
         {
             _startRealTimeUpdate = false;
             Geolocation.LocationChanged -= Geolocation_LocationChanged;
+
+            if (Geolocation.Default.IsListeningForeground)
+            {
+                Geolocation.Default.StopListeningForeground();
+            }
         }
 
         private void ToggleDropdown()
