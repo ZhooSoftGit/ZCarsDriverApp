@@ -39,13 +39,13 @@ namespace ZhooSoft.Auth.ViewModel
             _secondsRemaining = 60; // Set initial countdown time (1:30)
             StartTimer();
             SubmitCommand = new AsyncRelayCommand(OnSubmit);
-            ResendCodeCommand = new RelayCommand(OnResendCode);
+            ResendCodeCommand = new AsyncRelayCommand(OnResendCode);
             ChangePhoneNumberCommand = new AsyncRelayCommand(OnChangePhoneNumber);
             _accountService = accountService;
             _userSessionManager = userSessionManager;
         }
-        public ICommand SubmitCommand { get; }
-        public ICommand ResendCodeCommand { get; }
+        public IAsyncRelayCommand SubmitCommand { get; }
+        public IAsyncRelayCommand ResendCodeCommand { get; }
         public IAsyncRelayCommand ChangePhoneNumberCommand { get; }
 
         private readonly IAccountService _accountService;
@@ -102,16 +102,25 @@ namespace ZhooSoft.Auth.ViewModel
             }
         }
 
-        private void OnResendCode()
+        private async Task OnResendCode()
         {
             Otp1 = string.Empty;
             Otp2 = string.Empty;
             Otp3 = string.Empty;
             Otp4 = string.Empty;
-            _secondsRemaining = 90;
+            _secondsRemaining = -1;
             IsResendVisible = false;
             IsTimerVisible = true;
-            StartTimer();
+            var result = await _accountService.ReSendOtpAsync(PhoneNumber);
+            if (result.IsSuccess)
+            {
+                _secondsRemaining = 90;
+                StartTimer();
+            }
+            else
+            {
+                await _alertService.ShowAlert("Error", "Otp Send is Failed", "Ok");
+            }
         }
 
         private async Task OnChangePhoneNumber()

@@ -1,8 +1,9 @@
 ﻿using System.Text.Json;
+using ZCarsDriver.Services.AppService;
 
 namespace ZCarsDriver.Services
 {
-    public class OsrmService
+    public class OsrmService : IOsrmService
     {
         private readonly HttpClient _httpClient;
 
@@ -11,7 +12,7 @@ namespace ZCarsDriver.Services
             _httpClient = new HttpClient();
         }
 
-        public async Task<(double? Distance, string? EncodedPolyline)> GetEncodedPolylineAsync(double startLat, double startLng, double endLat, double endLng)
+        public async Task<(double? Distance, List<Location> Locations)> GetRoutePoints(double startLat, double startLng, double endLat, double endLng)
         {
             try
             {
@@ -27,7 +28,8 @@ namespace ZCarsDriver.Services
                 {
                     var geometry = routes[0].GetProperty("geometry").GetString();
                     var distance = routes[0].GetProperty("distance").GetDouble() / 1000;
-                    return (distance, geometry);
+                    var locations = PolylineDecoder.DecodePolyline(geometry);
+                    return (distance, locations);
                 }
 
                 Console.WriteLine("No route found.");

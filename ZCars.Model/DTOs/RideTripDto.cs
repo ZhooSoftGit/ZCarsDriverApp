@@ -115,6 +115,8 @@
 
         public int RideTripId { get; set; }
 
+        public string? OTP { get; set; }
+
         #endregion
     }
 

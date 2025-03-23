@@ -2,11 +2,11 @@
 {
     public class PolylineDecoder
     {
-        public static List<(double Latitude, double Longitude)> DecodePolyline(string encoded)
+        public static List<Location> DecodePolyline(string encoded)
         {
             if (string.IsNullOrEmpty(encoded)) return null;
 
-            var polyline = new List<(double Latitude, double Longitude)>();
+            var polyline = new List<Location>();
             int index = 0, len = encoded.Length;
             int lat = 0, lng = 0;
 
@@ -36,10 +36,29 @@
                 int dlng = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
                 lng += dlng;
 
-                polyline.Add((lat / 1e5, lng / 1e5));
+                polyline.Add(new Location(lat / 1e5, lng / 1e5));
             }
 
             return polyline;
         }
+
+
+        public static double CalculateBearing(Location start, Location end)
+        {
+            var lat1 = DegreesToRadians(start.Latitude);
+            var lon1 = DegreesToRadians(start.Longitude);
+            var lat2 = DegreesToRadians(end.Latitude);
+            var lon2 = DegreesToRadians(end.Longitude);
+
+            var dLon = lon2 - lon1;
+            var y = Math.Sin(dLon) * Math.Cos(lat2);
+            var x = Math.Cos(lat1) * Math.Sin(lat2) - Math.Sin(lat1) * Math.Cos(lat2) * Math.Cos(dLon);
+            var bearing = Math.Atan2(y, x);
+
+            return (RadiansToDegrees(bearing) + 360) % 360; // Normalize to 0-360
+        }
+
+        private static double DegreesToRadians(double degrees) => degrees * Math.PI / 180;
+        private static double RadiansToDegrees(double radians) => radians * 180 / Math.PI;
     }
 }
