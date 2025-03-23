@@ -334,9 +334,6 @@ namespace ZCarsDriver.ViewModel
             }
             else if (AppHelper.CurrentRide.RideStatus == RideStatus.Started)
             {
-                OnTrip = false;
-                RideStatus = RideStatus.Completed;
-                AppHelper.CurrentRide.RideStatus = RideStatus.Completed;
                 await OnEndTrip();
             }
         }
@@ -357,7 +354,9 @@ namespace ZCarsDriver.ViewModel
             {
                 IsBusy = true;
                 StopRealTimeTracking();
-                _rideStatus = RideStatus.Completed;
+                OnTrip = false;
+                RideStatus = RideStatus.Completed;
+                AppHelper.CurrentRide.RideStatus = RideStatus.Completed;
                 OnTrip = false;
                 var rideTripInfo = await _rideTripService.EndTripAsync(new EndTripDto
                 {
@@ -368,7 +367,9 @@ namespace ZCarsDriver.ViewModel
                     StartLatitude = 22,
                     StartLongitude = 22
                 });
+
                 AppHelper.CurrentRide = null;
+                InitializeMap();
                 IsBusy = false;
 
                 pp = new OnStartOtpPopup();

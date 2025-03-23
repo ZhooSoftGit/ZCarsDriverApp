@@ -78,7 +78,7 @@
 
         <!--  Bottom Section  -->
         <Grid
-            Margin="10,0,50,150"
+            Margin="10,0,50,100"
             Padding="10"
             BackgroundColor="Transparent"
             ColumnDefinitions="Auto, * , Auto"
@@ -201,7 +201,7 @@
         </StackLayout>
 
         <Button
-            Margin="10"
+            Margin="100,10"
             Padding="10"
             BackgroundColor="{x:StaticResource Primary}"
             Command="{Binding OnTripAction}"

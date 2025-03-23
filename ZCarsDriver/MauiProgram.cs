@@ -20,6 +20,10 @@ using ZhooSoft.ServiceBase;
 using CommunityToolkit.Maui.Maps;
 using ZCarsDriver.DPopup;
 using ZCarsDriver.NavigationExtension;
+using ZCarsDriver.Services.AppService;
+using ZCarsDriver.Services;
+
+
 
 
 #if ANDROID
@@ -149,6 +153,11 @@ namespace ZCarsDriver
             services.AddSingleton<IVehicleLocationService, VehicleLocationService>();
             services.AddSingleton<IVehicleMetadataService, VehicleMetadataService>();
             services.AddSingleton<IVendorService, VendorService>();
+
+            #region
+            services.AddSingleton<IOsrmService, OsrmService>();
+            services.AddSingleton<ICallService, CallService>();
+            #endregion
 
             return services;
         }
