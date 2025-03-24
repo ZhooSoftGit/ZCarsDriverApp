@@ -11,6 +11,7 @@ using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services;
 using ZCarsDriver.Services.AppService;
 using ZCarsDriver.Services.Contracts;
+using ZCarsDriver.Views.Common;
 using ZCarsDriver.Views.Driver;
 using ZhooCars.Common;
 using ZhooCars.Model.DTOs;
@@ -59,6 +60,8 @@ namespace ZCarsDriver.ViewModel
 
         private bool _startTrip;
 
+        public IRelayCommand OpenSideBarCmd { get; }
+
         [ObservableProperty]
         private int _tripCount;
 
@@ -82,7 +85,16 @@ namespace ZCarsDriver.ViewModel
             CurrentLocCommand = new AsyncRelayCommand(ShowCurrentLocation);
             OnTripAction = new AsyncRelayCommand(HandleTripAction);
 
+            OpenSideBarCmd = new AsyncRelayCommand(OpenSideBar);
+
             InitializeService();
+        }
+
+        private async Task OpenSideBar()
+        {
+            IsBusy = true;
+            var result = await _navigationService.OpenPopup(new CommonMenu());
+            IsBusy = false;
         }
 
         private void InitializeService()

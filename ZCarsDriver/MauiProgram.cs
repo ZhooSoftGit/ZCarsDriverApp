@@ -107,6 +107,8 @@ namespace ZCarsDriver
             services.AddTransient<DrivingLicensePage>();
             services.AddTransient<DriverDashboardPage>();
 
+            services.AddTransient<LinkDriverPage>();
+
             services.AddTransient<CancelTripPage>();
             services.AddTransient<TripDetailsPage>();
 
@@ -176,6 +178,8 @@ namespace ZCarsDriver
 
             services.AddTransient<DriverDashboardViewModel>();
             services.AddTransient<CustomMapWebViewModel>();
+
+            services.AddTransient<LinkDriverViewModel>();
             return services;
         }
 

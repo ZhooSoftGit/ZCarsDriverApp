@@ -13,4 +13,15 @@ namespace ZCarsDriver.Helpers
         CallRide
     }
 
+    public enum MenuEnum
+    {
+        Notification,
+        RideTypes,
+        Reports,
+        DemoVideo,
+        ContactSupport,
+        UserAppQRCode,
+        FAQ
+    }
+
 }

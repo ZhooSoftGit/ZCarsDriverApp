@@ -1,6 +1,7 @@
 ﻿using ZCarsDriver.Views;
 using ZCarsDriver.Views.Driver;
 using ZhooSoft.Auth.Views;
+using ZhooSoft.Core;
 
 namespace ZCarsDriver
 {
@@ -19,7 +20,7 @@ namespace ZCarsDriver
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            var nvPage = new NavigationPage(new DriverDashboardPage());
+            var nvPage = new NavigationPage(ServiceHelper.GetService<LinkDriverPage>());
 
             return new Window(nvPage);
         }

@@ -21,25 +21,46 @@
             IsShowingUser="True"
             VerticalOptions="Fill" />
 
-        <ctrl:CustomBorder
+        <Grid
             Margin="10"
             Padding="10"
-            BackgroundColor="White"
-            CornerRadius="20"
-            HeightRequest="50"
-            HorizontalOptions="Center"
-            VerticalOptions="Start">
-            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
-                <Image Source="home.png" />
-                <Label
-                    FontAttributes="Bold"
-                    FontSize="18"
-                    Text="Dashboard" />
-            </StackLayout>
-            <Border.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding GotoDashboard}" />
-            </Border.GestureRecognizers>
-        </ctrl:CustomBorder>
+            BackgroundColor="Transparent"
+            ColumnDefinitions="*">
+
+            <Image
+                BackgroundColor="Green"
+                HeightRequest="50"
+                HorizontalOptions="Start"
+                Source="home.png"
+                VerticalOptions="Start"
+                WidthRequest="50">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenSideBarCmd}" />
+                </Image.GestureRecognizers>
+            </Image>
+
+            <ctrl:CustomBorder
+                Padding="5"
+                BackgroundColor="White"
+                CornerRadius="20"
+                HorizontalOptions="Center"
+                VerticalOptions="Start">
+                <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                    <Image Source="home.png" />
+                    <Label
+                        FontAttributes="Bold"
+                        FontSize="18"
+                        Text="Dashboard"
+                        VerticalTextAlignment="Center" />
+                </StackLayout>
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GotoDashboard}" />
+                </Border.GestureRecognizers>
+            </ctrl:CustomBorder>
+
+        </Grid>
+
+
 
         <ctrl:CustomBorder
             Margin="20,80,20,0"

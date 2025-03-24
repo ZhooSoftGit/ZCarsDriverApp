@@ -2,10 +2,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Timers;
-using System.Windows.Input;
 using ZCars.Model.DTOs.DriverApp;
 using ZCarsDriver.Helpers;
-using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services.Contracts;
 using ZCarsDriver.UIModel;
 using ZhooCars.Common;
