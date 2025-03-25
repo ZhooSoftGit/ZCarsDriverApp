@@ -6,6 +6,7 @@
     xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:ZCarsDriver.ViewModel"
+    x:Name="LinkDriverUI"
     x:TypeArguments="vm:LinkDriverViewModel"
     NavigationPage.HasNavigationBar="False">
 
@@ -73,14 +74,9 @@
                 TextColor="Gray" />
 
             <!--  Available Cabs List  -->
-            <CollectionView
-                x:Name="CabsListView"
-                Grid.Row="2"
-                ItemsSource="{Binding FilteredCabs}"
-                SelectedItem="{Binding SelectedCab}"
-                SelectionChangedCommand="{Binding SelectCabCommand}"
-                SelectionMode="Single">
-                <CollectionView.ItemTemplate>
+
+            <StackLayout Grid.Row="2" BindableLayout.ItemsSource="{Binding FilteredCabs}">
+                <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <ctrl:CustomBorder
                             Margin="5"
@@ -112,12 +108,19 @@
                                 </VerticalStackLayout>
 
                                 <!--  Selection Radio Button  -->
-                                <RadioButton Grid.Column="2" GroupName="CabSelection" />
+                                <RadioButton
+                                    Grid.Column="2"
+                                    GroupName="CabSelection"
+                                    IsChecked="{Binding IsSelected}" />
                             </Grid>
+
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectCabCommand, Source={x:Reference LinkDriverUI}}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
                         </ctrl:CustomBorder>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </BindableLayout.ItemTemplate>
+            </StackLayout>
 
             <!--  Checkbox for RC Book  -->
             <Grid
@@ -140,12 +143,28 @@
             <Button
                 x:Name="ContinueButton"
                 Grid.Row="4"
-                BackgroundColor="Gray"
+                BackgroundColor="{x:StaticResource Primary}"
                 Command="{Binding ContinueCommand}"
                 HeightRequest="50"
                 IsEnabled="{Binding CanContinue}"
                 Text="Continue"
-                TextColor="White" />
+                TextColor="White">
+                <Button.Triggers>
+                    <DataTrigger
+                        Binding="{Binding CanContinue}"
+                        TargetType="Button"
+                        Value="False">
+                        <Setter Property="Opacity" Value="0.7" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding CanContinue}"
+                        TargetType="Button"
+                        Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+
 
             <!--  Change Vendor Link  -->
             <Grid

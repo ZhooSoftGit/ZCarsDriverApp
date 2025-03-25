@@ -6,7 +6,6 @@
     xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:ZCarsDriver.ViewModel"
-    Padding="20"
     x:TypeArguments="vm:VendorOtpViewModel"
     BackgroundColor="White"
     NavigationPage.HasNavigationBar="False">
@@ -16,19 +15,24 @@
         RowDefinitions="auto,*"
         VerticalOptions="Fill">
 
-        <!--  Header  -->
+        <!--  Title  -->
         <Grid
             x:Name="headerLayout"
             Grid.Row="0"
             Padding="15"
-            BackgroundColor="{StaticResource Primary}"
-            HorizontalOptions="Fill">
+            BackgroundColor="{x:StaticResource Primary}"
+            HorizontalOptions="Fill"
+            RowSpacing="1"
+            VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-
             <Image
+                Grid.Row="0"
                 Grid.Column="0"
                 Margin="10,0,0,0"
                 HorizontalOptions="Start"
@@ -40,14 +44,18 @@
             </Image>
 
             <Label
+                Grid.Row="0"
                 Grid.Column="1"
-                FontSize="18"
+                FontSize="Medium"
                 Text="{Binding PageTitleName}"
-                TextColor="White"
-                VerticalOptions="Center" />
+                TextColor="{x:StaticResource White}" />
         </Grid>
 
-        <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+        <Grid
+            Grid.Row="1"
+            Padding="10"
+            RowDefinitions="Auto,Auto,Auto,*">
 
 
             <!--  Title  -->
@@ -86,7 +94,7 @@
             <Button
                 Grid.Row="3"
                 Margin="0,40,0,0"
-                BackgroundColor="Red"
+                BackgroundColor="{x:StaticResource Primary}"
                 Command="{Binding GetOtpCommand}"
                 CornerRadius="10"
                 FontSize="16"

@@ -10,12 +10,12 @@ namespace ZCarsDriver.UIModel
     public partial class Cab : ObservableObject
     {
         [ObservableProperty]
-        private string registrationNumber;
+        private string _registrationNumber;
 
         [ObservableProperty]
-        private string model;
+        private string _model;
 
         [ObservableProperty]
-        private bool isSelected;
+        private bool _isSelected;
     }
 }

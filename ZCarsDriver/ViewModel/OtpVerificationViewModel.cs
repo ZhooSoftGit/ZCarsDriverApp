@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
+using ZCarsDriver.Services.Session;
+using ZhooCars.Services;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
@@ -8,65 +9,117 @@ namespace ZCarsDriver.ViewModel
     public partial class OtpVerificationViewModel : ViewModelBase
     {
         [ObservableProperty]
-        private string _otp1, _otp2, _otp3, _otp4;
+        private string _otp1;
+        [ObservableProperty]
+        private string _otp2;
+        [ObservableProperty]
+        private string _otp3;
+        [ObservableProperty]
+        private string _otp4;
+        [ObservableProperty]
+        private string _timerText;
 
         [ObservableProperty]
-        private Color _otpBorderColor = Colors.LightGray;
+        private bool showError;
 
         [ObservableProperty]
-        private string resendOtpText = "Resend OTP (60s)";
+        private string _phoneNumber;
 
         [ObservableProperty]
-        private bool isResendEnabled = false;
+        private bool _isTimerVisible = true;
 
-        private int countdown = 60;
-        private System.Timers.Timer timer;
+        [ObservableProperty]
+        private bool _isResendVisible;
 
-        public ICommand VerifyOtpCommand { get; }
-        public ICommand ResendOtpCommand { get; }
+        private int _secondsRemaining;
 
         public OtpVerificationViewModel()
         {
-            VerifyOtpCommand = new RelayCommand(VerifyOtp);
-            ResendOtpCommand = new RelayCommand(ResendOtp);
-            StartCountdown();
+            _secondsRemaining = 60; // Set initial countdown time (1:30)
+            StartTimer();
+            PageTitleName = "Verify Vendor OTP";
+            SubmitCommand = new AsyncRelayCommand(OnSubmit);
+            ResendCodeCommand = new AsyncRelayCommand(OnResendCode);
+            _accountService = ServiceHelper.GetService<IAccountService>();
+            _userSessionManager = ServiceHelper.GetService<IUserSessionManager>();
         }
+        public IAsyncRelayCommand SubmitCommand { get; }
+        public IAsyncRelayCommand ResendCodeCommand { get; }
 
-        private void VerifyOtp()
+        private readonly IAccountService _accountService;
+        private readonly IUserSessionManager _userSessionManager;
+
+        private async void StartTimer()
         {
-            if (string.IsNullOrWhiteSpace(Otp1) || string.IsNullOrWhiteSpace(Otp2) ||
-                string.IsNullOrWhiteSpace(Otp3) || string.IsNullOrWhiteSpace(Otp4))
+            while (_secondsRemaining > 0)
             {
-                Application.Current.MainPage.DisplayAlert("Error", "Please enter a valid OTP.", "OK");
-                return;
+                TimerText = TimeSpan.FromSeconds(_secondsRemaining).ToString("mm\\:ss");
+                await Task.Delay(1000);
+                _secondsRemaining--;
             }
-
-            string enteredOtp = Otp1 + Otp2 + Otp3 + Otp4;
-            Application.Current.MainPage.DisplayAlert("OTP Verified", $"You entered: {enteredOtp}", "OK");
+            TimerText = "";
+            IsTimerVisible = false;
+            IsResendVisible = true;
         }
 
-        private void ResendOtp()
+        private async Task OnSubmit()
         {
-            countdown = 60;
-            IsResendEnabled = false;
-            StartCountdown();
-        }
+            string enteredOtp = Otp1.Trim() + Otp2.Trim() + Otp3.Trim() + Otp4.Trim();
 
-        private void StartCountdown()
-        {
-            timer = new System.Timers.Timer(1000);
-            timer.Elapsed += (sender, args) =>
+
+            if (enteredOtp.Length == 4)
             {
-                countdown--;
-                ResendOtpText = $"Resend OTP ({countdown}s)";
-                if (countdown <= 0)
+                IsBusy = true;
+                var result = await _accountService.VerifyOtpAsync(PhoneNumber, enteredOtp);
+                IsBusy = false;
+                if (result.IsSuccess)
                 {
-                    timer.Stop();
-                    IsResendEnabled = true;
-                    ResendOtpText = "Resend OTP";
+                    await _navigationService.PopAsync();
+                    await _navigationService.PopAsync();
                 }
-            };
-            timer.Start();
+                else
+                {
+                    Otp1 = Otp2 = Otp3 = Otp4 = string.Empty;
+                    ShowError = true;
+                }
+            }
+            else
+            {
+                ShowError = true;
+            }
+        }
+
+        private async Task OnResendCode()
+        {
+            Otp1 = string.Empty;
+            Otp2 = string.Empty;
+            Otp3 = string.Empty;
+            Otp4 = string.Empty;
+            _secondsRemaining = -1;
+            IsResendVisible = false;
+            IsTimerVisible = true;
+            var result = await _accountService.ReSendOtpAsync(PhoneNumber);
+            if (result.IsSuccess)
+            {
+                await _alertService.ShowAlert("Info", "Otp has been resend successfully", "Ok");
+                _secondsRemaining = 90;
+                StartTimer();
+            }
+            else
+            {
+                await _alertService.ShowAlert("Error", "Otp Send is Failed", "Ok");
+            }
+        }
+
+        public override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (NavigationParams != null)
+            {
+                var str = NavigationParams["phoneNumber"].ToString();
+                PhoneNumber = str;
+            }
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using ZCarsDriver.UIModel;
+using ZCarsDriver.Views.Driver;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
@@ -21,22 +23,22 @@ namespace ZCarsDriver.ViewModel
         private bool hasRcBook;
 
         [ObservableProperty]
-        private Cab selectedCab;
+        private Cab _selectedCab;
 
-        public bool CanContinue => SelectedCab != null;
+        [ObservableProperty]
+        private bool _canContinue;
 
         public ICommand SelectCabCommand { get; }
-        public ICommand ContinueCommand { get; }
-        public ICommand ChangeVendorCommand { get; }
+        public IAsyncRelayCommand ContinueCommand { get; }
+        public IAsyncRelayCommand ChangeVendorCommand { get; }
         public ICommand SearchCommand { get; set; }
 
         public LinkDriverViewModel()
         {
             SelectCabCommand = new RelayCommand<Cab>(SelectCab);
-            ContinueCommand = new RelayCommand(OnContinue, () => CanContinue);
-            ChangeVendorCommand = new RelayCommand(OnChangeVendor);
+            ContinueCommand = new AsyncRelayCommand(OnContinue);
+            ChangeVendorCommand = new AsyncRelayCommand(OnChangeVendor);
             SearchCommand = new RelayCommand(FilterCabs);
-
         }
 
         public override void OnAppearing()
@@ -62,22 +64,26 @@ namespace ZCarsDriver.ViewModel
             foreach (var c in FilteredCabs)
                 c.IsSelected = false;
 
+            SelectedCab = cab;
+
             SelectedCab.IsSelected = true;
+
+            CanContinue = true;
         }
 
-        private void OnContinue()
+        private async Task OnContinue()
         {
             if (SelectedCab != null)
             {
-                Application.Current.MainPage.DisplayAlert("Cab Selected",
-                    $"You selected {SelectedCab.RegistrationNumber}", "OK");
+                await _navigationService.PushAsync(ServiceHelper.GetService<DriverDashboardPage>());
             }
         }
 
-        private void OnChangeVendor()
+        private async Task OnChangeVendor()
         {
-            Application.Current.MainPage.DisplayAlert("Change Vendor",
-                "Vendor change process initiated.", "OK");
+            IsBusy = true;
+            await _navigationService.PushAsync(ServiceHelper.GetService<VendorOtpPage>());
+            IsBusy = false;
         }
 
         private void FilterCabs()

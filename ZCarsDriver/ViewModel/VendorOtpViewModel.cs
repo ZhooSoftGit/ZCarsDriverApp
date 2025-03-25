@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using ZCarsDriver.Views.Driver;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
@@ -9,7 +10,7 @@ namespace ZCarsDriver.ViewModel
     public partial class VendorOtpViewModel : ViewModelBase
     {
         [ObservableProperty]
-        private string phoneNumber;
+        private string _phoneNumber;
 
         [ObservableProperty]
         private bool _isPhoneValid;
@@ -18,6 +19,7 @@ namespace ZCarsDriver.ViewModel
 
         public VendorOtpViewModel()
         {
+            PageTitleName = "Vendor OTP";
             GetOtpCommand = new AsyncRelayCommand(GetOtp);
         }
 
@@ -30,7 +32,12 @@ namespace ZCarsDriver.ViewModel
             }
             //TODO API OTP
 
-            Application.Current.MainPage.DisplayAlert("OTP Sent", $"OTP sent to {PhoneNumber}", "OK");
+            var nvparm = new Dictionary<string, object>()
+                            {
+                                {"phoneNumber", PhoneNumber },
+                                {"sessionId", "" }
+                            };
+            await _navigationService.PushAsync(ServiceHelper.GetService<OtpVerificationPage>(), nvparm);
         }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
