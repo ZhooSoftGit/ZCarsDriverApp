@@ -13,7 +13,7 @@ namespace ZhooSoft.Core
         private bool _isBusy;
 
         [ObservableProperty]
-        private string pageTitleName;
+        private string _pageTitleName;
 
         #endregion
 
