@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:ZhooSoft.Core;assembly=ZhooSoft.Core"
     xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
+    xmlns:header="clr-namespace:ZCarsDriver.Templates"
     xmlns:resource="clr-namespace:ZCarsDriver.Resources.Strings"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:ZCarsDriver.ViewModel"
@@ -23,42 +24,7 @@
             VerticalOptions="Fill">
 
             <!--  Title  -->
-            <Grid
-                x:Name="headerLayout"
-                Grid.Row="0"
-                Padding="15"
-                BackgroundColor="{x:StaticResource Primary}"
-                HorizontalOptions="Fill"
-                RowSpacing="1"
-                VerticalOptions="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Image
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Margin="10,0,0,0"
-                    HorizontalOptions="Start"
-                    Source="back.png"
-                    VerticalOptions="Center">
-                    <Image.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding BackCommand}" />
-                    </Image.GestureRecognizers>
-                </Image>
-
-                <Label
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    FontSize="Medium"
-                    Text="{Binding PageTitleName}"
-                    TextColor="{x:StaticResource White}" />
-
-
-            </Grid>
+            <header:CustomNavigationHeader Grid.Row="0" />
 
             <!--  Document List  -->
             <CollectionView
@@ -116,14 +82,30 @@
             <!--  Submit Button  -->
             <Button
                 Grid.Row="2"
-                BackgroundColor="Gray"
+                Margin="20"
+                BackgroundColor="{x:StaticResource Primary}"
                 Command="{Binding SubmitApplicationCommand}"
                 CornerRadius="10"
                 FontSize="18"
                 HeightRequest="50"
                 IsEnabled="{Binding IsSubmitEnabled}"
                 Text="Submit Application"
-                TextColor="White" />
+                TextColor="White">
+                <Button.Triggers>
+                    <DataTrigger
+                        Binding="{Binding IsSubmitEnabled}"
+                        TargetType="Button"
+                        Value="False">
+                        <Setter Property="Opacity" Value="0.7" />
+                    </DataTrigger>
+                    <DataTrigger
+                        Binding="{Binding IsSubmitEnabled}"
+                        TargetType="Button"
+                        Value="True">
+                        <Setter Property="Opacity" Value="1" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
 
         </Grid>
     </Grid>

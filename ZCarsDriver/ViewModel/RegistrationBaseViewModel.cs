@@ -20,6 +20,8 @@ namespace ZCarsDriver.ViewModel
         private bool _isSubmitEnabled;
 
         private UserRoles _userRole;
+        private RegsitrationType _registrationType;
+        private object _selectedObj;
 
         #endregion
 
@@ -50,9 +52,14 @@ namespace ZCarsDriver.ViewModel
             IsBusy = true;
             if (NavigationParams.Count > 0)
             {
-                if (NavigationParams.ContainsKey("Tile") && NavigationParams["Tile"] is UserRoles role)
+                if (NavigationParams.ContainsKey("regType") && NavigationParams["regType"] is RegsitrationType regType)
                 {
-                    _userRole = role;
+                    _registrationType = regType;
+                }
+
+                if (NavigationParams.ContainsKey("selectedObj"))
+                {
+                    _selectedObj = NavigationParams["selectedObj"];
                 }
 
                 NavigationParams.Clear();
@@ -68,29 +75,34 @@ namespace ZCarsDriver.ViewModel
         {
             if (CheckListItems == null)
             {
-                var checklist = new List<CheckListItem>
-                            {
-                                new() { ItemName = "Basic Details", IsCompleted = false, IsForm = true },
-                                new() { ItemName = "Profile Photo", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.ProfilePhoto },
-                                new() { ItemName = "Aadhaar", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.AadharCard }
-                            };
-                switch (_userRole)
+                var checklist = new List<CheckListItem>();
+
+                switch (_registrationType)
                 {
-                    case UserRoles.Driver:
+                    case RegsitrationType.DriverApplication:
+                        checklist.Add(new CheckListItem { ItemName = "Profile Photo", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.ProfilePhoto });
+                        checklist.Add(new CheckListItem { ItemName = "Aadhaar", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.AadharCard });
                         checklist.Add(new CheckListItem { ItemName = "Driving License", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.DrivingLicense });
                         break;
 
-                    case UserRoles.Vendor:
-                        checklist.Add(new CheckListItem { ItemName = "RC Book", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.RCBook });
-                        checklist.Add(new CheckListItem { ItemName = "Vehicle Details", IsCompleted = false, CheckListType = UIHelper.CheckListType.VehicleDetails, IsForm = true });
+                    case RegsitrationType.VendorApplication:
+                        checklist.Add(new CheckListItem { ItemName = "Profile Photo", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.ProfilePhoto });
+                        checklist.Add(new CheckListItem { ItemName = "Aadhaar", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.AadharCard });
+                        //checklist.Add(new CheckListItem { ItemName = "Vehicle Details", IsCompleted = false, CheckListType = UIHelper.CheckListType.VehicleDetails, IsForm = true });
                         break;
 
-                    case UserRoles.SparPartsDistributor:
+                    case RegsitrationType.VechicleDetails:
+                        checklist.Add(new CheckListItem { ItemName = "Vehicle Details", IsCompleted = false, CheckListType = UIHelper.CheckListType.VehicleDetails, IsForm = true });
+                        checklist.Add(new CheckListItem { ItemName = "Rc Book", IsCompleted = false, IsDocument = true, CheckListType = UIHelper.CheckListType.RCBook });
+                        checklist.Add(new CheckListItem { ItemName = "Insurance Document", IsCompleted = false, IsOptional = true, IsDocument = true, CheckListType = UIHelper.CheckListType.Insurance });
+                        break;
+
+                    case RegsitrationType.ServiceProviderApplication:
                         checklist.Add(new CheckListItem { ItemName = "Service Details", IsCompleted = false, CheckListType = UIHelper.CheckListType.ServiceStationDetails, IsForm = true });
                         checklist.Add(new CheckListItem { ItemName = "GST Document", IsCompleted = false, FrontOnly = true, IsDocument = true, CheckListType = UIHelper.CheckListType.GSTDocument });
                         break;
 
-                    case UserRoles.ServiceProvider:
+                    case RegsitrationType.SparPartsApplication:
                         checklist.Add(new CheckListItem { ItemName = "Shop Details", IsCompleted = false, CheckListType = UIHelper.CheckListType.SpartPartsShopDetails, IsForm = true });
                         checklist.Add(new CheckListItem { ItemName = "GST Document", IsCompleted = false, FrontOnly = true, IsDocument = true, CheckListType = UIHelper.CheckListType.GSTDocument });
                         break;
@@ -126,8 +138,10 @@ namespace ZCarsDriver.ViewModel
                 {
                     var param = new Dictionary<string, object>
                     {
-                        {"checklist", item }
+                        {"checklist", item },
+                        {"data", _selectedObj }
                     };
+
                     await _navigationService.PushAsync(ServiceHelper.GetService<CommonFormPage>(), param);
                 }
 
@@ -137,7 +151,7 @@ namespace ZCarsDriver.ViewModel
 
         private void UpdateSubmitButtonState()
         {
-            IsSubmitEnabled = CheckListItems.All(item => item.IsCompleted);
+            IsSubmitEnabled = CheckListItems.All(item => item.IsCompleted || item.IsOptional);
         }
 
         #endregion

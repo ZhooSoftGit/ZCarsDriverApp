@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:base="clr-namespace:ZhooSoft.Core;assembly=ZhooSoft.Core"
     xmlns:ctrl="clr-namespace:ZhooSoft.Controls;assembly=ZhooSoft.Controls"
+    xmlns:header="clr-namespace:ZCarsDriver.Templates"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
     xmlns:vm="clr-namespace:ZCarsDriver.ViewModel"
     x:TypeArguments="vm:DrivingLicenseViewModel"
@@ -15,36 +16,8 @@
         RowDefinitions="Auto, *"
         VerticalOptions="Fill">
 
-        <!--  Header  -->
-        <Grid
-            x:Name="headerLayout"
-            Grid.Row="0"
-            Padding="15"
-            BackgroundColor="{StaticResource Primary}"
-            HorizontalOptions="Fill">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Image
-                Grid.Column="0"
-                Margin="10,0,0,0"
-                HorizontalOptions="Start"
-                Source="back.png"
-                VerticalOptions="Center">
-                <Image.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding BackCommand}" />
-                </Image.GestureRecognizers>
-            </Image>
-
-            <Label
-                Grid.Column="1"
-                FontSize="18"
-                Text="{Binding PageTitleName}"
-                TextColor="White"
-                VerticalOptions="Center" />
-        </Grid>
+        <!--  Title  -->
+        <header:CustomNavigationHeader Grid.Row="0" />
 
         <!--  Content  -->
         <ScrollView Grid.Row="1" Padding="20">

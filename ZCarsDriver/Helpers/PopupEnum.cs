@@ -10,7 +10,10 @@ namespace ZCarsDriver.Helpers
     {
         CancelRide,
         TripDetails,
-        CallRide
+        CallRide,
+
+        ShowProfile,
+        ShowDashboard
     }
 
     public enum MenuEnum

@@ -7,5 +7,7 @@
         void NavigateToDetail(NavigationPage detailPage);
 
         void NavigateToNotification();
+
+        Task Initialize();
     }
 }

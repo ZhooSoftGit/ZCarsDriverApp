@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using ZCarsDriver.Services.Session;
 using ZhooCars.Services;
+using ZhooSoft.Auth.Model;
 using ZhooSoft.Core;
 
 namespace ZhooSoft.Auth.ViewModel
@@ -88,6 +89,8 @@ namespace ZhooSoft.Auth.ViewModel
                     });
 
 
+                    UserDetails.getInstance().Phone1 = PhoneNumber;                    
+                    UserDetails.getInstance().UserRoles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User };
                     ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
                 }
                 else

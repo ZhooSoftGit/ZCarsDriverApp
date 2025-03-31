@@ -1,4 +1,7 @@
-﻿namespace ZCarsDriver.UIHelper
+﻿using ZhooCars.Common;
+using ZhooCars.Model.DTOs;
+
+namespace ZCarsDriver.UIHelper
 {
     public static class UIHelper
     {
@@ -44,4 +47,69 @@
 
         #endregion
     }
+
+    public static class VehicleDtoSamples
+    {
+        public static List<VehicleDto> GetSampleVehicles()
+        {
+            return new List<VehicleDto>
+            {
+                new VehicleDto
+                {
+                    ApprovalStatus = ApprovalStatus.Approved,
+                    Color = "Blue",
+                    FuelType = "Diesel",
+                    InsuranceExpiryDate = DateTime.Now.AddYears(1),
+                    InsuranceNumber = "INS12345",
+                    RCNumber = "RC123",
+                    RegistrationDate = DateTime.Now.AddYears(-3),
+                    SeatingCapacity = 5,
+                    Status = VehicleStatus.Active,
+                    VehicleId = 1,
+                    VehicleMake = "Toyota",
+                    VehicleModel = "Innova",
+                    VehicleRegistrationNumber = "KA01AB1234",
+                    VehicleTypeId = 2,
+                    VehicleYear = 2020
+                },
+                new VehicleDto
+                {
+                    ApprovalStatus = ApprovalStatus.Pending,
+                    Color = "Red",
+                    FuelType = "Petrol",
+                    InsuranceExpiryDate = DateTime.Now.AddMonths(6),
+                    InsuranceNumber = "INS67890",
+                    RCNumber = "RC456",
+                    RegistrationDate = DateTime.Now.AddYears(-1),
+                    SeatingCapacity = 4,
+                    Status = VehicleStatus.Maintenance,
+                    VehicleId = 2,
+                    VehicleMake = "Honda",
+                    VehicleModel = "City",
+                    VehicleRegistrationNumber = "MH02CD5678",
+                    VehicleTypeId = 1,
+                    VehicleYear = 2022
+                },
+                new VehicleDto
+                {
+                    ApprovalStatus = ApprovalStatus.Rejected,
+                    Color = "White",
+                    FuelType = "Electric",
+                    InsuranceExpiryDate = DateTime.Now.AddYears(2),
+                    InsuranceNumber = "INS11223",
+                    RCNumber = "RC789",
+                    RegistrationDate = DateTime.Now.AddYears(-5),
+                    SeatingCapacity = 7,
+                    Status = VehicleStatus.Active,
+                    VehicleId = 3,
+                    VehicleMake = "Tesla",
+                    VehicleModel = "Model X",
+                    VehicleRegistrationNumber = "DL03EF9012",
+                    VehicleTypeId = 3,
+                    VehicleYear = 2021
+                }
+            };
+        }
+    }
+
 }

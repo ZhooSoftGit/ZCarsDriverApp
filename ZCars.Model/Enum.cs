@@ -2,6 +2,17 @@
 {
     #region Enums
 
+    public enum MobileModule
+    {
+        Driver,
+        Vendor,
+        ServiceProvider,
+        SparParts,
+        BuyAndSell,
+        RequestForm,
+        CustomerSupport
+    }
+
     public enum ApprovalStatus
     {
         Pending = 0,
@@ -19,6 +30,18 @@
         SparPartsDistributor = 6,
         Owner = 7,
         BuyAndSell = 8
+    }
+
+    public enum RegsitrationType
+    {
+        BasicDetails,
+        DriverApplication,
+        VendorApplication,
+        VechicleDetails,
+        ServiceProviderApplication,
+        SparPartsApplication,
+        BuyForm,
+        SellingForm
     }
 
     public enum DocumentTypes
@@ -40,6 +63,13 @@
         Break,
         CheckOut,
         LoggedOut
+    }
+
+    public enum FuelType
+    {
+        Petrol,
+        Diseal,
+        Electronic
     }
 
     public enum VehicleStatus
@@ -101,6 +131,13 @@
         Cancelled,
         Failed,
         Closed
+    }
+
+    public enum ActionType
+    {
+        New,
+        View,
+        Edit
     }
 
     public enum DocumentHttpMethod

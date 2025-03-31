@@ -1,5 +1,7 @@
 ﻿using ZCarsDriver.Views;
+using ZCarsDriver.Views.Common;
 using ZCarsDriver.Views.Driver;
+using ZhooSoft.Auth;
 using ZhooSoft.Auth.Views;
 using ZhooSoft.Core;
 
@@ -12,6 +14,7 @@ namespace ZCarsDriver
         public App()
         {
             InitializeComponent();
+            UserAppTheme = AppTheme.Light;
         }
 
         #endregion
@@ -20,9 +23,7 @@ namespace ZCarsDriver
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            var nvPage = new NavigationPage(ServiceHelper.GetService<LinkDriverPage>());
-
-            return new Window(nvPage);
+            return new Window(ServiceHelper.GetService<SplashScreen>());
         }
 
         private void CheckLogin()

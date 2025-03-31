@@ -79,9 +79,15 @@ namespace ZhooSoft.Core.NavigationBase
         }
 
 
-        public Task PopToRootAsync()
+        public async Task PopToRootAsync()
         {
-            throw new NotImplementedException();
+            if (Application.Current != null && Application.Current.Windows != null && Application.Current.Windows.Count > 0)
+            {
+                if (Application.Current.Windows[0].Page is NavigationPage nvpage)
+                {
+                    await nvpage.PopToRootAsync();
+                }
+            }
         }
 
         public async Task PushAsync(Page page)

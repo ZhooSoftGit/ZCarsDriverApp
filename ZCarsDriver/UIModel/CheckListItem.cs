@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using ZCarsDriver.UIHelper;
+using ZhooCars.Common;
 
 namespace ZCarsDriver.UIModel
 {
@@ -24,6 +25,14 @@ namespace ZCarsDriver.UIModel
         public bool IsDocument { get; set; }
 
         public bool IsForm { get; set; }
+
+        public bool IsNavigation { get; set; }
+
+        public bool IsOptional { get; set; }
+
+        public Page? NavigationPage { get; set; }
+
+        public ActionType CheckListItemStatus { get; set; }
 
         #endregion
     }

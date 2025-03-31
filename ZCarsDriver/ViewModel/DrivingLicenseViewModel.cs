@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using ZCarsDriver.UIModel;
+using ZhooCars.Model.DTOs;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
@@ -74,9 +75,25 @@ namespace ZCarsDriver.ViewModel
                 _checklistItem = item;
                 UpdatePageData();
                 BothSide = !item.FrontOnly;
+                await LoadData();
             }
             await Task.Delay(100);
             IsBusy = false;
+        }
+
+        private async Task LoadData()
+        {
+            if (_checklistItem.CheckListItemStatus != ZhooCars.Common.ActionType.New)
+            {
+                if (NavigationParams.ContainsKey("DocumentData") && NavigationParams["DocumentData"] is DocumentDto dto)
+                {
+                    await LoadFrontData(dto);
+                    if (!_checklistItem.FrontOnly)
+                    {
+                        await LoadBackData(dto);
+                    }
+                }
+            }
         }
 
         private void RemoveBack()
@@ -134,6 +151,24 @@ namespace ZCarsDriver.ViewModel
                 IsBackUploaded = true;
                 UpdateSaveButtonState();
             }
+        }
+
+        private async Task LoadBackData(DocumentDto document)
+        {
+            BackLicenseImage = ImageSource.FromFile("license_dummy.png");
+            BackFileName = document.DocumentUrl;
+            BackFileSize = document.DocumentId + " kb";
+            IsBackUploaded = true;
+            UpdateSaveButtonState();
+        }
+
+        private async Task LoadFrontData(DocumentDto document)
+        {
+            FrontLicenseImage = ImageSource.FromFile("license_dummy.png");
+            FrontFileName = document.DocumentUrl;
+            FrontFileSize = document.DocumentId + " kb";
+            IsBackUploaded = true;
+            UpdateSaveButtonState();
         }
 
         private async Task UploadFrontAsync()

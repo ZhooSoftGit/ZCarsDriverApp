@@ -22,6 +22,7 @@ using ZCarsDriver.DPopup;
 using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services.AppService;
 using ZCarsDriver.Services;
+using ZCarsDriver.Views.Common;
 
 
 
@@ -100,16 +101,21 @@ namespace ZCarsDriver
 
         private static IServiceCollection AddPages(this IServiceCollection services)
         {
+            services.AddTransient<SplashScreen>();
+
             services.AddTransient<LoginPage>();
             services.AddTransient<OTPVerificationPage>();
             services.AddTransient<HomeViewPage>();
             services.AddTransient<RegistrationBasePage>();
             services.AddTransient<DrivingLicensePage>();
             services.AddTransient<DriverDashboardPage>();
+            services.AddTransient<BaseProfilePage>();
 
             services.AddTransient<VendorOtpPage>();
             services.AddTransient<LinkDriverPage>();
             services.AddTransient<OtpVerificationPage>();
+
+            services.AddTransient<VehicleListPage>();
 
             services.AddTransient<CancelTripPage>();
             services.AddTransient<TripDetailsPage>();
@@ -175,8 +181,12 @@ namespace ZCarsDriver
             services.AddTransient<DrivingLicenseViewModel>();
             services.AddTransient<DynamicFormViewModel>();
 
+            services.AddTransient<BaseProfileViewModel>();
+
             services.AddTransient<CancelTripViewModel>();
             services.AddTransient<TripDetailsViewModel>();
+
+            services.AddTransient<VehicleListViewModel>();
 
             services.AddTransient<DriverDashboardViewModel>();
             services.AddTransient<CustomMapWebViewModel>();

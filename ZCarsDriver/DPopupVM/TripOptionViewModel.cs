@@ -9,6 +9,7 @@ namespace ZCarsDriver.DPopupVM
     public partial class TripOptionViewModel : ViewModelBase
     {
         internal TripOptionPopup CurrentPopup;
+
         #region Constructors
 
         public TripOptionViewModel()

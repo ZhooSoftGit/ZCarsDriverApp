@@ -2,10 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ZCarsDriver.DPopup;
+using ZCarsDriver.Helpers;
 using ZCarsDriver.Services.Contracts;
 using ZCarsDriver.Services.Session;
 using ZCarsDriver.Views.Driver;
 using ZhooCars.Common;
+using ZhooSoft.Auth.Model;
 using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
@@ -89,54 +92,41 @@ namespace ZCarsDriver.ViewModel
             if (string.IsNullOrEmpty(option))
                 return;
             option = option.Replace(" ", "");
+            var nvparam = new Dictionary<string, object>();
+            var userroles = UserDetails.getInstance().UserRoles;
             switch (option)
             {
                 case "Driver":
-                    //var page = ServiceHelper.GetService<RegistrationBasePage>();
-                    //var nvparam = new Dictionary<string, object>
-                    //{
-                    //    {"Tile", UserRoles.Driver }
-                    //};
-                    //await _navigationService.PushAsync(page, nvparam);
-
-                    var page1 = ServiceHelper.GetService<DriverDashboardPage>();
-                    var nvparam = new Dictionary<string, object>
+                    AppHelper.CurrentModule = MobileModule.Driver;
+                    if (userroles.Contains(UserRoles.Driver))
                     {
-                        {"Tile", UserRoles.Driver }
-                    };
-                    await _navigationService.PushAsync(page1, nvparam);
-
+                        await _navigationService.PushAsync(ServiceHelper.GetService<DriverDashboardPage>());
+                    }
+                    else
+                    {
+                        var page2 = ServiceHelper.GetService<BaseProfilePage>();
+                        await _navigationService.PushAsync(ServiceHelper.GetService<BaseProfilePage>());
+                    }
                     break;
 
                 case "Vendor":
-                    var page = ServiceHelper.GetService<RegistrationBasePage>();
-                    nvparam = new Dictionary<string, object>
-                    {
-                        {"Tile", UserRoles.Vendor }
-                    };
-                    await _navigationService.PushAsync(page, nvparam);
+                    AppHelper.CurrentModule = MobileModule.Vendor;
+                    await _navigationService.PushAsync(ServiceHelper.GetService<BaseProfilePage>());
                     break;
 
                 case "ServiceProvider":
-                    page = ServiceHelper.GetService<RegistrationBasePage>();
-                    nvparam = new Dictionary<string, object>
-                    {
-                        {"Tile", UserRoles.ServiceProvider }
-                    };
-                    await _navigationService.PushAsync(page, nvparam);
+                    AppHelper.CurrentModule = MobileModule.ServiceProvider;
+                    await _navigationService.PushAsync(ServiceHelper.GetService<BaseProfilePage>());
                     break;
 
                 case "SparParts":
-                    page = ServiceHelper.GetService<RegistrationBasePage>();
-                    nvparam = new Dictionary<string, object>
-                    {
-                        {"Tile", UserRoles.SparPartsDistributor }
-                    };
-                    await _navigationService.PushAsync(page, nvparam);
+                    AppHelper.CurrentModule = MobileModule.SparParts;
+                    await _navigationService.PushAsync(ServiceHelper.GetService<BaseProfilePage>());
                     break;
 
                 case "BuyAndSell":
-                    page = ServiceHelper.GetService<RegistrationBasePage>();
+                    AppHelper.CurrentModule = MobileModule.BuyAndSell;
+                    var page = ServiceHelper.GetService<RegistrationBasePage>();
                     nvparam = new Dictionary<string, object>
                     {
                         {"Tile", UserRoles.BuyAndSell }

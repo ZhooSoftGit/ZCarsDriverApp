@@ -9,6 +9,7 @@
         AadharCard,
         DrivingLicense,
         RCBook,
+        Insurance,
         VehicleDetails,
         ServiceStationDetails,
         SpartPartsShopDetails,
