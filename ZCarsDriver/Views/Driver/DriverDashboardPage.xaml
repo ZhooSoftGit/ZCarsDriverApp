@@ -226,6 +226,7 @@
             Padding="10"
             BackgroundColor="{x:StaticResource Primary}"
             Command="{Binding OnTripAction}"
+            CommandParameter="{Binding NextStatus}"
             HorizontalOptions="Fill"
             IsVisible="{Binding OnTrip}"
             Text="{Binding ActionText}"

@@ -93,7 +93,7 @@ namespace ZCarsDriver.DPopup
                 {
                     BookingRequest = BookingRequest,
                     RideDetails = result.Data,
-                    RideStatus = RideStatus.Assigned
+                    CurrentStatus = RideStatus.Assigned
                 };
 
                 AppHelper.CurrentRide = ride;

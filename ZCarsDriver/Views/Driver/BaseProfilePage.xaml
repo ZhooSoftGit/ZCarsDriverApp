@@ -169,7 +169,7 @@
                             Grid.Row="1"
                             Grid.Column="0"
                             FontSize="12"
-                            Text="Will be enabled after the registration"
+                            Text="Vendor vechicle details"
                             TextColor="Red" />
                         <Image
                             Grid.Row="0"
@@ -218,7 +218,7 @@
                             Grid.Column="0"
                             FontSize="12"
                             Text="Will be enabled after the registration"
-                            TextColor="Red" />
+                            TextColor="{x:StaticResource Primary}" />
                         <Image
                             Grid.Row="0"
                             Grid.RowSpan="2"
@@ -273,19 +273,19 @@
             <!--  Footer Buttons  -->
             <Grid
                 Grid.Row="2"
-                Margin="10,20"
+                Margin="10,20" ColumnSpacing="20"
                 ColumnDefinitions="*,*">
                 <Button
                     BackgroundColor="White"
-                    BorderColor="Red"
+                    BorderColor="{x:StaticResource Primary}"
                     BorderWidth="1"
                     Command="{Binding ContactSupportCommand}"
                     CornerRadius="10"
                     Text="Contact Support"
-                    TextColor="Red" />
+                    TextColor="{x:StaticResource Primary}" />
                 <Button
                     Grid.Column="1"
-                    BackgroundColor="Red"
+                    BackgroundColor="{x:StaticResource Primary}"
                     Command="{Binding LogoutCommand}"
                     CornerRadius="10"
                     Text="Logout"

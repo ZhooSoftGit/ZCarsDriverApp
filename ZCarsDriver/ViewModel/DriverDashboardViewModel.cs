@@ -28,7 +28,7 @@ namespace ZCarsDriver.ViewModel
         public CustomMapView CurrentMap;
 
         [ObservableProperty]
-        private string _actionText = "Reached";
+        private string _actionText;
 
         [ObservableProperty]
         private BookingRequestModel _bookingRequestModel;
@@ -52,6 +52,9 @@ namespace ZCarsDriver.ViewModel
         private ITaxiBookingService? _taxiService;
         [ObservableProperty]
         private RideStatus _rideStatus;
+
+        [ObservableProperty]
+        private RideStatus _nextStatus;
 
         [ObservableProperty]
         private RideTripDto _rideTrip;
@@ -170,10 +173,11 @@ namespace ZCarsDriver.ViewModel
                 StopRealTimeTracking();
                 InitializeMap();
             }
-            else
+            else if (!IsLoaded && AppHelper.CurrentRide != null)
             {
                 await RefreshPage();
             }
+            IsLoaded = true;
         }
 
         public async Task<double?> PlotRouteOnMap(double startLat, double startLng, double endLat, double endLng)
@@ -248,60 +252,27 @@ namespace ZCarsDriver.ViewModel
 
         internal async Task RefreshPage()
         {
-            if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.RideStatus == RideStatus.Assigned)
+            if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.CurrentStatus == RideStatus.Assigned)
             {
-                RideStatus = RideStatus.Assigned;
                 OnTrip = true;
+                ActionText = AppHelper.CurrentRide.NextStatus.ToString();
                 await OnStartPickup();
             }
-            if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.RideStatus == RideStatus.Reached)
+            if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.CurrentStatus == RideStatus.Reached)
             {
-                RideStatus = RideStatus.Reached;
                 OnTrip = false;
-                await OnReachedPickup();
+                ActionText = AppHelper.CurrentRide.NextStatus.ToString();
             }
-            else if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.RideStatus == RideStatus.Started)
+            else if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.CurrentStatus == RideStatus.Started)
             {
                 OnTrip = true;
-                ActionText = "End Trip";
+                ActionText = AppHelper.CurrentRide.NextStatus.ToString();
                 await OnStartTrip();
             }
-        }
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            base.OnPropertyChanged(e);
-
-            if (e.PropertyName == nameof(RideStatus))
+            else if (AppHelper.CurrentRide != null && AppHelper.CurrentRide.CurrentStatus == RideStatus.Cancelled)
             {
-                switch (RideStatus)
-                {
-                    case RideStatus.Assigned:
-                        {
-                            ActionText = "Reached";
-                        }
-                        break;
-                    case RideStatus.Reached:
-                        {
-                            ActionText = "Started";
-                        }
-                        break;
-                    case RideStatus.Started:
-                        {
-                            ActionText = "Completed";
-                        }
-                        break;
-                    case RideStatus.Completed:
-                        {
-
-                        }
-                        break;
-                    case RideStatus.Cancelled:
-                        {
-
-                        }
-                        break;
-                }
+                AppHelper.CurrentRide = null;
+                InitializeMap();
             }
         }
 
@@ -330,21 +301,19 @@ namespace ZCarsDriver.ViewModel
 
         private async Task HandleTripAction()
         {
-            if (AppHelper.CurrentRide.RideStatus == RideStatus.Assigned)
+            if (AppHelper.CurrentRide.NextStatus == RideStatus.Reached)
             {
                 OnTrip = true;
-                RideStatus = RideStatus.Reached;
-                AppHelper.CurrentRide.RideStatus = RideStatus.Reached;
                 await OnReachedPickup();
+                AppHelper.CurrentRide.CurrentStatus = RideStatus.Reached;
+                ActionText = AppHelper.CurrentRide.NextStatus.ToString();
             }
-            else if (AppHelper.CurrentRide.RideStatus == RideStatus.Reached)
+            else if (AppHelper.CurrentRide.NextStatus == RideStatus.Started)
             {
                 OnTrip = true;
-                RideStatus = RideStatus.Started;
-                AppHelper.CurrentRide.RideStatus = RideStatus.Started;
-                await OnStartTrip();
+                await OnInitializeStart();
             }
-            else if (AppHelper.CurrentRide.RideStatus == RideStatus.Started)
+            else if (AppHelper.CurrentRide.NextStatus == RideStatus.Completed)
             {
                 await OnEndTrip();
             }
@@ -367,8 +336,7 @@ namespace ZCarsDriver.ViewModel
                 IsBusy = true;
                 StopRealTimeTracking();
                 OnTrip = false;
-                RideStatus = RideStatus.Completed;
-                AppHelper.CurrentRide.RideStatus = RideStatus.Completed;
+                AppHelper.CurrentRide.CurrentStatus = RideStatus.Completed;
                 OnTrip = false;
                 var rideTripInfo = await _rideTripService.EndTripAsync(new EndTripDto
                 {
@@ -428,17 +396,12 @@ namespace ZCarsDriver.ViewModel
             IsBusy = true;
             _startRealTimeUpdate = true;
             _destination = new Location(AppHelper.CurrentRide.BookingRequest.PickupLatitude, AppHelper.CurrentRide.BookingRequest.PickupLongitude);
-            _rideStatus = RideStatus.Assigned;
-            OnTrip = true;
-            await _rideTripService.StartTripAsync(new UpdateTripStatusDto
-            {
-                RideTripId = 1
-            });
+            OnTrip = true;           
             await StartRealTimeTracking();
             IsBusy = false;
         }
 
-        private async Task OnStartTrip()
+        private async Task OnInitializeStart()
         {
             IsBusy = true;
             var result = await _navigationService.OpenPopup(new OnStartOtpPopup());
@@ -449,15 +412,21 @@ namespace ZCarsDriver.ViewModel
 
                 if (response.IsSuccess)
                 {
-                    _startRealTimeUpdate = true;
-                    _startTrip = true;
-                    _rideStatus = RideStatus.Started;
-                    OnTrip = true;
-                    _destination = new Location(AppHelper.CurrentRide.BookingRequest.DropLatitude, AppHelper.CurrentRide.BookingRequest.DropLongitude);
-                    await StartRealTimeTracking();
+                    await OnStartTrip();
                 }
             }
             IsBusy = false;
+        }
+
+        private async Task OnStartTrip()
+        {
+            _startRealTimeUpdate = true;
+            _startTrip = true;
+            AppHelper.CurrentRide.CurrentStatus = RideStatus.Started;
+            ActionText = AppHelper.CurrentRide.NextStatus.ToString();
+            OnTrip = true;
+            _destination = new Location(AppHelper.CurrentRide.BookingRequest.DropLatitude, AppHelper.CurrentRide.BookingRequest.DropLongitude);
+            await StartRealTimeTracking();
         }
 
         private async Task OpenCall()

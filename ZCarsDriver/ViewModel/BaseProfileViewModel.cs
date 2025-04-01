@@ -61,6 +61,8 @@ namespace ZCarsDriver.ViewModel
             {
                 _currentModule = module;
 
+                PageTitleName = module.ToString() + " Registration";
+
                 if (_currentModule == MobileModule.Vendor)
                 {
                     IsVendor = true;

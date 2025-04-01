@@ -50,6 +50,8 @@ namespace ZhooSoft.Core
             }
         }
 
+        public bool IsLoaded { get; set; }
+
         public Dictionary<string, object> NavigationParams { get; set; } = new Dictionary<string, object>();
 
         public ICommand OpenFlyout { get; }
