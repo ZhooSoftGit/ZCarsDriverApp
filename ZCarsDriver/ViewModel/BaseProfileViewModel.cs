@@ -1,10 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ZCarsDriver.Helpers;
 using ZCarsDriver.UIModel;
@@ -23,6 +18,14 @@ namespace ZCarsDriver.ViewModel
         private bool _isVendor;
 
         [ObservableProperty]
+        private bool _isDriver;
+
+        [ObservableProperty]
+        private string _ownerNumber;
+        [ObservableProperty]
+        private string _vehicleNo;
+
+        [ObservableProperty]
         private string _applicationStatus = "Pending";
         private MobileModule _currentModule;
 
@@ -35,17 +38,26 @@ namespace ZCarsDriver.ViewModel
         public IAsyncRelayCommand ContactSupportCommand { get; }
 
         public IAsyncRelayCommand VehiclesCommand { get; }
+
+        public IAsyncRelayCommand DriverLinkCommand { get; }
+
         public ICommand LogoutCommand { get; }
 
         public BaseProfileViewModel()
         {
             ProfileTapCommand = new AsyncRelayCommand(OnProfileTapped);
             ApplicationTapCommand = new AsyncRelayCommand(OnApplicationTapped);
+            DriverLinkCommand = new AsyncRelayCommand(OnLinkDriver);
             ResetDataCommand = new AsyncRelayCommand(OnResetData);
             LaunchDashBoardCommand = new AsyncRelayCommand(OnLaunchDashBoard);
             ContactSupportCommand = new AsyncRelayCommand(OnContactSupport);
             VehiclesCommand = new AsyncRelayCommand(OnVehiclesCmd);
             LogoutCommand = new RelayCommand(OnLogout);
+        }
+
+        private async Task OnLinkDriver()
+        {
+            await _navigationService.PushAsync(ServiceHelper.GetService<LinkDriverPage>());
         }
 
         private async Task OnVehiclesCmd()
@@ -66,6 +78,12 @@ namespace ZCarsDriver.ViewModel
                 if (_currentModule == MobileModule.Vendor)
                 {
                     IsVendor = true;
+                }
+                if (_currentModule == MobileModule.Driver)
+                {
+                    IsDriver = true;
+                    VehicleNo = "TN 38 DU 4090";
+                    OwnerNumber = "ZCars";
                 }
             }
         }

@@ -34,13 +34,13 @@ namespace ZhooSoft.Controls
 
         public SfEntry()
         {
-            
             _entry = new Entry();            
             ApplyCustomStyle();
             _entry.SetBinding(Entry.TextProperty, new Binding(nameof(SfText), source: this, mode: BindingMode.TwoWay));
             _entry.SetBinding(Entry.KeyboardProperty, new Binding(nameof(Keyboard), source: this));
             _entry.TextChanged += (s, e) => OnTextchanged(e);
             Content = _entry;
+            HeightRequest = 80;
         }
 
         private void OnTextchanged(object e)
