@@ -6,6 +6,7 @@ using ZhooSoft.Auth;
 using ZhooSoft.Auth.Model;
 using ZhooSoft.Auth.Views;
 using ZhooSoft.Core;
+using ZhooSoft.Core.Alerts;
 using ZhooSoft.Core.Session;
 
 namespace ZCarsDriver.CoreHelper
@@ -69,7 +70,7 @@ namespace ZCarsDriver.CoreHelper
         private void UpdateUserDetails(UserSession session)
         {
             UserDetails.getInstance().Phone1 = session.PhoneNumber;
-            UserDetails.getInstance().UserRoles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User};
+            UserDetails.getInstance().UserRoles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User };
         }
 
         public void NavigateToNotification()
@@ -86,6 +87,14 @@ namespace ZCarsDriver.CoreHelper
             }
             else
             {
+                try
+                {
+                    var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
                 return true;
             }
         }
