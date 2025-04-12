@@ -73,6 +73,7 @@
                                 <HorizontalStackLayout
                                     Grid.Column="2"
                                     HorizontalOptions="Fill"
+                                    IsVisible="{Binding ShowRegistrationOption}"
                                     Spacing="20"
                                     VerticalOptions="Fill">
                                     <!--  Edit Button with Image  -->
@@ -81,14 +82,6 @@
                                         CommandParameter="{Binding .}"
                                         HeightRequest="16"
                                         Source="edit_icon.png"
-                                        WidthRequest="16" />
-
-                                    <!--  View Button with Image  -->
-                                    <ctrl:CustomImage
-                                        Command="{Binding Path=BindingContext.ViewVehicleCommand, Source={x:Reference VehicleListUI}}"
-                                        CommandParameter="{Binding .}"
-                                        HeightRequest="16"
-                                        Source="view_icon.png"
                                         WidthRequest="16" />
 
                                     <!--  Delete Button with Image  -->
@@ -100,6 +93,9 @@
                                         WidthRequest="16" />
                                 </HorizontalStackLayout>
                             </Grid>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Path=BindingContext.ViewVehicleCommand, Source={x:Reference VehicleListUI}}" CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
                         </ctrl:CustomBorder>
                     </DataTemplate>
                 </BindableLayout.ItemTemplate>
@@ -112,7 +108,7 @@
                 BackgroundColor="{x:StaticResource Primary}"
                 Command="{Binding AddVehicleCommand}"
                 HeightRequest="50"
-                IsVisible="{Binding IsVehicleListPage}"
+                IsVisible="{Binding ShowRegistrationOption}"
                 Text="Add Vehicle"
                 TextColor="White" />
         </Grid>

@@ -58,6 +58,9 @@ namespace ZhooCars.Model.DTOs
 
         public required int VehicleYear { get; set; } = 2004;
 
+
+        public bool ShowRegistrationOption { get; set; }
+
         #endregion
     }
 }

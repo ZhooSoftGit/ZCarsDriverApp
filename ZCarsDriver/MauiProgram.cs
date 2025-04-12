@@ -23,6 +23,10 @@ using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services.AppService;
 using ZCarsDriver.Services;
 using ZCarsDriver.Views.Common;
+using ZCarsDriver.Views.Rides;
+using ZCarsDriver.Views.Vendor;
+
+
 
 
 
@@ -124,6 +128,14 @@ namespace ZCarsDriver
             services.AddTransient<BookingRequestPopup>();
 
             services.AddTransient<CommonFormPage>();
+
+            services.AddTransient<RideDetailsPage>();
+            services.AddTransient<RideListPage>();
+            services.AddTransient<DashboardPage>();
+            services.AddTransient<VehicleDetailsPage>();
+
+            services.AddTransient<EarningsPage>();
+
             return services;
         }
 
@@ -194,6 +206,15 @@ namespace ZCarsDriver
             services.AddTransient<LinkDriverViewModel>();
             services.AddTransient<VendorOtpViewModel>();
             services.AddTransient<OtpVerificationViewModel>();
+
+
+            services.AddTransient<DashboardViewModel>();
+            services.AddTransient<VehicleDetailsViewModel>();
+            services.AddTransient<RideListViewModel>();
+            services.AddTransient<RideDetailsViewModel>();
+
+            services.AddTransient<EarningsViewModel>();
+
             return services;
         }
 

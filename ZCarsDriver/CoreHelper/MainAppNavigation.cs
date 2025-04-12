@@ -85,17 +85,32 @@ namespace ZCarsDriver.CoreHelper
             {
                 return false;
             }
-            else
+            else 
             {
                 try
                 {
                     var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+                    return true;
                 }
-                catch (Exception ex)
+                catch (PermissionException e)
                 {
-                    return false;
+                    await ServiceHelper.GetService<IAlertService>().ShowAlert("Error", "Enable your location", "ok");
                 }
-                return true;
+                catch (FeatureNotEnabledException e)
+                {
+                    // Location turned OFF, show popup to user, etc...
+                    await ServiceHelper.GetService<IAlertService>().ShowAlert("Error", "Location is Off. Please enable the location", "ok");
+                }
+                catch (FeatureNotSupportedException e)
+                {
+                    // Location services not supported, show popup to user, etc...
+                    await ServiceHelper.GetService<IAlertService>().ShowAlert("Error", "Location service is not enabled. Please enable the location", "ok");
+                }
+                catch (Exception e)
+                {
+                    // Something else went wrong
+                }
+                return false;
             }
         }
 

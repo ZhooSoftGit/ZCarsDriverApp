@@ -27,22 +27,14 @@ namespace ZCarsDriver.ViewModel.Common
 
         private async Task RequestLocationPermission()
         {
-            var locationPermission = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>();
-            if (locationPermission != PermissionStatus.Granted)
+            var status = await Permissions.RequestAsync<Permissions.LocationWhenInUse>();
+            if (status == PermissionStatus.Granted)
             {
-                await _alertService.ShowAlert("Permission Denied", "Please enable location in settings.", "OK");
+                ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
             }
             else
             {
-                try
-                {
-                    var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
-                    ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
-                }
-                catch (Exception ex)
-                {
-                    await _alertService.ShowAlert("Permission Denied", "Location service is not running.Please enable it", "OK");
-                }
+                await Shell.Current.DisplayAlert("Permission Denied", "Please enable location in settings.", "OK");
             }
         }
 

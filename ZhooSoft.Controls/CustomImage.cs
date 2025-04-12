@@ -10,10 +10,10 @@ namespace ZhooSoft.Controls
     public class CustomImage : Image
     {
         public static readonly BindableProperty CommandProperty =
-            BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(CustomImage));
+            BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(CustomDatePicker));
 
         public static readonly BindableProperty CommandParameterProperty =
-            BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(CustomImage));
+            BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(CustomDatePicker));
 
         public ICommand Command
         {

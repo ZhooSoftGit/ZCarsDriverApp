@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using ZCarsDriver.Views.Driver;
+using ZCarsDriver.Views.Vendor;
 using ZhooCars.Common;
 using ZhooCars.Model.DTOs;
 using ZhooSoft.Auth.Model;
@@ -23,6 +24,10 @@ namespace ZCarsDriver.ViewModel
 
         [ObservableProperty]
         private string searchText;
+
+
+        [ObservableProperty]
+        private bool _showRegistrationOption;
 
         #endregion
 
@@ -65,15 +70,11 @@ namespace ZCarsDriver.ViewModel
             base.OnAppearing();
 
             IsBusy = true;
-            if (UserDetails.getInstance().UserRoles.Contains(ZhooCars.Common.UserRoles.Vendor))
+            if (NavigationParams.ContainsKey("showregistrationoption"))
             {
-                await LoadData();
+                ShowRegistrationOption = true;
             }
-            else
-            {
-                Vehicles = new ObservableCollection<VehicleDto>(UIHelper.VehicleDtoSamples.GetSampleVehicles());
-            }
-
+            await LoadData();
             PerformSearch();
             IsBusy = false;
         }
@@ -98,8 +99,6 @@ namespace ZCarsDriver.ViewModel
             var param = new Dictionary<string, object>
                     {
                         { "regType",  RegsitrationType.VechicleDetails }
-                        //{"selectedObj", vehicle },
-                        //{"action", ActionType.Edit }
                     };
             await _navigationService.PushAsync(ServiceHelper.GetService<RegistrationBasePage>(), param);
         }
@@ -107,6 +106,18 @@ namespace ZCarsDriver.ViewModel
         private async Task LoadData()
         {
             //CAL API ad get vechicle list
+            var vehicles = UIHelper.VehicleDtoSamples.GetSampleVehicles();
+
+
+            if (ShowRegistrationOption)
+            {
+                foreach (var item in vehicles)
+                {
+                    item.ShowRegistrationOption = true;
+                }
+            }
+
+            Vehicles = new ObservableCollection<VehicleDto>(vehicles);
         }
 
         private void PerformSearch()
@@ -123,11 +134,22 @@ namespace ZCarsDriver.ViewModel
 
         private async Task ViewVehicle(VehicleDto vehicle)
         {
-            var param = new Dictionary<string, object>
+            if (ShowRegistrationOption)
+            {
+                var param = new Dictionary<string, object>
                     {
                         { "regType",  RegsitrationType.VechicleDetails }
                     };
-            await _navigationService.PushAsync(ServiceHelper.GetService<RegistrationBasePage>(), param);
+                await _navigationService.PushAsync(ServiceHelper.GetService<RegistrationBasePage>(), param);
+            }
+            else
+            {
+                var param = new Dictionary<string, object>
+                    {
+                        { "selecteItem",  vehicle }
+                    };
+                await _navigationService.PushAsync(ServiceHelper.GetService<VehicleDetailsPage>(), param);
+            }
         }
 
         #endregion

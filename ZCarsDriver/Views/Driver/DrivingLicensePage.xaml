@@ -150,11 +150,7 @@
                             </Label.GestureRecognizers>
                         </Label>
                     </Grid>
-
-
                 </ctrl:CustomBorder>
-
-
 
                 <!--  Save Button  -->
                 <Button

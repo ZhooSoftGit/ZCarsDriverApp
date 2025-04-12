@@ -27,4 +27,15 @@ namespace ZCarsDriver.Helpers
         FAQ
     }
 
+    public enum ActionEnum
+    {
+        Vehicles,
+        Drivers,
+        PeekHrs,
+        Reports,
+        Earnings,
+        Rides,
+        Others
+    }
+
 }

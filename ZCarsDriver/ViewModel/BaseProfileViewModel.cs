@@ -4,6 +4,7 @@ using System.Windows.Input;
 using ZCarsDriver.Helpers;
 using ZCarsDriver.UIModel;
 using ZCarsDriver.Views.Driver;
+using ZCarsDriver.Views.Vendor;
 using ZhooCars.Common;
 using ZhooSoft.Core;
 
@@ -62,7 +63,11 @@ namespace ZCarsDriver.ViewModel
 
         private async Task OnVehiclesCmd()
         {
-            await _navigationService.PushAsync(ServiceHelper.GetService<VehicleListPage>());
+            var nvparam = new Dictionary<string, object>
+                    {
+                        {"showregistrationoption",true }
+                    };
+            await _navigationService.PushAsync(ServiceHelper.GetService<VehicleListPage>(), nvparam);
         }
 
         public override void OnAppearing()
@@ -91,8 +96,17 @@ namespace ZCarsDriver.ViewModel
         private async Task OnLaunchDashBoard()
         {
             IsBusy = true;
-            await _navigationService.PopToRootAsync();
-            await _navigationService.PushAsync(ServiceHelper.GetService<DriverDashboardPage>());
+            if(AppHelper.CurrentModule == MobileModule.Driver)
+            {
+                await _navigationService.PopToRootAsync();
+                await _navigationService.PushAsync(ServiceHelper.GetService<DriverDashboardPage>());
+            }
+            else if(AppHelper.CurrentModule == MobileModule.Vendor)
+            {
+                //await _navigationService.PopToRootAsync();
+                await _navigationService.PushAsync(ServiceHelper.GetService<DashboardPage>());
+            }
+            
             IsBusy = false;
         }
 
