@@ -96,7 +96,7 @@ namespace ZhooSoft.Controls
                         inputControl = new DatePicker
                         {
                             BindingContext = field
-                        };                        
+                        };
                         inputControl.SetBinding(DatePicker.DateProperty, nameof(FormField.DateValue), BindingMode.TwoWay);
                         break;
 
@@ -106,6 +106,11 @@ namespace ZhooSoft.Controls
                             ItemsSource = field.Options,
                             BindingContext = field
                         };
+                        if (!string.IsNullOrEmpty(field.PickerDisplayProperty))
+                        {
+                            picker.ItemDisplayBinding = new Binding(field.PickerDisplayProperty);
+                        }
+
                         picker.SetBinding(Picker.SelectedItemProperty, nameof(FormField.Value), BindingMode.TwoWay);
                         inputControl = picker;
                         break;
@@ -123,7 +128,7 @@ namespace ZhooSoft.Controls
                         {
                             BindingContext = field
                         };
-                        rg.ItemsSource = field.Options;
+                        rg.ItemsSource = field.Options.Select(o => o.ToString()).ToList();
                         rg.Orientation = field.StackOrientation;
                         rg.SetBinding(RadioGroup.SelectedValueProperty, nameof(FormField.Value), BindingMode.TwoWay);
                         inputControl = rg;
@@ -167,7 +172,13 @@ namespace ZhooSoft.Controls
         private bool _isRequired;
 
         [ObservableProperty]
-        private List<string> _options;
+        private List<object> _options;
+
+        [ObservableProperty]
+        private object _selectedItem;
+
+        [ObservableProperty]
+        private string _pickerDisplayProperty;
 
         [ObservableProperty]
         private string _placeholder;

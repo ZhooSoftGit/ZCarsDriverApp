@@ -1,4 +1,5 @@
-﻿using ZCarsDriver.Services;
+﻿using ZCars.Model.Response;
+using ZCarsDriver.Services;
 using ZhooCars.Model.Response;
 using ZhooSoft.ServiceBase;
 
@@ -38,9 +39,9 @@ namespace ZhooCars.Services
             return await _apiService.PostAsync<bool>($"{ApiConstants.BaseUrl}{ApiConstants.AccountSendOtp}", new { PhoneNumber = phoneNumber });
         }
 
-        public async Task<ApiResponse<TokenResponse?>> VerifyOtpAsync(string phoneNumber, string otpCode)
+        public async Task<ApiResponse<OTPResponse?>> VerifyOtpAsync(string phoneNumber, string otpCode)
         {
-            return await _apiService.PostAsync<TokenResponse?>($"{ApiConstants.BaseUrl}{ApiConstants.AccountVerifyOtp}", new { PhoneNumber = phoneNumber, Code = otpCode });
+            return await _apiService.PostAsync<OTPResponse?>($"{ApiConstants.BaseUrl}{ApiConstants.AccountVerifyOtp}", new { PhoneNumber = phoneNumber, Code = otpCode });
         }
 
         #endregion

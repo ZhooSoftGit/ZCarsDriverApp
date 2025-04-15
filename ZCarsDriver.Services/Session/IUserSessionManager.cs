@@ -14,10 +14,12 @@ namespace ZCarsDriver.Services.Session
         Task<UserSession?> GetUserSessionAsync();
         void ClearSession();
 
+        Task<string?> GetUserPreference(string key);
+
+        Task SetUserPreference(string key, string value);
+
         string GetUserPhoneNumber();
 
         string GetUserName();
-
-        List<UserRoles> GetUserRoles();
     }
 }

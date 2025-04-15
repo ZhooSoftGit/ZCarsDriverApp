@@ -1,4 +1,6 @@
-﻿namespace ZCarsDriver.Services
+﻿using ZhooSoft.Core;
+
+namespace ZCarsDriver.Services
 {
     public static class ApiConstants
     {
@@ -16,7 +18,7 @@
 
         public const string AddPeakHour = "AddPeakHour";
 
-        public const string APIUrl = _baseUrl + DevUrl;
+        public const string APIUrl = GlobalConstants.APPUrl;
 
         public const string AssignServiceRequest = "service-requests/{0}/assign/{1}";
 

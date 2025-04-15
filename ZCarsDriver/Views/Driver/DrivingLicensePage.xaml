@@ -44,92 +44,167 @@
                     Text="Attachments" />
 
                 <!--  Uploaded File (Front)  -->
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10"
+                    HorizontalOptions="Fill"
+                    IsVisible="{Binding IsFrontUploaded, Converter={toolkit:InvertedBoolConverter}}"
+                    VerticalOptions="Fill">
+                    <ctrl:CustomBorder Padding="10" BackgroundColor="{x:StaticResource Primary}">
+                        <HorizontalStackLayout
+                            HorizontalOptions="Center"
+                            Spacing="10"
+                            VerticalOptions="Center">
+                            <ctrl:CustomImage Source="upload.png" />
+                            <Label
+                                Text="Upload Front"
+                                TextColor="{x:StaticResource White}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UploadFrontCommand}" />
+                        </Border.GestureRecognizers>
+                    </ctrl:CustomBorder>
+                    <ctrl:CustomBorder
+                        Grid.Column="1"
+                        Padding="10"
+                        BackgroundColor="{x:StaticResource Primary}">
+                        <HorizontalStackLayout
+                            HorizontalOptions="Center"
+                            Spacing="10"
+                            VerticalOptions="Center">
+                            <ctrl:CustomImage Source="upload.png" />
+                            <Label
+                                Text="Take Picture Front"
+                                TextColor="{x:StaticResource White}"
+                                VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding UploadFrontCommand}" />
+                        </Border.GestureRecognizers>
+                    </ctrl:CustomBorder>
+                </Grid>
+
                 <ctrl:CustomBorder
                     Padding="10"
-                    BorderColor="Gray"
-                    CornerRadius="10">
+                    BackgroundColor="{x:StaticResource Primary}"
+                    BorderColor="{x:StaticResource Primary}"
+                    CornerRadius="10"
+                    IsVisible="{Binding IsFrontUploaded}">
                     <Grid
-                        ColumnDefinitions="*"
-                        HorizontalOptions="Fill"
-                        RowDefinitions="*"
-                        VerticalOptions="Fill">
-                        <Grid
-                            ColumnDefinitions="Auto, *, Auto"
-                            IsVisible="{Binding IsFrontUploaded}"
-                            VerticalOptions="Center">
+                        ColumnDefinitions="*, Auto"
+                        ColumnSpacing="10"
+                        VerticalOptions="Center">
+                        <HorizontalStackLayout
+                            Grid.Column="0"
+                            HorizontalOptions="Fill"
+                            Spacing="10"
+                            VerticalOptions="Fill">
                             <Image
-                                Grid.Column="0"
                                 HeightRequest="50"
                                 Source="{Binding FrontLicenseImage}"
                                 WidthRequest="50" />
 
-                            <Label Grid.Column="1">
+                            <Label VerticalTextAlignment="Center">
                                 <Label.FormattedText>
                                     <FormattedString>
-                                        <Span Text="{Binding FrontFileName}" TextColor="{StaticResource Primary}" />
+                                        <Span Text="{Binding FrontFileName}" TextColor="{StaticResource White}" />
                                         <Span Text="&#10;" />
                                         <Span Text="{Binding FrontFileSize}" TextColor="{StaticResource Gray100}" />
                                     </FormattedString>
                                 </Label.FormattedText>
                             </Label>
-                            <Image
-                                Grid.Column="2"
-                                HeightRequest="25"
-                                Source="delete_icon.png"
-                                WidthRequest="25">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding RemoveFrontCommand}" />
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </Grid>
-                        <Label
-                            HorizontalOptions="Fill"
-                            HorizontalTextAlignment="Center"
-                            IsVisible="{Binding IsFrontUploaded, Converter={toolkit:InvertedBoolConverter}}"
-                            Text="⬆ Upload (Front)"
-                            TextColor="{StaticResource Primary}"
-                            VerticalOptions="Fill"
-                            VerticalTextAlignment="Center">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding UploadFrontCommand}" />
-                            </Label.GestureRecognizers>
-                        </Label>
+                        </HorizontalStackLayout>
+
+                        <Image
+                            Grid.Column="1"
+                            HeightRequest="25"
+                            Source="delete_icon.png"
+                            WidthRequest="25">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding RemoveFrontCommand}" />
+                            </Image.GestureRecognizers>
+                        </Image>
                     </Grid>
-
-
                 </ctrl:CustomBorder>
 
-                <!--  Uploaded File (Back)  -->
-                <ctrl:CustomBorder
-                    Padding="10"
-                    BorderColor="{StaticResource Primary}"
-                    CornerRadius="10"
-                    IsVisible="{Binding BothSide}">
-                    <Grid
-                        ColumnDefinitions="*"
-                        HorizontalOptions="Fill"
-                        RowDefinitions="*"
-                        VerticalOptions="Fill">
-                        <Grid
-                            ColumnDefinitions="Auto, *, Auto"
-                            IsVisible="{Binding IsBackUploaded}"
-                            VerticalOptions="Center">
-                            <Image
-                                Grid.Column="0"
-                                HeightRequest="50"
-                                Source="{Binding BackLicenseImage}"
-                                WidthRequest="50" />
 
-                            <Label Grid.Column="1">
-                                <Label.FormattedText>
-                                    <FormattedString>
-                                        <Span Text="{Binding BackFileName}" TextColor="{StaticResource Primary}" />
-                                        <Span Text="{Binding BackFileSize}" TextColor="{StaticResource Gray100}" />
-                                    </FormattedString>
-                                </Label.FormattedText>
-                            </Label>
+                <!--  Uploaded File (Back)  -->
+
+                <VerticalStackLayout IsVisible="{Binding BothSide}">
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        ColumnSpacing="10"
+                        HorizontalOptions="Fill"
+                        IsVisible="{Binding IsBackUploaded, Converter={toolkit:InvertedBoolConverter}}"
+                        VerticalOptions="Fill">
+                        <ctrl:CustomBorder Padding="10" BackgroundColor="{x:StaticResource Primary}">
+                            <HorizontalStackLayout
+                                HorizontalOptions="Center"
+                                Spacing="10"
+                                VerticalOptions="Center">
+                                <ctrl:CustomImage Source="upload.png" />
+                                <Label
+                                    Text="Upload Back"
+                                    TextColor="{x:StaticResource White}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UploadBackCommand}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+
+                        <ctrl:CustomBorder
+                            Grid.Column="1"
+                            Padding="10"
+                            BackgroundColor="{x:StaticResource Primary}">
+                            <HorizontalStackLayout
+                                HorizontalOptions="Center"
+                                Spacing="10"
+                                VerticalOptions="Center">
+                                <ctrl:CustomImage Source="upload.png" />
+                                <Label
+                                    Text="Take Picture Back"
+                                    TextColor="{x:StaticResource White}"
+                                    VerticalOptions="Center" />
+                            </HorizontalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding UploadBackCommand}" />
+                            </Border.GestureRecognizers>
+                        </ctrl:CustomBorder>
+                    </Grid>
+
+                    <ctrl:CustomBorder
+                        Padding="10"
+                        BackgroundColor="{StaticResource Primary}"
+                        BorderColor="{StaticResource Primary}"
+                        CornerRadius="10"
+                        IsVisible="{Binding IsBackUploaded}">
+                        <Grid
+                            ColumnDefinitions="*, Auto"
+                            ColumnSpacing="10"
+                            VerticalOptions="Center">
+                            <HorizontalStackLayout Spacing="10">
+                                <Image
+                                    Grid.Column="0"
+                                    HeightRequest="50"
+                                    Source="{Binding BackLicenseImage}"
+                                    WidthRequest="50" />
+
+                                <Label Grid.Column="1" VerticalTextAlignment="Center">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding BackFileName}" TextColor="{StaticResource White}" />
+                                            <Span Text="&#10;" />
+                                            <Span Text="{Binding BackFileSize}" TextColor="{StaticResource Gray100}" />
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                            </HorizontalStackLayout>
+
                             <Image
-                                Grid.Column="2"
+                                Grid.Column="1"
                                 HeightRequest="25"
                                 Source="delete_icon.png"
                                 WidthRequest="25">
@@ -138,19 +213,8 @@
                                 </Image.GestureRecognizers>
                             </Image>
                         </Grid>
-                        <Label
-                            HorizontalOptions="Fill"
-                            HorizontalTextAlignment="Center"
-                            IsVisible="{Binding IsBackUploaded, Converter={toolkit:InvertedBoolConverter}}"
-                            Text="⬆ Upload (Back)"
-                            TextColor="{StaticResource Primary}"
-                            VerticalOptions="Fill">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding UploadBackCommand}" />
-                            </Label.GestureRecognizers>
-                        </Label>
-                    </Grid>
-                </ctrl:CustomBorder>
+                    </ctrl:CustomBorder>
+                </VerticalStackLayout>
 
                 <!--  Save Button  -->
                 <Button

@@ -9,5 +9,6 @@ namespace ZCarsDriver.PlatformHelper
     public interface ILocationHelper
     {
         bool IsLocationEnabled();
+        void OpenLocationSettings();
     }
 }

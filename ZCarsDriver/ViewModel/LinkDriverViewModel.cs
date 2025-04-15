@@ -39,6 +39,7 @@ namespace ZCarsDriver.ViewModel
             ContinueCommand = new AsyncRelayCommand(OnContinue);
             ChangeVendorCommand = new AsyncRelayCommand(OnChangeVendor);
             SearchCommand = new RelayCommand(FilterCabs);
+            PageTitleName = "Link Vehicle";
         }
 
         public override void OnAppearing()

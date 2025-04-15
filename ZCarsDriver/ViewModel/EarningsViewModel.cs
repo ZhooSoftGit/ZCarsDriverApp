@@ -41,6 +41,7 @@ namespace ZCarsDriver.ViewModel
 
         public EarningsViewModel()
         {
+            PageTitleName = "Earnings";
             RefreshEarningCmd = new Command(async () => await RefreshEarnings());
             ExportReportCmd = new Command(async () => await ExportReports());
         }
@@ -58,7 +59,6 @@ namespace ZCarsDriver.ViewModel
             TotalDrivingTime = new TimeSpan(10, 1, 1);
             TotalEarnings = 300;
             TotalKilometers = 30;
-
             IsBusy = false;
         }
     }

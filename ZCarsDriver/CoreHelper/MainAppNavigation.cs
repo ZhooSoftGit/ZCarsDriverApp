@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using ZCarsDriver.PlatformHelper;
 using ZCarsDriver.Services.Session;
 using ZCarsDriver.Views;
 using ZCarsDriver.Views.Common;
@@ -100,11 +101,14 @@ namespace ZCarsDriver.CoreHelper
                 {
                     // Location turned OFF, show popup to user, etc...
                     await ServiceHelper.GetService<IAlertService>().ShowAlert("Error", "Location is Off. Please enable the location", "ok");
+                    ServiceHelper.GetService<ILocationHelper>().OpenLocationSettings();
                 }
                 catch (FeatureNotSupportedException e)
                 {
                     // Location services not supported, show popup to user, etc...
                     await ServiceHelper.GetService<IAlertService>().ShowAlert("Error", "Location service is not enabled. Please enable the location", "ok");
+                    ServiceHelper.GetService<ILocationHelper>().OpenLocationSettings();
+                    
                 }
                 catch (Exception e)
                 {

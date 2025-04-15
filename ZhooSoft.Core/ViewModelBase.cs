@@ -15,6 +15,8 @@ namespace ZhooSoft.Core
         [ObservableProperty]
         private string _pageTitleName;
 
+
+
         #endregion
 
         #region Constructors
@@ -35,6 +37,8 @@ namespace ZhooSoft.Core
         public INavigationService _navigationService { get; set; }
 
         public IAsyncRelayCommand BackCommand { get; }
+
+        
 
         public bool IsBusy
         {

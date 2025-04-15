@@ -25,14 +25,10 @@ using ZCarsDriver.Services;
 using ZCarsDriver.Views.Common;
 using ZCarsDriver.Views.Rides;
 using ZCarsDriver.Views.Vendor;
-
-
-
-
-
-
+using ZCarsDriver.PlatformHelper;
 #if ANDROID
 using ZhooSoft.Controls.Platforms.Android;
+using ZCarsDriver.Platforms.Android.Helpers;
 using Android.Content.Res;
 #endif
 
@@ -135,6 +131,7 @@ namespace ZCarsDriver
             services.AddTransient<VehicleDetailsPage>();
 
             services.AddTransient<EarningsPage>();
+            services.AddTransient<PeakHoursPage>();
 
             return services;
         }
@@ -147,6 +144,7 @@ namespace ZCarsDriver
 
 #if ANDROID
             services.AddSingleton<IProgressService, ProgressService_Android>();
+            services.AddTransient<ILocationHelper, LocationHelperAndroid>();
 #endif
 
 #if IOS
@@ -214,7 +212,7 @@ namespace ZCarsDriver
             services.AddTransient<RideDetailsViewModel>();
 
             services.AddTransient<EarningsViewModel>();
-
+            services.AddTransient<PeakHoursViewModel>();
             return services;
         }
 

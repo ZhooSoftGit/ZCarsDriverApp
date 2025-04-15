@@ -1,4 +1,5 @@
-﻿using ZhooCars.Model.Response;
+﻿using ZCars.Model.Response;
+using ZhooCars.Model.Response;
 using ZhooSoft.ServiceBase;
 
 namespace ZhooCars.Services
@@ -15,7 +16,7 @@ namespace ZhooCars.Services
 
         Task<ApiResponse<bool>> SendOtpAsync(string phoneNumber);
 
-        Task<ApiResponse<TokenResponse?>> VerifyOtpAsync(string phoneNumber, string otpCode);
+        Task<ApiResponse<OTPResponse?>> VerifyOtpAsync(string phoneNumber, string otpCode);
 
         #endregion
     }

@@ -178,6 +178,9 @@
 	  <MauiXaml Update="Views\Vendor\EarningsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\Vendor\PeakHoursPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\Vendor\RideListPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

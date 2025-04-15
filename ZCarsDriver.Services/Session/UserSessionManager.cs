@@ -32,6 +32,16 @@ namespace ZCarsDriver.Services.Session
             }
         }
 
+        public async Task<string?> GetUserPreference(string key)
+        {
+            return await SecureStorage.GetAsync(key);
+        }
+
+        public async Task SetUserPreference(string key, string value)
+        {
+            await SecureStorage.SetAsync(key, value);
+        }
+
         public async Task<UserSession?> GetUserSessionAsync()
         {
             var json = Preferences.Get(UserSessionKey, string.Empty);

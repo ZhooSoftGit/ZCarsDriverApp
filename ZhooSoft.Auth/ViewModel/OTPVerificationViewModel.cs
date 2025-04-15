@@ -2,6 +2,8 @@
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using ZCarsDriver.Services.Session;
+using ZhooCars.Common;
+using ZhooCars.Model.DTOs;
 using ZhooCars.Services;
 using ZhooSoft.Auth.Model;
 using ZhooSoft.Core;
@@ -83,14 +85,14 @@ namespace ZhooSoft.Auth.ViewModel
                     {
                         Name = "Rajesh",
                         PhoneNumber = PhoneNumber,
-                        RefreshToken = result.Data.RefreshToken,
-                        Token = result.Data.Token,
-                        Roles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User }
+                        RefreshToken = result.Data.TokenResponse.RefreshToken,
+                        Token = result.Data.TokenResponse.Token,
+                        Roles = GetRoles(result.Data.UserRoles)
                     });
 
 
                     UserDetails.getInstance().Phone1 = PhoneNumber;                    
-                    UserDetails.getInstance().UserRoles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User };
+                    UserDetails.getInstance().UserRoles = GetRoles(result.Data.UserRoles);
                     ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
                 }
                 else
@@ -103,6 +105,17 @@ namespace ZhooSoft.Auth.ViewModel
             {
                 ShowError = true;
             }
+        }
+
+        private List<UserRoles> GetRoles(List<UserRoleDto> roles)
+        {
+            List<UserRoles> roless = new List<UserRoles>();
+            foreach(var item in roles)
+            {
+                roless.Add(item.RoleId);
+            }
+
+            return roless;
         }
 
         private async Task OnResendCode()

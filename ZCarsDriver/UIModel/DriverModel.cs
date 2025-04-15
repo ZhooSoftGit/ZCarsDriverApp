@@ -18,4 +18,10 @@ namespace ZCarsDriver.UIModel
         [ObservableProperty]
         private bool _isSelected;
     }
+
+    public class TimeSlot
+    {
+        public TimeSpan FromTime { get; set; }
+        public TimeSpan ToTime { get; set; }
+    }
 }

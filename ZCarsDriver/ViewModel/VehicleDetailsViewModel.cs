@@ -6,8 +6,13 @@ using ZhooSoft.Core;
 
 namespace ZCarsDriver.ViewModel
 {
-    public  partial class VehicleDetailsViewModel : ViewModelBase
+    public partial class VehicleDetailsViewModel : ViewModelBase
     {
+        #region Fields
+
+        [ObservableProperty]
+        private Driver _assignedDriver;
+
         [ObservableProperty]
         private Vehicle _vehicle;
 
@@ -17,15 +22,30 @@ namespace ZCarsDriver.ViewModel
         [ObservableProperty]
         private ObservableCollection<VehiclePricing> _vehiclePricing;
 
-        [ObservableProperty]
-        private Driver _assignedDriver;
+        #endregion
 
-        public ICommand CallDriverCommand { get; }
+        #region Constructors
 
         public VehicleDetailsViewModel()
         {
             CallDriverCommand = new Command(CallDriver);
             PageTitleName = "Vehicle Details";
+        }
+
+        #endregion
+
+        #region Properties
+
+        public ICommand CallDriverCommand { get; }
+
+        #endregion
+
+        #region Methods
+
+        public override void OnAppearing()
+        {
+            base.OnAppearing();
+            LoadData();
         }
 
         private void CallDriver()
@@ -35,12 +55,6 @@ namespace ZCarsDriver.ViewModel
                 // Your call logic here
                 // For example: Launcher.Default.OpenAsync($"tel:{AssignedDriver.PhoneNumber}");
             }
-        }
-
-        public override void OnAppearing()
-        {
-            base.OnAppearing();
-            LoadData();
         }
 
         private void LoadData()
@@ -68,11 +82,13 @@ namespace ZCarsDriver.ViewModel
                 };
 
             AssignedDriver = new Driver
-                {
-                    Name = "Annai Raj R",
-                    PhoneNumber = "+91 9876543210",
-                    Photo = "driver_profile.png"
-                };
+            {
+                Name = "Annai Raj R",
+                PhoneNumber = "+91 9876543210",
+                Photo = "driver_profile.png"
+            };
         }
+
+        #endregion
     }
 }

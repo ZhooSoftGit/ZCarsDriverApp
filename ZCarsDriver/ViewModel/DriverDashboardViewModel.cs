@@ -11,6 +11,7 @@ using ZCarsDriver.NavigationExtension;
 using ZCarsDriver.Services;
 using ZCarsDriver.Services.AppService;
 using ZCarsDriver.Services.Contracts;
+using ZCarsDriver.Services.Session;
 using ZCarsDriver.Views.Common;
 using ZCarsDriver.Views.Driver;
 using ZhooCars.Common;
@@ -97,6 +98,8 @@ namespace ZCarsDriver.ViewModel
         {
             IsBusy = true;
             var result = await _navigationService.OpenPopup(new CommonMenu());
+
+            await Task.Delay(100);
             IsBusy = false;
         }
 
@@ -177,6 +180,9 @@ namespace ZCarsDriver.ViewModel
             {
                 await RefreshPage();
             }
+
+            await ServiceHelper.GetService<IUserSessionManager>().SetUserPreference("CurrentModule", UserRoles.Driver.ToString());
+
             IsLoaded = true;
         }
 
@@ -289,7 +295,7 @@ namespace ZCarsDriver.ViewModel
         {
             try
             {
-                var location = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+                var location = await Geolocation.GetLocationAsync() ?? await Geolocation.GetLastKnownLocationAsync();
                 return location;
             }
             catch (Exception ex)
@@ -396,7 +402,7 @@ namespace ZCarsDriver.ViewModel
             IsBusy = true;
             _startRealTimeUpdate = true;
             _destination = new Location(AppHelper.CurrentRide.BookingRequest.PickupLatitude, AppHelper.CurrentRide.BookingRequest.PickupLongitude);
-            OnTrip = true;           
+            OnTrip = true;
             await StartRealTimeTracking();
             IsBusy = false;
         }
