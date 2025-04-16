@@ -1,5 +1,7 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Collections;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -24,7 +26,7 @@ namespace ZhooSoft.ServiceBase
             {
                 await Task.Delay(500); // Simulating API delay
 
-                T? dummyData = GenerateDummyData<T>();
+                var dummyData = DummyDataGenerator.CreateDummy<T>();
 
                 return new ApiResponse<T?>
                 {
@@ -47,7 +49,7 @@ namespace ZhooSoft.ServiceBase
             {
                 await Task.Delay(500); // Simulating API delay
 
-                T? dummyData = GenerateDummyData<T>();
+                var dummyData = DummyDataGenerator.CreateDummy<T>();
 
                 return new ApiResponse<T?>
                 {
@@ -195,5 +197,84 @@ namespace ZhooSoft.ServiceBase
 
 
     }
+
+
+public static class DummyDataGenerator
+    {
+        private static readonly Random _rand = new();
+
+        public static T CreateDummy<T>()
+        {
+            return (T)CreateObject(typeof(T));
+        }
+
+        private static object CreateObject(Type type)
+        {
+            if (type == typeof(string))
+                return $"Dummy_{Guid.NewGuid().ToString()[..8]}";
+
+            if (type == typeof(int) || type == typeof(int?))
+                return _rand.Next(1, 100);
+
+            if (type == typeof(long) || type == typeof(long?))
+                return (long)_rand.Next(1, 100000);
+
+            if (type == typeof(double) || type == typeof(double?))
+                return _rand.NextDouble() * 100;
+
+            if (type == typeof(bool) || type == typeof(bool?))
+                return _rand.Next(0, 2) == 1;
+
+            if (type == typeof(DateTime) || type == typeof(DateTime?))
+                return DateTime.Now.AddDays(-_rand.Next(0, 1000));
+
+            if (type == typeof(Guid) || type == typeof(Guid?))
+                return Guid.NewGuid();
+
+            if (type.IsEnum)
+            {
+                var values = Enum.GetValues(type);
+                return values.GetValue(_rand.Next(values.Length))!;
+            }
+
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return CreateObject(Nullable.GetUnderlyingType(type)!);
+            }
+
+            if (typeof(IEnumerable).IsAssignableFrom(type) && type.IsGenericType)
+            {
+                var itemType = type.GetGenericArguments()[0];
+                var listType = typeof(List<>).MakeGenericType(itemType);
+                var list = (IList)Activator.CreateInstance(listType)!;
+                for (int i = 0; i < 3; i++)
+                    list.Add(CreateObject(itemType));
+                return list;
+            }
+
+            if (type.IsClass || (type.IsValueType && !type.IsPrimitive))
+            {
+                var obj = Activator.CreateInstance(type)!;
+                foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                {
+                    if (!prop.CanWrite) continue;
+                    try
+                    {
+                        var value = CreateObject(prop.PropertyType);
+                        prop.SetValue(obj, value);
+                    }
+                    catch
+                    {
+                        // Ignore if unsupported
+                    }
+                }
+                return obj;
+            }
+
+            return Activator.CreateInstance(type)!;
+        }
+    }
+
+
 
 }

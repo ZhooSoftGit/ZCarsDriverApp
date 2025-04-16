@@ -41,7 +41,11 @@ namespace ZhooCars.Services
 
         public async Task<ApiResponse<OTPResponse?>> VerifyOtpAsync(string phoneNumber, string otpCode)
         {
-            return await _apiService.PostAsync<OTPResponse?>($"{ApiConstants.BaseUrl}{ApiConstants.AccountVerifyOtp}", new { PhoneNumber = phoneNumber, Code = otpCode });
+            var result = await _apiService.PostAsync<OTPResponse?>($"{ApiConstants.BaseUrl}{ApiConstants.AccountVerifyOtp}", new { PhoneNumber = phoneNumber, Code = otpCode });
+
+            result.Data = new OTPResponse { TokenResponse = new TokenResponse { RefreshToken = "new Guid()", Token = "" } };
+
+            return result;
         }
 
         #endregion

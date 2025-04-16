@@ -12,8 +12,8 @@ namespace ZCars.Model.Response
     {
         public TokenResponse TokenResponse { get; set; }
 
-        public UserDetailDto? Userdetails { get; set; }
+       // public UserDetailDto? Userdetails { get; set; }
 
-        public List<UserRoleDto> UserRoles { get; set; }
+        //public List<UserRoleDto> UserRoles { get; set; }
     }
 }

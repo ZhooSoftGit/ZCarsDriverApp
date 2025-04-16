@@ -87,12 +87,12 @@ namespace ZhooSoft.Auth.ViewModel
                         PhoneNumber = PhoneNumber,
                         RefreshToken = result.Data.TokenResponse.RefreshToken,
                         Token = result.Data.TokenResponse.Token,
-                        Roles = GetRoles(result.Data.UserRoles)
+                        Roles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User }
                     });
 
 
-                    UserDetails.getInstance().Phone1 = PhoneNumber;                    
-                    UserDetails.getInstance().UserRoles = GetRoles(result.Data.UserRoles);
+                    UserDetails.getInstance().Phone1 = PhoneNumber;
+                    UserDetails.getInstance().UserRoles = new List<ZhooCars.Common.UserRoles> { ZhooCars.Common.UserRoles.User };
                     ServiceHelper.GetService<IMainAppNavigation>().NavigateToMain(true);
                 }
                 else
